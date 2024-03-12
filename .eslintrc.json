@@ -1,3 +1,18 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next", "next/core-web-vitals", "airbnb-base", "prettier"],
+  "rules": {
+    "import/extensions": "off",
+    "consistent-return": "off",
+    "no-underscore-dangle": "off",
+    "comma-dangle": "off",
+    "no-console": "warn",
+    "no-param-reassign": "off",
+    "arrow-body-style": "off",
+    "no-use-before-define": ["error", { "functions": false, "classes": false }],
+    "object-curly-newline": "off",
+    "implicit-arrow-linebreak": "off",
+    "class-methods-use-this": "off",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-undef": "warn"
+  }
 }
