@@ -1,0 +1,69 @@
+:root {
+  /* --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255; */
+
+  /* ? Default For Dark Theme */
+  /* --bg-color-primary: hsl(226,57%, 41%) */
+  /* --bg-color-primary: 256deg 100% 9%; */
+  /* --color-accent: #175443; */
+  --color-accent: #02674a;
+
+  --text-color-primary: hsl(163, 100%, 50%);
+  --color-accent-2: #541728;
+  --color-accent-3: #251754;
+  --color-accent-4: #465417;
+  --color-accent-5: #173754;
+  --color-accent-6: #96be25;
+  --color-accent-6: #7cc0d8;
+  --bg-color-primary: 256deg 100% 9%;
+  /* --color-secondary: hsl(226,57%, 21%); */
+  --bg-color-secondary: 226deg 57% 21%;
+  /* --bg-color-secondary: hsl(256, 100%, 9%); */
+  /* --bg-color-secondary: 256deg 100% 9%; */
+  /* --color-text: hsl(210, 40%, 96%); */
+
+  /* --text-color-primary: 210deg 40% 96%; */
+
+  /* --blog-header-color: hsl(26, 90%, 37%); */
+  --blog-header-color: hsl(26, 90%, 37%);
+  /* --color-blogs-date: hsl(343, 57%, 31%); */
+  --color-blogs-date: hsl(26, 90%, 37%);
+  /* --color-blogs-date: hsl(343, 57%, 21%); */
+
+  --text-color-calm: hsl(267, 7%, 70%);
+  --text-color-calm-strong: hsl(266, 8%, 83%);
+  --color-accent-text: hsl(266, 8%, 93%);
+
+  --color-accent-blog: hsl(163, 100%, 33%);
+  --color-blog-title: hsl(196, 54%, 77%);
+  --color-red-light-2: #ffa091;
+}
+
+.light {
+  --bg-color-primary: hsl(0, 0%, 92%);
+  --bg-color-primary: 0deg 0% 92%;
+  /* --bg-color-secondary: hsl(44, 97%, 40%); */
+  /* --bg-color-secondary: hsl(0, 0%, 82%); */
+  --bg-color-secondary: 0deg 0% 82%;
+  /* --bg-color-secondary: 44deg 97% 40%; */
+  /* --color-text: hsl(217, 33%, 17%); */
+  /* --text-color-primary: hsl(217deg,33%,17%); */
+  --text-color-primary: 217deg 33% 17%;
+
+  /* --color-blogs-date: hsl(343, 57%, 51%); */
+  /* --color-blogs-date: #465417; */
+
+  --text-color-primary: hsl(163, 100%, 35%);
+
+  --color-blogs-date: hsl(26, 90%, 47%);
+
+  /* --text-color-primary: hsl(163, 100%, 33%); */
+  --text-color-calm: hsl(265, 4%, 31%);
+  --text-color-calm-strong: hsl(265, 4%, 31%);
+
+  --color-accent-blog: hsl(163, 100%, 25%);
+  --color-blog-title: hsl(196, 54%, 37%);
+
+  --color-red-light-2: #ff6148;
+}
