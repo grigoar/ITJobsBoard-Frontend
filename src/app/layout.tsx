@@ -4,7 +4,6 @@ import { Inter } from 'next/font/google';
 import '../styles/globals.css';
 import Head from 'next/head';
 import AppLayout from '@/components/layout/AppLayout';
-import { Html } from 'next/document';
 
 const inter = Inter({ subsets: ['latin'] });
 
