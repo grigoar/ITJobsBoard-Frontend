@@ -1,8 +1,9 @@
 name: Main
 on:
   push:
-    branches: [main, feature/*]
+    branches: [main]
   pull_request:
+    branches: [feature/*]
 
 jobs:
   build-job:

@@ -1,0 +1,41 @@
+export const separatorsRegex = [
+  ' ',
+  '+',
+  '(',
+  ')',
+  '*',
+  '\\/',
+  '\\\\',
+  ':',
+  '?',
+  '!',
+  '.',
+  ',',
+  ':',
+  ';',
+  '"',
+  "'",
+  '`',
+  '~',
+  '&',
+  '%',
+  '$',
+  '#',
+  '@',
+  '>',
+  '<',
+  '=',
+  '^',
+  '_',
+  '\\-',
+  '\\\n',
+  '\\[',
+  '\\{',
+  '\\]',
+  '\\}',
+];
+
+export const generalTextSplitter = (text: string) => {
+  const textSplitted = text.split(new RegExp(`[${separatorsRegex.join('')}]`, 'g'));
+  return textSplitted;
+};
