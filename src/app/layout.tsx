@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import '../styles/globals.css';
 import Head from 'next/head';
 import AppLayout from '@/components/layout/AppLayout';
+import StoreProvider from './StoreProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,15 +22,17 @@ export default function RootLayout({
     // <html lang="en">
     //   <body className={inter.className}>{children}</body>
     // </html>
-    <html lang="en">
-      <body className={inter.className}>
-        <Head>
-          <meta name="viewport" content={'width=device-width, initial-scale=1'} />
-        </Head>
-        <main>
-          <AppLayout>{children}</AppLayout>
-        </main>
-      </body>
-    </html>
+    <StoreProvider count={30}>
+      <html lang="en">
+        <body className={inter.className}>
+          <Head>
+            <meta name="viewport" content={'width=device-width, initial-scale=1'} />
+          </Head>
+          <main>
+            <AppLayout>{children}</AppLayout>
+          </main>
+        </body>
+      </html>
+    </StoreProvider>
   );
 }
