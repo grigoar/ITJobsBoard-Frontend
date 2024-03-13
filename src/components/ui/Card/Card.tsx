@@ -7,7 +7,7 @@ interface Props {
 const Card = (props: Props) => {
   return (
     <div
-      className={`${props.className != null ? props.className : ''} m-auto  my-12 h-full rounded-3xl bg-secondary p-8 `}
+      className={`${props.className != null ? props.className : ''} m-auto  my-12 h-auto rounded-3xl bg-secondary p-8 `}
     >
       {props.children}
     </div>

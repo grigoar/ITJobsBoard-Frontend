@@ -1,14 +1,27 @@
+'use client';
+
 import React from 'react';
 import { BsArrowRight } from 'react-icons/bs';
 import Link from 'next/link';
 import constants from '@/utils/constants';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { decrement, increment } from '@/store/slices/counterSlice';
 import Card from '../ui/Card/Card';
 import Button from '../ui/Button/Button';
 
 const HomeWrapper = () => {
+  const count = useAppSelector((state) => state.counter.value);
+  const dispatch = useAppDispatch();
   return (
     <section className=" flex max-w-[800px] flex-col  items-center justify-between self-center pb-0  text-xl font-semibold">
       <Card>
+        <button aria-label="Increment value" onClick={() => dispatch(increment())}>
+          Increment
+        </button>
+        <span>{count}</span>
+        <button aria-label="Decrement value" onClick={() => dispatch(decrement())}>
+          Decrement
+        </button>
         <h1 className="mb-8 text-[33px]">
           <span className="mb-4 block">Hi!</span>
           Welcome to{' '}
