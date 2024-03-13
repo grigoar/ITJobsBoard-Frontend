@@ -3,12 +3,13 @@ import { configureStore } from '@reduxjs/toolkit';
 
 // import { setupListeners } from '@reduxjs/toolkit/dist/query';
 // import userDataSliceReducer from './slices/userDataSlice';
+import itJobsBoardApi from '@/api/indexITJobsBoardApi';
+import { rtkQueryErrorLogger } from '@/api/ServerErrorsMiddleware';
 import counterSliceReducer from './slices/counterSlice';
 import appGlobalSettingsSliceReducer from './slices/appGlobalSettings';
 // import typingMuscleApi from '../services/typingMuscleApis';
 // import raceStatsReducer from './slices/raceStatsSlice';
 // import practiceRaceStatsReducer from './slices/practiceRaceStatsSlice';
-// import { rtkQueryErrorLogger } from '../services/ServerErrorsMiddleware';
 
 export const makeStore = () => {
   const store = configureStore({
@@ -16,6 +17,7 @@ export const makeStore = () => {
       // userData: userDataSliceReducer,
       appGlobalSettings: appGlobalSettingsSliceReducer,
       counter: counterSliceReducer,
+      [itJobsBoardApi.reducerPath]: itJobsBoardApi.reducer,
 
       // raceStats: raceStatsReducer,
       // practiceRaceStats: practiceRaceStatsReducer,
@@ -24,7 +26,7 @@ export const makeStore = () => {
     },
     // Adding the api middleware enables caching, invalidation, polling,
     // and other useful features of `rtk-query`.
-    // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(rtkQueryErrorLogger, typingMuscleApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(rtkQueryErrorLogger, itJobsBoardApi.middleware),
   });
   return store;
 };

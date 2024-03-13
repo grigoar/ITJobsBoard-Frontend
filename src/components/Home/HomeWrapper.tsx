@@ -1,17 +1,28 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BsArrowRight } from 'react-icons/bs';
 import Link from 'next/link';
 import constants from '@/utils/constants';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { decrement, increment } from '@/store/slices/counterSlice';
+import { useLazyGetServerHealthQuery } from '@/api/testingApi';
 import Card from '../ui/Card/Card';
 import Button from '../ui/Button/Button';
 
 const HomeWrapper = () => {
   const count = useAppSelector((state) => state.counter.value);
   const dispatch = useAppDispatch();
+  const [getServerHealth, { data: serverHealth }] = useLazyGetServerHealthQuery();
+
+  const checkServerHealth = () => {
+    getServerHealth();
+  };
+
+  useEffect(() => {
+    console.log('serverHealth', serverHealth);
+  }, [serverHealth]);
+
   return (
     <section className=" flex max-w-[800px] flex-col  items-center justify-between self-center pb-0  text-xl font-semibold">
       <Card>
@@ -22,6 +33,9 @@ const HomeWrapper = () => {
         <button aria-label="Decrement value" onClick={() => dispatch(decrement())}>
           Decrement
         </button>
+        <Button style="btn btn-ghost" action={checkServerHealth}>
+          Check Server Health
+        </Button>
         <h1 className="mb-8 text-[33px]">
           <span className="mb-4 block">Hi!</span>
           Welcome to{' '}
