@@ -34,4 +34,5 @@ const testingApi = itJobsBoardApi.injectEndpoints({
   }),
 });
 
-export const { useLazyGetServerHealthQuery, useTestingCountryIPQuery, useTestingServerFailureQuery } = testingApi;
+export const { useLazyGetServerHealthQuery, useLazyTestingCountryIPQuery, useLazyTestingServerFailureQuery } =
+  testingApi;

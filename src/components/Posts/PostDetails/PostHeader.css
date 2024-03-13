@@ -1,0 +1,110 @@
+@import '../../../styles/partials/_mixinsGlobal.scss';
+
+.header {
+  padding-bottom: var(--text-xxxl);
+  border-bottom: 8px solid var(--donate-link-color);
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+
+  h1 {
+    align-self: center;
+    height: 100%;
+    font-size: calc(var(--text-font-size-blogs) * 1.7);
+    color: var(--color-button-primary);
+    margin: 0;
+    line-height: 7rem;
+    text-align: left;
+    margin-bottom: 2rem;
+
+    @include respond(phone) {
+      font-size: calc(var(--text-font-size-blogs) * 1.5);
+      line-height: 5rem;
+    }
+  }
+}
+
+.header img {
+  object-fit: cover;
+}
+
+.imageContainer {
+  width: fit-content;
+  max-width: 300px;
+  max-height: 200px;
+  height: fit-content;
+  display: flex;
+  justify-content: flex-end;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 10px;
+
+  @include respond(phone) {
+    margin-bottom: 0px;
+  }
+}
+.imageWrapper {
+  border-radius: 5px;
+  height: fit-content;
+}
+
+.readTime {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  span {
+    margin-left: 5px;
+    font-size: calc(var(--text-font-size-blogs) * 0.9);
+  }
+  @include respond(phone) {
+    font-size: calc(var(--text-font-size-blogs) * 0.8);
+    span {
+      font-size: calc(var(--text-font-size-blogs) * 0.8);
+    }
+  }
+}
+
+.timerIcon {
+  color: var(--text-color-blogs-date);
+}
+
+.postDate {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  right: 0px;
+
+  time {
+    margin-left: 5px;
+    font-size: calc(var(--text-font-size-blogs) * 0.9);
+  }
+
+  @include respond(phone) {
+    font-size: calc(var(--text-font-size-blogs) * 0.8);
+    time {
+      font-size: calc(var(--text-font-size-blogs) * 0.8);
+    }
+  }
+}
+
+.datePostIcon {
+  color: var(--text-color-blogs-date);
+}
+
+@media (min-width: 768px) {
+  .header {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  .header h1 {
+    text-align: left;
+  }
+}

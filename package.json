@@ -7,11 +7,13 @@
     "build": "next build",
     "postbuild": "next-sitemap ",
     "start": "next start",
+    "start:local": "next start -p 4000",
     "lint": "next lint",
     "check-types": "tsc"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
+    "@sentry/nextjs": "^7.105.0",
     "@types/react-redux": "^7.1.33",
     "@types/react-syntax-highlighter": "^15.5.11",
     "gray-matter": "^4.0.3",

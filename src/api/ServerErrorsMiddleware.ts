@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { isRejectedWithValue } from '@reduxjs/toolkit';
 import type { MiddlewareAPI, Middleware } from '@reduxjs/toolkit';
-// import * as Sentry from '@sentry/nextjs';
+import * as Sentry from '@sentry/nextjs';
 // import { appGlobalSettingsActions } from '../store/slices/appGlobalSettings';
 // import { NotificationServerFailure } from '../utils/notificationsObjects';
 
@@ -17,7 +17,7 @@ export const rtkQueryErrorLogger: Middleware = (_api: MiddlewareAPI) => (next) =
       // if (action.payload.status.toString() !== '500') {
       //   api.dispatch(appGlobalSettingsActions.setActiveNotification(NotificationServerFailure));
       // }
-      // Sentry.captureMessage(`Server Error: ${JSON.stringify(action.payload, null, 4)}`, 'error');
+      Sentry.captureMessage(`Server Error: ${JSON.stringify(action.payload, null, 4)}`, 'error');
     }
   }
   return next(action);

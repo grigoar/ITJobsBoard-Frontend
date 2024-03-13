@@ -33,7 +33,7 @@ export function getPostData(postIdentifier: string) {
     labels,
   };
 
-  return postData;
+  return postData as BlogPostModel;
 }
 
 export function getAllPosts() {
@@ -44,7 +44,7 @@ export function getAllPosts() {
   });
   // @ts-ignore
   const sortedPosts = allPosts.sort((postA, postB) => (postA.date > postB.date ? -1 : 1));
-  return sortedPosts;
+  return sortedPosts as BlogPostModel[];
 }
 
 export function getFeaturedPosts(allPosts: BlogPostModel[]) {

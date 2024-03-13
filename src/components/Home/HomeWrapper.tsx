@@ -6,7 +6,7 @@ import Link from 'next/link';
 import constants from '@/utils/constants';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { decrement, increment } from '@/store/slices/counterSlice';
-import { useLazyGetServerHealthQuery } from '@/api/testingApi';
+import { useLazyGetServerHealthQuery, useLazyTestingServerFailureQuery } from '@/api/testingApi';
 import Card from '../ui/Card/Card';
 import Button from '../ui/Button/Button';
 
@@ -14,14 +14,25 @@ const HomeWrapper = () => {
   const count = useAppSelector((state) => state.counter.value);
   const dispatch = useAppDispatch();
   const [getServerHealth, { data: serverHealth }] = useLazyGetServerHealthQuery();
+  const [testingServerFailure, { data: serverFailure }] = useLazyTestingServerFailureQuery();
 
   const checkServerHealth = () => {
     getServerHealth();
+
+    throw new Error('This is a test error');
+  };
+
+  const checkServerError = () => {
+    testingServerFailure();
   };
 
   useEffect(() => {
     console.log('serverHealth', serverHealth);
   }, [serverHealth]);
+
+  useEffect(() => {
+    console.log('serverFailure', serverFailure);
+  }, [serverFailure]);
 
   return (
     <section className=" flex max-w-[800px] flex-col  items-center justify-between self-center pb-0  text-xl font-semibold">
@@ -35,6 +46,9 @@ const HomeWrapper = () => {
         </button>
         <Button style="btn btn-ghost" action={checkServerHealth}>
           Check Server Health
+        </Button>
+        <Button style="btn btn-ghost" action={checkServerError}>
+          Check Server Error
         </Button>
         <h1 className="mb-8 text-[33px]">
           <span className="mb-4 block">Hi!</span>
