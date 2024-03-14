@@ -1,3 +1,4 @@
+const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
 const { withSentryConfig } = require('@sentry/nextjs');
 /** @type {import('next').NextConfig} */
 
