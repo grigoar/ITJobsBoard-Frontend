@@ -16,7 +16,7 @@ const securityHeaders = (env) => {
       // ? This seems fine
       // * This is for setting the content security policy to only allow the resources from the allowed sources
       key: cspKey,
-      value: `default-src 'self'; font-src 'self'; img-src 'self' data: ${process.env.NEXT_PUBLIC_AWS_STORAGE_PATH_URL} blob: ${process.env.NEXT_PUBLIC_SITE_DOMAIN_URL}; script-src 'self' https://js.stripe.com/; frame-src https://js.stripe.com/; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; connect-src 'self' https://o1365772.ingest.us.sentry.io/api/4506904969019392/envelope/`,
+      value: `default-src 'self'; font-src 'self'; img-src 'self' data: ${process.env.NEXT_PUBLIC_AWS_STORAGE_PATH_URL} blob: ${process.env.NEXT_PUBLIC_SITE_DOMAIN_URL}; script-src 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; connect-src 'self' https://o1365772.ingest.us.sentry.io/api/4506904969019392/envelope/`,
       // value: `default-src 'self'; font-src 'self'; img-src 'self' data: ${process.env.NEXT_PUBLIC_AWS_STORAGE_PATH_URL} blob: ${process.env.NEXT_PUBLIC_SITE_DOMAIN_URL}; script-src 'self' https://*.vercel-insights.com https://js.stripe.com/; frame-src https://js.stripe.com/; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; connect-src 'self' https://o1365772.ingest.sentry.io/api/6661983/envelope/  https://*.vercel-insights.com;`,
     },
     // * Prefetch the DNS for the external scripts links addresses
