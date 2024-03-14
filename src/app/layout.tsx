@@ -24,10 +24,10 @@ export default function RootLayout({
     // </html>
     <StoreProvider count={30}>
       <html lang="en">
+        <Head>
+          <meta name="viewport" content={'width=device-width, initial-scale=1'} />
+        </Head>
         <body className={inter.className}>
-          <Head>
-            <meta name="viewport" content={'width=device-width, initial-scale=1'} />
-          </Head>
           <main>
             <AppLayout>{children}</AppLayout>
           </main>

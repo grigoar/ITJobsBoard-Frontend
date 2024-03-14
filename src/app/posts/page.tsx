@@ -4,7 +4,8 @@ import AllPosts from '@/components/Posts/HomePosts/AllPostsWrapper';
 import constants from '@/utils/constants';
 import { PageSEOModel } from '@/models/Utils/PageSEOModel';
 import { BlogPostModel } from '@/models/BlogPosts/BlogPostModel';
-import { getAllPosts, getAllPostsLabels } from '@/utils/postsHelper';
+import { getAllPosts } from '@/utils/postsHelperServer';
+import { getAllPostsLabels } from '@/utils/postsHelperClient';
 
 const Blogs = () => {
   const allPosts: BlogPostModel[] = getAllPosts();

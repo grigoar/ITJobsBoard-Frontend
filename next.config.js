@@ -4,6 +4,7 @@ const { withSentryConfig } = require('@sentry/nextjs');
 
 const securityHeaders = (env) => {
   const cspKey = env !== PHASE_DEVELOPMENT_SERVER ? 'Content-Security-Policy' : 'Content-Security-Policy-Report-Only';
+  // 'Content-Security-Policy-Report-Only';
 
   return [
     // * This is for caching the data for a day and storing it only on the user browser cache
@@ -16,7 +17,7 @@ const securityHeaders = (env) => {
       // ? This seems fine
       // * This is for setting the content security policy to only allow the resources from the allowed sources
       key: cspKey,
-      value: `default-src 'self'; font-src 'self'; img-src 'self' data: ${process.env.NEXT_PUBLIC_AWS_STORAGE_PATH_URL} blob: ${process.env.NEXT_PUBLIC_SITE_DOMAIN_URL}; script-src 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; connect-src 'self' https://o1365772.ingest.us.sentry.io/api/4506904969019392/envelope/`,
+      value: `default-src 'self'; font-src 'self'; img-src 'self' data: ${process.env.NEXT_PUBLIC_AWS_STORAGE_PATH_URL} blob: ${process.env.NEXT_PUBLIC_SITE_DOMAIN_URL}; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; connect-src 'self' https://o1365772.ingest.sentry.io/api/6661983/envelope/`,
       // value: `default-src 'self'; font-src 'self'; img-src 'self' data: ${process.env.NEXT_PUBLIC_AWS_STORAGE_PATH_URL} blob: ${process.env.NEXT_PUBLIC_SITE_DOMAIN_URL}; script-src 'self' https://*.vercel-insights.com https://js.stripe.com/; frame-src https://js.stripe.com/; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; connect-src 'self' https://o1365772.ingest.sentry.io/api/6661983/envelope/  https://*.vercel-insights.com;`,
     },
     // * Prefetch the DNS for the external scripts links addresses
@@ -59,15 +60,6 @@ const securityHeaders = (env) => {
 
 const nextConfig = (phase) => {
   return {
-    webpack(config) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback, // if you miss it, all the other options in fallback, specified
-        // by next.js will be dropped. Doesn't make much sense, but how it is
-        fs: false, // the solution
-      };
-
-      return config;
-    },
     // * not needed for now
     // images: {
     //   domains: ['typing-muscle.s3.eu-central-1.amazonaws.com'],
@@ -90,6 +82,7 @@ const nextConfig = (phase) => {
         },
       ];
     },
+
     sentry: {
       hideSourceMaps: true,
       silent: true,
@@ -102,7 +95,6 @@ const nextConfig = (phase) => {
       //   - hideSourceMaps
       //   - widenClientFileUpload
       //   - transpileClientSDK
-
       // For all available options, see:
       // https://github.com/getsentry/sentry-webpack-plugin#options
     },

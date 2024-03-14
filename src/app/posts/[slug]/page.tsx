@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPostData, getRandomFeaturedPostsLocalFiles } from '@/utils/postsHelper';
+import { getPostData, getRandomFeaturedPostsLocalFiles } from '@/utils/postsHelperServer';
 import constants from '@/utils/constants';
 import { BlogPostModel } from '@/models/BlogPosts/BlogPostModel';
 import SEO from '@/components/common/SEO';

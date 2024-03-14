@@ -3,7 +3,7 @@
 // import React, { useEffect, useState } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { filterPosts, getFeaturedPosts } from '@/utils/postsHelper';
+import { filterPosts, getFeaturedPosts } from '@/utils/postsHelperClient';
 import { BlogPostModel } from '../../../models/BlogPosts/BlogPostModel';
 import AllPostsGrid from './AllPostsGrid';
 import FeaturedPostsGrid from './FeaturedPostsGrid';
