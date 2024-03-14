@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../../ui/Button/Button';
+import Button from '../../common/Button/Button';
 
 const Header = () => {
   return (

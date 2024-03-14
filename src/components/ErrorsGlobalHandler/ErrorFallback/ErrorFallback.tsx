@@ -3,8 +3,8 @@ import React from 'react';
 import constants from '../../../utils/constants';
 import BrokenHeartErrorImage from '../../common/SVGs/BrokenHeartErrorImage';
 import SEO from '../../common/SEO';
-import Card from '../../ui/Card/Card';
-import Button from '../../ui/Button/Button';
+import Card from '../../common/Card/Card';
+import Button from '../../common/Button/Button';
 
 const ErrorFallback = () => {
   const pageMeta = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BsArrowRight } from 'react-icons/bs';
-import Button from '../ui/Button/Button';
-import Card from '../ui/Card/Card';
+import Button from '../common/Button/Button';
+import Card from '../common/Card/Card';
 
 const DisclaimerWrapper = () => {
   return (

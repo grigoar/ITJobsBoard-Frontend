@@ -48,6 +48,9 @@ const Header = () => {
           <Link className={`${aboutPageLinkClassActive}`} href="/contact">
             Contact
           </Link>
+          <Link className={`${aboutPageLinkClassActive}`} href="/register">
+            Register
+          </Link>
         </div>
         <div className="flex items-center justify-center">
           <Switch

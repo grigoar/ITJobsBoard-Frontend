@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import constants from '@/utils/constants';
 import { useAppSelector } from '@/store/hooks';
-import Card from '../ui/Card/Card';
+import Card from '../common/Card/Card';
 
 const ContactWrapper = () => {
   const count = useAppSelector((state) => state.counter.value);

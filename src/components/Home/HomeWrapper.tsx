@@ -7,8 +7,8 @@ import constants from '@/utils/constants';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { decrement, increment } from '@/store/slices/counterSlice';
 import { useLazyGetServerHealthQuery, useLazyTestingServerFailureQuery } from '@/api/testingApi';
-import Card from '../ui/Card/Card';
-import Button from '../ui/Button/Button';
+import Card from '../common/Card/Card';
+import Button from '../common/Button/Button';
 
 const HomeWrapper = () => {
   const count = useAppSelector((state) => state.counter.value);
