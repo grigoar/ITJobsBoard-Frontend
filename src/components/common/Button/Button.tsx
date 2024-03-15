@@ -8,6 +8,7 @@ interface Props {
   action?: () => void;
   isDisabled?: boolean;
   areaLabelCustom?: string;
+  type?: 'button' | 'submit' | 'reset';
 }
 const Button = (props: Props) => {
   if (props.link) {
@@ -16,7 +17,7 @@ const Button = (props: Props) => {
         href={props.link}
         onClick={props.action}
         tabIndex={0}
-        className={`cursor-pointer  ${props.style ? props.style : ''}`}
+        className={`cursor-pointer  ${props.style ? props.style : ''} `}
         aria-label={`${props.areaLabelCustom || ''}`}
       >
         {/* <a className={`${classes.buttonGen} ${props.style ? props.style : ''}`}>{props.children}</a> */}
@@ -32,6 +33,7 @@ const Button = (props: Props) => {
       tabIndex={0}
       className={`cursor-pointer  ${props.style ? props.style : ''}`}
       aria-label={`${props.areaLabelCustom || ''}`}
+      type={props.type || 'button'}
     >
       {props.children}
     </button>

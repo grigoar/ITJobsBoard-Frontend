@@ -1,10 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import NewUserSchema from '@/validations/users/NewUserSchema';
 import FormInput from '../common/Form/FormInput';
+import Button from '../common/Button/Button';
+import Card from '../common/Card/Card';
+import FormWrapper from '../common/Form/FormWrapper';
 
 type NewUser = {
   email: string;
@@ -18,43 +21,54 @@ const RegisterUser = () => {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: yupResolver(NewUserSchema),
+    resolver: yupResolver(NewUserSchema, { abortEarly: false, recursive: true }),
   });
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
+
   const onSubmitHandler = (data: NewUser) => {
+    console.log(errors);
     console.log(data.email, data.password);
     reset();
   };
   return (
-    <form onSubmit={handleSubmit(onSubmitHandler)}>
-      <h2>Lets sign you in.</h2>
-      <br />
+    <Card>
+      <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)}>
+        <h2>Lets register you!</h2>
 
-      {/* <input className="text-black" {...register('email')} placeholder="email" type="email" required /> */}
-      <FormInput
-        register={register}
-        placeholder="email"
-        type="email"
-        name="email"
-        id="email"
-        label="Email"
-        required
-        error={errors.email?.message}
-      />
-      {/* <p>{errors.email?.message}</p> */}
+        {/* <input className="text-black" {...register('email')} placeholder="email" type="email" required /> */}
+        <FormInput
+          register={register}
+          placeholder="john.doe@gmail.com"
+          type="email"
+          name="email"
+          id="email"
+          label="Email"
+          required
+          errors={errors.email?.message}
+        />
+        {/* <p>{errors.email ? errors.email : ''}</p> */}
 
-      <FormInput
-        register={register}
-        placeholder="password"
-        type="password"
-        name="password"
-        id="password"
-        label="Password"
-        required
-        error={errors.password?.message}
-      />
+        <FormInput
+          register={register}
+          placeholder="password"
+          type="password"
+          name="password"
+          id="password"
+          label="Password"
+          required
+          errors={errors.password?.message}
+        />
 
-      <button type="submit">Sign in</button>
-    </form>
+        {/* {errors.password && <ul>{errors.password?.types?.map((error, index) => <li key={index}>{error}</li>)}</ul>} */}
+        {/* <button type="submit">Sign in</button> */}
+        <Button style={`btn btn-ghost `} type="submit" action={handleSubmit(onSubmitHandler)}>
+          Sign in
+        </Button>
+      </FormWrapper>
+    </Card>
   );
 };
 

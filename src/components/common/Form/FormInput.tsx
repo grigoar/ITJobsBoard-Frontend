@@ -4,17 +4,24 @@ type Props = {
   name: string;
   label: string;
   id: string;
-  error?: string;
+  errors?: string;
 
   [extra: string]: any;
 };
 
-const FormInput = ({ name, register, label, id, error, ...inputProps }: Props) => {
+const FormInput = ({ name, register, label, id, errors, ...inputProps }: Props) => {
+  const errorMessages =
+    errors?.split(',').map((error: string, index) => {
+      return <li key={index}>{error}</li>;
+    }) || [];
+
   return (
     <>
-      <label htmlFor={id}>{label}</label>
-      <input {...register(name)} id={id} name={name} className="text-black" {...inputProps} />
-      <p>{error || ``}&nbsp;</p>
+      <label className="w-full" htmlFor={id}>
+        {label}
+      </label>
+      <input {...register(name)} id={id} name={name} className="w-full text-black" {...inputProps} />
+      <ul>{errorMessages}&nbsp;</ul>
     </>
   );
 };
