@@ -39,6 +39,7 @@ const FormInput = ({
         );
       })) ||
     [];
+
   // <div class="shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]"></div>
   // ${dirtyField && errors == null && 'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:outline-none focus:ring-1 focus:ring-[var(--color-green-light)]'}`}
 

@@ -9,7 +9,8 @@
     "start": "next start",
     "start:local": "next start -p 4000",
     "lint": "next lint",
-    "check-types": "tsc"
+    "check-types": "tsc",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
