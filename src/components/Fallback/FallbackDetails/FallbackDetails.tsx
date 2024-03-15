@@ -12,7 +12,7 @@ const FallbackDetails = () => {
       <div className={'fallback404Container w-[90%]'}>
         <Card className={'fallback404CardContainer flex flex-row items-start justify-start'}>
           <div className={'fallback404TextContainer flex-[1.9]'}>
-            <h1 className={'fallback404Title mb-2 text-[25px] text-[var(--color-red-light-2)]'}>
+            <h1 className={'fallback404Title mb-2 text-[25px] text-[var(--color-red-light)]'}>
               Oops! It looks like this page is lost in space!
             </h1>
             <h4 className={'fallback404Subtitle mb-2 text-[16px] font-semibold tracking-[1px]'}>
@@ -39,7 +39,7 @@ const FallbackDetails = () => {
           </div>
           <div
             className={
-              'image404 flex flex-[1.2] flex-col items-center justify-center self-center text-[var(--color-red-light-2)]'
+              'image404 flex flex-[1.2] flex-col items-center justify-center self-center text-[var(--color-red-light)]'
             }
           >
             <div className={'image404Text mb-2 text-[6.5rem] italic leading-[5rem]'}>404</div>

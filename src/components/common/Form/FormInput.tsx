@@ -55,12 +55,8 @@ const FormInput = ({
       }
     }, 2000);
     return () => clearTimeout(timeout);
-  }, [watchField]);
+  }, [watchField, watchFieldPrev]);
 
-  console.log('watchField', watchField);
-  console.log('fieldChanged', fieldChanged);
-  console.log('dirtyField', dirtyField);
-  console.log('errors', errors);
   return (
     <>
       <label className="w-full" htmlFor={id}>

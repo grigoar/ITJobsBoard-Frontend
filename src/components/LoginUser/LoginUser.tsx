@@ -4,17 +4,13 @@ import React, { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import NewUserSchema from '@/validations/users/NewUserSchema';
+import LoginUserModel from '@/models/Users/LoginUserModel';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
 import FormWrapper from '../common/Form/FormWrapper';
 
-type NewUser = {
-  email: string;
-  password: string;
-};
-
-const RegisterUser = () => {
+const LoginUser = () => {
   const {
     register,
     handleSubmit,
@@ -28,10 +24,10 @@ const RegisterUser = () => {
   });
 
   useEffect(() => {
-    console.log(errors);
+    // console.log(errors);
   }, [errors]);
 
-  const onSubmitHandler = (data: NewUser) => {
+  const onSubmitHandler = (data: LoginUserModel) => {
     console.log(errors);
     console.log(data.email, data.password);
     reset();
@@ -39,7 +35,7 @@ const RegisterUser = () => {
   return (
     <Card>
       <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)}>
-        <h2>Lets register you!</h2>
+        <h2>Lets log you in!</h2>
 
         {/* <input className="text-black" {...register('email')} placeholder="email" type="email" required /> */}
         <FormInput
@@ -81,4 +77,4 @@ const RegisterUser = () => {
   );
 };
 
-export default RegisterUser;
+export default LoginUser;
