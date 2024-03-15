@@ -9,11 +9,11 @@ import js from 'react-syntax-highlighter/dist/cjs/languages/prism/javascript';
 import css from 'react-syntax-highlighter/dist/cjs/languages/prism/css';
 import { BsArrowLeft } from 'react-icons/bs';
 
-import Card from '../../ui/Card/Card';
+import Card from '../../common/Card/Card';
 import { BlogPostModel } from '../../../models/BlogPosts/BlogPostModel';
 import PostHeader from './PostHeader';
 import FeaturedPosts from '../HomePosts/FeaturedPostsGrid';
-import Button from '../../ui/Button/Button';
+import Button from '../../common/Button/Button';
 
 SyntaxHighlighter.registerLanguage('js', js);
 SyntaxHighlighter.registerLanguage('css', css);

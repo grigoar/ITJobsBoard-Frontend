@@ -7,6 +7,19 @@
   /* --bg-color-primary: hsl(226,57%, 41%) */
   /* --bg-color-primary: 256deg 100% 9%; */
   /* --color-accent: #175443; */
+
+  /* Text colors */
+  --color-grey-light-1: hsl(262, 18%, 88%);
+  --color-grey-light-2: hsl(266, 8%, 83%);
+  --color-grey-light-3: hsl(267, 7%, 70%);
+  --color-grey-light-4: hsl(265, 6%, 66%);
+  --color-grey-light-5: hsl(265, 4%, 57%);
+  --color-grey-dark-1: hsl(265, 3%, 53%);
+  --color-grey-dark-2: hsl(265, 4%, 42%);
+  --color-grey-dark-3: hsl(265, 4%, 31%);
+  --color-grey-dark-4: #343036;
+  --color-grey-dark-5: #221f23;
+
   --color-accent: #02674a;
 
   --text-color-primary: hsl(163, 100%, 50%);
@@ -37,7 +50,16 @@
 
   --color-accent-blog: hsl(163, 100%, 33%);
   --color-blog-title: hsl(196, 54%, 77%);
+
+  --color-green-light: #32f87b;
+  --color-green-dark: #2ab600;
+
+  --color-red-light: #ff7474;
   --color-red-light-2: #ffa091;
+
+  --color-blue-light: #0a75e8;
+
+  --input-background-color: hsl(226, 57%, 97%);
 }
 
 .light {
@@ -65,5 +87,14 @@
   --color-accent-blog: hsl(163, 100%, 25%);
   --color-blog-title: hsl(196, 54%, 37%);
 
-  --color-red-light-2: #ff6148;
+  /* --color-red-light: #fd3131; */
+  --color-red-light: hsl(344, 89%, 48%);
+  --color-red-light-2: hsl(0, 100%, 90%);
+
+  --color-green-light: #009e3a;
+  --color-green-dark: #2ab600;
+
+  --color-blue-light: #0a75e8;
+
+  --input-background-color: hsl(300, 3%, 95%);
 }
