@@ -18,10 +18,13 @@ const RegisterUser = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, touchedFields, dirtyFields },
     reset,
+    watch,
   } = useForm({
     resolver: yupResolver(NewUserSchema, { abortEarly: false, recursive: true }),
+    // mode: 'onTouched',
+    mode: 'all',
   });
 
   useEffect(() => {
@@ -48,6 +51,9 @@ const RegisterUser = () => {
           label="Email"
           required
           errors={errors.email?.message}
+          touchedField={touchedFields.email}
+          dirtyField={dirtyFields.email}
+          watchField={watch('email')}
         />
         {/* <p>{errors.email ? errors.email : ''}</p> */}
 
@@ -60,6 +66,9 @@ const RegisterUser = () => {
           label="Password"
           required
           errors={errors.password?.message}
+          touchedField={touchedFields.password}
+          dirtyField={dirtyFields.password}
+          watchField={watch('password')}
         />
 
         {/* {errors.password && <ul>{errors.password?.types?.map((error, index) => <li key={index}>{error}</li>)}</ul>} */}
