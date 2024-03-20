@@ -20,6 +20,7 @@
   --color-grey-dark-4: #343036;
   --color-grey-dark-5: #221f23;
 
+  /* --color-accent: #02674a; */
   --color-accent: #02674a;
 
   --text-color-primary: hsl(163, 100%, 50%);
@@ -60,6 +61,9 @@
   --color-blue-light: #0a75e8;
 
   --input-background-color: hsl(226, 57%, 97%);
+
+  --text-color: var(--color-grey-light-1);
+  --text-color-complement: var(--color-grey-dark-4);
 }
 
 .light {
@@ -97,4 +101,8 @@
   --color-blue-light: #0a75e8;
 
   --input-background-color: hsl(300, 3%, 95%);
+
+  --text-color: var(--color-grey-dark-4);
+
+  --text-color-complement: var(--color-grey-light-1);
 }

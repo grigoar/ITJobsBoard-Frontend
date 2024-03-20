@@ -1,3 +1,4 @@
+import constants from '@/utils/constants';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const itJobsBoardApi = createApi({
@@ -18,8 +19,17 @@ const itJobsBoardApi = createApi({
     // credentials: 'include',
   }),
   tagTypes: [
-    // constants.USER_PROFILE_TAG,
+    constants.USER_PROFILE_TAG,
     // constants.USER_RACES_TAG,
+    // constants.RACE_DATA_TAG,
+    // constants.USER_GENERAL_STATS_TAG,
+    // constants.USER_IMPROVE_STATS_TAG,
+    // constants.USER_PRACTICE_DATA_TAG,
+    // constants.USER_FEEDBACK_TAG,
+    // constants.USER_PROPOSAL_TEXT_TAG,
+    // constants.USER_SETTING_TAG,
+    // constants.PAYMENT_TAG,
+    // constants.USER_PROFILE_DETAILS_BY_ID_TAG,
   ],
   endpoints: () => ({}),
 });
