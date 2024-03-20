@@ -23,11 +23,11 @@ const FormInput = ({
   touchedField,
   ...inputProps
 }: Props) => {
-  const [fieldChanged, setFieldChanged] = useState(false);
-  const [watchFieldPrev, setWatchFieldPrev] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [watchFieldPrev, setWatchFieldPrev] = useState<string | undefined>('');
 
   const errorMessages =
-    ((fieldChanged || touchedField) &&
+    ((isTyping || touchedField) &&
       errors?.split(',').map((error: string, index) => {
         return (
           <li
@@ -43,18 +43,23 @@ const FormInput = ({
   // ${dirtyField && errors == null && 'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:outline-none focus:ring-1 focus:ring-[var(--color-green-light)]'}`}
 
   useEffect(() => {
-    // implement a debounce
+    // implement a debounce to check if the user is typing
+
+    if (watchField === undefined) return;
+
+    if (watchFieldPrev !== watchField) {
+      setIsTyping(true);
+      setWatchFieldPrev(watchField);
+    }
 
     const timeout = setTimeout(() => {
-      if (watchField !== '' && watchField !== undefined && watchField !== null && watchField !== watchFieldPrev) {
-        setFieldChanged(true);
-        setWatchFieldPrev(watchField);
-      } else {
-        setFieldChanged(false);
-      }
+      setIsTyping(false);
     }, 2000);
+
     return () => clearTimeout(timeout);
   }, [watchField, watchFieldPrev]);
+
+  console.log('isTyping', isTyping);
 
   return (
     <>
@@ -65,12 +70,12 @@ const FormInput = ({
         {...register(name)}
         id={id}
         name={name}
-        className={`w-full ${!touchedField && errors == null && 'border-2 border-[var(--color-blue-light)]'} ${errors != null && (fieldChanged || touchedField) && 'border-2 border-[var(--color-red-light)] bg-[var(--color-red-light-2)]'} mb-4 rounded-md  p-3 text-[var(--color-grey-dark-5)] ${dirtyField && errors == null && 'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:outline-none focus:ring-1 focus:ring-[var(--color-green-light)]'} `}
+        className={`w-full ${!touchedField && errors == null && 'border-2 border-[var(--color-blue-light)]'} ${errors != null && touchedField && !isTyping && 'border-2 border-[var(--color-red-light)] bg-[var(--color-red-light-2)]'} mb-4 rounded-md  p-3 text-[var(--color-grey-dark-5)] ${dirtyField && errors == null && !isTyping && 'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:outline-none focus:ring-1 focus:ring-[var(--color-green-light)]'} `}
         {...inputProps}
       />
-      <ul className="w-full">{errorMessages}</ul>
+      {!isTyping ? <ul className="w-full">{errorMessages}</ul> : <></>}
     </>
   );
 };
 
-export default FormInput;
+export default React.memo(FormInput);

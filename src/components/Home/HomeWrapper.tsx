@@ -19,7 +19,7 @@ const HomeWrapper = () => {
   const checkServerHealth = () => {
     getServerHealth();
 
-    throw new Error('This is a test error');
+    // throw new Error('This is a test error');
   };
 
   const checkServerError = () => {

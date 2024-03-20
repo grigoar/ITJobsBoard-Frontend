@@ -3,14 +3,14 @@
 import React, { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import RegisterUserSchema from '@/validations/users/RegisterUserSchema';
 import LoginUserModel from '@/models/Users/LoginUserModel';
-import LoginUserSchema from '@/validations/users/LoginUserSchema';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
 import FormWrapper from '../common/Form/FormWrapper';
 
-const LoginUser = () => {
+const RegisterUser = () => {
   const {
     register,
     handleSubmit,
@@ -18,7 +18,7 @@ const LoginUser = () => {
     reset,
     watch,
   } = useForm({
-    resolver: yupResolver(LoginUserSchema, { abortEarly: false, recursive: true }),
+    resolver: yupResolver(RegisterUserSchema, { abortEarly: false, recursive: true }),
     // mode: 'onTouched',
     mode: 'all',
   });
@@ -55,7 +55,7 @@ const LoginUser = () => {
 
         <FormInput
           register={register}
-          placeholder="password"
+          placeholder="*********"
           type="password"
           name="password"
           id="password"
@@ -65,6 +65,19 @@ const LoginUser = () => {
           touchedField={touchedFields.password}
           dirtyField={dirtyFields.password}
           watchField={watch('password')}
+        />
+        <FormInput
+          register={register}
+          placeholder="*********"
+          type="password"
+          name="passwordConfirm"
+          id="passwordConfirm"
+          label="Password Confirm"
+          required
+          errors={errors.passwordConfirm?.message}
+          touchedField={touchedFields.passwordConfirm}
+          dirtyField={dirtyFields.passwordConfirm}
+          watchField={watch('passwordConfirm')}
         />
 
         {/* {errors.password && <ul>{errors.password?.types?.map((error, index) => <li key={index}>{error}</li>)}</ul>} */}
@@ -77,4 +90,4 @@ const LoginUser = () => {
   );
 };
 
-export default LoginUser;
+export default RegisterUser;
