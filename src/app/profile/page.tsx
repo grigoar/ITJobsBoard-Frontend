@@ -1,19 +1,19 @@
-import LoginUser from '@/components/LoginUser/LoginUser';
+import Profile from '@/components/Profile/Profile';
 import { checkUserIsLoggedIn } from '@/utils/helpers';
 import { redirect } from 'next/navigation';
 import React, { Suspense } from 'react';
 
-const LoginPage = async () => {
+const ProfilePage = async () => {
   const isUserLogged = await checkUserIsLoggedIn();
-  if (isUserLogged) {
-    redirect('/');
+  if (!isUserLogged) {
+    redirect('/login');
   }
 
   return (
     <Suspense>
-      <LoginUser />
+      <Profile />
     </Suspense>
   );
 };
 
-export default LoginPage;
+export default ProfilePage;

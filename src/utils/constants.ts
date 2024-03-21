@@ -13,6 +13,8 @@ export default {
   LOCAL_STORAGE_THEME: 'theme',
 
   // Cookies names (for cookie consent)
+  COOKIE_AUTH_NAME: 'jwt',
+  COOKIE_AUTH_NAME_EXPIRED: 'loggedout',
   COOKIE_CONSENT: 'cookie_consent',
   COOKIE_CONSENT_COUNTRY: 'ccc',
   USER_PREMIUM_COOKIE: 'up',

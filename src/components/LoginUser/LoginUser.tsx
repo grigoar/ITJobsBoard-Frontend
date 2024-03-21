@@ -19,8 +19,6 @@ import MessageResult from '../common/MessageResult/MessageResult';
 
 const typeGuardLogin = (tbd: any): tbd is AuthErrorModel => true;
 
-// TODO: Implement redux for the user state
-
 const LoginUser = () => {
   const dispatchAppStore = useAppDispatch();
 
