@@ -10,6 +10,8 @@ import { RegisterUserModel } from '@/models/Users/RegisterUserModel';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
 import { AuthErrorModel } from '@/models/Errors/RegisterError';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { userDataActions } from '@/store/slices/userDataSlice';
+import { useAppDispatch } from '@/store/hooks';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -26,6 +28,8 @@ const typeGuardRegister = (tbd: any): tbd is AuthErrorModel => true;
 // TODO: Implement Logout functionality
 
 const RegisterUser = () => {
+  const dispatchAppStore = useAppDispatch();
+
   const [registerUser, { isLoading: registerUserLoading }] = useRegisterUserMutation();
   const [checkUniqueEmail, { error: uniqueEmailError }] = useCheckUniqueEmailMutation();
 
@@ -75,9 +79,10 @@ const RegisterUser = () => {
 
   const registerNewUserHandler = async (user: RegisterUserModel) => {
     try {
-      await registerUser(user).unwrap();
+      const newUser = await registerUser(user).unwrap();
       reset();
       // dispatchAppStore(raceStateActions.setIsNewTextNeeded(true));
+      dispatchAppStore(userDataActions.saveLoggedInUser(newUser.user));
 
       showResultSuccessMessage('User registered successfully!');
       // setIsButtonSignUpDisabled(true);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Switch from 'react-switch';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -6,11 +6,32 @@ import useThemeToggle from '@/hooks/useDarkTheme';
 import constants from '@/utils/constants';
 import LightThemeImage from '@/components/common/SVGs/themes/LightThemeImage';
 import DarkThemeImage from '@/components/common/SVGs/themes/DarkThemeImage';
+import { useCheckLoggedUserQuery } from '@/api/authenticationApi';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { userDataActions } from '@/store/slices/userDataSlice';
 
 const Header = () => {
+  const dispatch = useAppDispatch();
+  const { data: checkUserStatusData, isLoading } = useCheckLoggedUserQuery();
+  const { loggedInUser, isUserLogged, isUserAdmin } = useAppSelector((state) => state.userData);
+
+  console.log('loggedInUser', loggedInUser);
+  console.log('isUserAdmin', isUserAdmin);
+  console.log('isUserLogged', isUserLogged);
+  console.log('isLoading', isLoading);
+
   const pathName = usePathname();
   const { activeTheme, toggleTheme } = useThemeToggle();
   const isDark = activeTheme === constants.THEME_DARK;
+
+  useEffect(() => {
+    // throw new Error('This is a test error');
+    if (checkUserStatusData?.user) {
+      dispatch(userDataActions.saveLoggedInUser(checkUserStatusData?.user));
+    } else {
+      dispatch(userDataActions.setUserLoggedInStatus(false));
+    }
+  }, [checkUserStatusData, dispatch]);
 
   const changeThemeHandler = () => {
     toggleTheme();

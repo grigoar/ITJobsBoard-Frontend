@@ -58,6 +58,6 @@ export const {
   useRegisterUserMutation,
   useCheckUniqueEmailMutation,
   useLoginUserMutation,
-  useLazyCheckLoggedUserQuery,
   useLogoutCurrentUserMutation,
+  useCheckLoggedUserQuery,
 } = testingApi;

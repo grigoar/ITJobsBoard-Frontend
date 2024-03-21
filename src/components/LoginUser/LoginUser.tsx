@@ -9,6 +9,8 @@ import { useLoginUserMutation, useLogoutCurrentUserMutation } from '@/api/authen
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { AuthErrorModel } from '@/models/Errors/RegisterError';
+import { userDataActions } from '@/store/slices/userDataSlice';
+import { useAppDispatch } from '@/store/hooks';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -20,6 +22,8 @@ const typeGuardLogin = (tbd: any): tbd is AuthErrorModel => true;
 // TODO: Implement redux for the user state
 
 const LoginUser = () => {
+  const dispatchAppStore = useAppDispatch();
+
   const [loginUser, { isLoading }] = useLoginUserMutation();
   const [logoutUser] = useLogoutCurrentUserMutation();
   const { showResultErrorMessage, showResultSuccessMessage, isMessageError, resultMessageDisplay } =
@@ -45,7 +49,7 @@ const LoginUser = () => {
   const logoutHandler = useCallback(async () => {
     await logoutUser(null);
 
-    // dispatchAppStore(userDataActions.setUserLoggedInStatus(false));
+    dispatchAppStore(userDataActions.setUserLoggedInStatus(false));
   }, [logoutUser]);
 
   useEffect(() => {
@@ -67,11 +71,8 @@ const LoginUser = () => {
 
   const loginUserHandler = async (user: LoginUserModel) => {
     try {
-      // const userLoggedIn = await loginUser(user).unwrap();
-      await loginUser(user).unwrap();
-      // dispatchAppStore(userDataActions.saveLoggedInUser(userLoggedIn.user));
-      // dispatchAppStore(raceStateActions.setIsNewTextNeeded(true));
-      // dispatchAppStore(raceStateActions.setIsNewTypingText(true));
+      const userLoggedIn = await loginUser(user).unwrap();
+      dispatchAppStore(userDataActions.saveLoggedInUser(userLoggedIn.user));
 
       showResultSuccessMessage('Logged in successfully!');
       sendNotificationSuccess();

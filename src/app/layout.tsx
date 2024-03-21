@@ -28,9 +28,7 @@ export default function RootLayout({
           <meta name="viewport" content={'width=device-width, initial-scale=1'} />
         </Head>
         <body className={inter.className}>
-          <main>
-            <AppLayout>{children}</AppLayout>
-          </main>
+          <AppLayout>{children}</AppLayout>
         </body>
       </html>
     </StoreProvider>
