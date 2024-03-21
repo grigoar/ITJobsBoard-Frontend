@@ -2,9 +2,9 @@ import { configureStore } from '@reduxjs/toolkit';
 // import { setupListeners } from '@reduxjs/toolkit/query';
 
 // import { setupListeners } from '@reduxjs/toolkit/dist/query';
-// import userDataSliceReducer from './slices/userDataSlice';
 import itJobsBoardApi from '@/api/indexITJobsBoardApi';
 import { rtkQueryErrorLogger } from '@/api/ServerErrorsMiddleware';
+import userDataSliceReducer from './slices/userDataSlice';
 import counterSliceReducer from './slices/counterSlice';
 import appGlobalSettingsSliceReducer from './slices/appGlobalSettings';
 // import typingMuscleApi from '../services/typingMuscleApis';
@@ -14,7 +14,7 @@ import appGlobalSettingsSliceReducer from './slices/appGlobalSettings';
 export const makeStore = () => {
   const store = configureStore({
     reducer: {
-      // userData: userDataSliceReducer,
+      userData: userDataSliceReducer,
       appGlobalSettings: appGlobalSettingsSliceReducer,
       counter: counterSliceReducer,
       [itJobsBoardApi.reducerPath]: itJobsBoardApi.reducer,

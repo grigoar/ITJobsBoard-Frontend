@@ -10,6 +10,9 @@ import { RegisterUserModel } from '@/models/Users/RegisterUserModel';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
 import { AuthErrorModel } from '@/models/Errors/RegisterError';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { userDataActions } from '@/store/slices/userDataSlice';
+import { useAppDispatch } from '@/store/hooks';
+import { toastifySuccess } from '@/utils/helpers';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -18,12 +21,11 @@ import MessageResult from '../common/MessageResult/MessageResult';
 
 const typeGuardRegister = (tbd: any): tbd is AuthErrorModel => true;
 
-// TODO: check the spinner loading
-// todo: check the cookies
-// TODO: hide/show login and register
 // TODO: style the login and register on navbar
 
 const RegisterUser = () => {
+  const dispatchAppStore = useAppDispatch();
+
   const [registerUser, { isLoading: registerUserLoading }] = useRegisterUserMutation();
   const [checkUniqueEmail, { error: uniqueEmailError }] = useCheckUniqueEmailMutation();
 
@@ -61,9 +63,7 @@ const RegisterUser = () => {
   }, [checkUniqueEmail, watch('email'), errors.email?.message, watch]);
 
   const sendNotificationSuccess = useCallback(() => {
-    // dispatchAppStore(appGlobalSettingsActions.setActiveNotification(NotificationSignUpSuccess));
-    // if (router.query['go-pro'] === 'true') {
-
+    toastifySuccess('Have a great journey!');
     if (searchParams?.get('go-pro') === 'true') {
       router.replace('/go-pro');
     } else {
@@ -73,9 +73,10 @@ const RegisterUser = () => {
 
   const registerNewUserHandler = async (user: RegisterUserModel) => {
     try {
-      await registerUser(user).unwrap();
+      const newUser = await registerUser(user).unwrap();
       reset();
       // dispatchAppStore(raceStateActions.setIsNewTextNeeded(true));
+      dispatchAppStore(userDataActions.saveLoggedInUser(newUser.user));
 
       showResultSuccessMessage('User registered successfully!');
       // setIsButtonSignUpDisabled(true);
