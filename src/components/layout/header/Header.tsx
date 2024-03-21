@@ -9,12 +9,14 @@ import { useCheckLoggedUserQuery, useLogoutCurrentUserMutation } from '@/api/aut
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { userDataActions } from '@/store/slices/userDataSlice';
 import Button from '@/components/common/Button/Button';
+import { changeBodyTheme, toastifySuccess } from '@/utils/helpers';
 
 const Header = () => {
   const dispatch = useAppDispatch();
   const [logoutUser] = useLogoutCurrentUserMutation();
   const { data: checkUserStatusData, isLoading } = useCheckLoggedUserQuery();
   const { loggedInUser, isUserLogged, isUserAdmin } = useAppSelector((state) => state.userData);
+  // const { activeTheme, setNewActiveTheme } = useChangeAppTheme(loggedInUser);
 
   const router = useRouter();
   // const searchParams = useSearchParams();
@@ -38,7 +40,18 @@ const Header = () => {
   }, [checkUserStatusData, dispatch]);
 
   const changeThemeHandler = () => {
+    let newTheme;
+    if (activeTheme === constants.THEME_DARK) {
+      newTheme = constants.THEME_LIGHT;
+    } else if (activeTheme === constants.THEME_LIGHT) {
+      newTheme = constants.THEME_DARK;
+    }
+
+    // setNewActiveTheme(newTheme || constants.THEME_DARK);
+    changeBodyTheme(newTheme || constants.THEME_DARK);
     toggleTheme();
+    // setNewActiveTheme(newTheme || constants.THEME_DARK);
+    // changeBodyTheme(newTheme || constants.THEME_DARK);
   };
   // console.log('pathName', pathName);
   // console.log('searchParams', searchParams);
@@ -50,6 +63,7 @@ const Header = () => {
     // dispatch(raceStateActions.setIsNewTextNeeded(true));
     // dispatch(raceStateActions.setIsNewTypingText(true));
     // dispatch(appGlobalSettingsActions.setActiveNotification(NotificationLoggedOutSuccessfully));
+    toastifySuccess('Logged out successfully!');
     // setIsDropdownOpen(false);
     // if (router.asPath !== '/' && !router.asPath.includes('posts') && !router.asPath.includes('go-pro')) {
     // if (pathName && !searchParams?.get().includes('posts') && !searchParams?.get("/").includes('go-pro'){

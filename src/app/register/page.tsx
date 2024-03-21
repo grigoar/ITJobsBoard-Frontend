@@ -1,5 +1,5 @@
 import RegisterUser from '@/components/RegisterUser/RegisterUser';
-import { checkUserIsLoggedIn } from '@/utils/helpers';
+import { checkUserIsLoggedIn } from '@/utils/helpersServer';
 import { redirect } from 'next/navigation';
 import React, { Suspense } from 'react';
 

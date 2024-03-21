@@ -11,6 +11,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { AuthErrorModel } from '@/models/Errors/RegisterError';
 import { userDataActions } from '@/store/slices/userDataSlice';
 import { useAppDispatch } from '@/store/hooks';
+import { toastifySuccess } from '@/utils/helpers';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -19,6 +20,7 @@ import MessageResult from '../common/MessageResult/MessageResult';
 
 const typeGuardLogin = (tbd: any): tbd is AuthErrorModel => true;
 
+// TODO: check the refresh page and the theme
 const LoginUser = () => {
   const dispatchAppStore = useAppDispatch();
 
@@ -48,7 +50,7 @@ const LoginUser = () => {
     await logoutUser(null);
 
     dispatchAppStore(userDataActions.setUserLoggedInStatus(false));
-  }, [logoutUser]);
+  }, [logoutUser, dispatchAppStore]);
 
   useEffect(() => {
     const clearLogoutHandler = setTimeout(() => {
@@ -59,7 +61,7 @@ const LoginUser = () => {
   }, [logoutHandler]);
 
   const sendNotificationSuccess = useCallback(() => {
-    // dispatchAppStore(appGlobalSettingsActions.setActiveNotification(NotificationLoginRedirect));
+    toastifySuccess('Logged in successfully!');
     if (searchParams?.get('go-pro') === 'true') {
       router.replace('/go-pro');
     } else {
@@ -86,15 +88,14 @@ const LoginUser = () => {
       } else {
         showResultErrorMessage('Something Went Wrong! Please try again!');
       }
+      // toastifyError('Login failed! Please try again!');
     }
   };
 
   const onSubmitHandler = (data: LoginUserModel) => {
-    console.log(errors);
-    console.log(data.email, data.password);
     loginUserHandler(data);
-    // reset();
   };
+
   return (
     <Card>
       <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)}>

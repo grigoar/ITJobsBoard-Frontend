@@ -2,6 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '../styles/globals.css';
+import 'react-toastify/dist/ReactToastify.css';
 import Head from 'next/head';
 import AppLayout from '@/components/layout/AppLayout';
 import StoreProvider from './StoreProvider';
@@ -27,6 +28,7 @@ export default function RootLayout({
         <Head>
           <meta name="viewport" content={'width=device-width, initial-scale=1'} />
         </Head>
+
         <body className={inter.className}>
           <AppLayout>{children}</AppLayout>
         </body>

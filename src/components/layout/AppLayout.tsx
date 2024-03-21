@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import { ToastContainer } from 'react-toastify';
 import ErrorBoundary from '../ErrorsGlobalHandler/ErrorBoundary';
 import Header from './header/Header';
 import Footer from './footer/Footer';
@@ -15,6 +16,7 @@ const AppLayout = ({ children }: Props) => {
     <ErrorBoundary>
       <div className="flex min-h-screen flex-col bg-primary font-primary">
         <Header />
+        <ToastContainer />
         <main className="flex flex-grow text-[var(--text-color-calm-strong)]">
           <div className="mx-auto flex min-h-full  w-full max-w-[1220px] flex-auto flex-grow items-center justify-center">
             {children}

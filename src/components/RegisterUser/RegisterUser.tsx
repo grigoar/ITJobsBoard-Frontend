@@ -12,6 +12,7 @@ import { AuthErrorModel } from '@/models/Errors/RegisterError';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { userDataActions } from '@/store/slices/userDataSlice';
 import { useAppDispatch } from '@/store/hooks';
+import { toastifySuccess } from '@/utils/helpers';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -20,12 +21,7 @@ import MessageResult from '../common/MessageResult/MessageResult';
 
 const typeGuardRegister = (tbd: any): tbd is AuthErrorModel => true;
 
-// todo: check the cookies
-// TODO: hide/show login and register
 // TODO: style the login and register on navbar
-
-// TODO: Add notifications using react-toastify
-// TODO: Implement Logout functionality
 
 const RegisterUser = () => {
   const dispatchAppStore = useAppDispatch();
@@ -67,9 +63,7 @@ const RegisterUser = () => {
   }, [checkUniqueEmail, watch('email'), errors.email?.message, watch]);
 
   const sendNotificationSuccess = useCallback(() => {
-    // dispatchAppStore(appGlobalSettingsActions.setActiveNotification(NotificationSignUpSuccess));
-    // if (router.query['go-pro'] === 'true') {
-
+    toastifySuccess('Have a great journey!');
     if (searchParams?.get('go-pro') === 'true') {
       router.replace('/go-pro');
     } else {
