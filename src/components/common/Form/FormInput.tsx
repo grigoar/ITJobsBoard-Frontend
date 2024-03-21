@@ -8,6 +8,7 @@ type Props = {
   touchedField?: boolean;
   dirtyField?: boolean;
   watchField?: string;
+  extraError?: string;
 
   [extra: string]: any;
 };
@@ -20,21 +21,37 @@ const FormInput = ({
   errors,
   dirtyField,
   watchField,
-  touchedField,
+  // touchedField,
+  extraError,
   ...inputProps
 }: Props) => {
   const [isTyping, setIsTyping] = useState(false);
   const [watchFieldPrev, setWatchFieldPrev] = useState<string | undefined>('');
 
+  const [errorsArray, setErrorsArray] = useState<string[]>([]);
+
+  useEffect(() => {
+    let errorsForm = [];
+    if (extraError !== undefined && extraError !== '') {
+      errorsForm = errors?.split(',') || [];
+      errorsForm?.push(extraError);
+    } else {
+      errorsForm = errors?.split(',') || [];
+    }
+    setErrorsArray(errorsForm || []);
+  }, [errors, extraError]);
+
   const errorMessages =
-    ((isTyping || touchedField) &&
-      errors?.split(',').map((error: string, index) => {
+    // ((isTyping || touchedField) &&
+    (!isTyping &&
+      dirtyField &&
+      errorsArray.map((error: string, index) => {
         return (
           <li
             className="  font-normal text-[var(--color-red-light)] [&>li]:mb-4 [&>li]:marker:text-[color:red]"
             key={index}
           >
-            {error}
+            &#x2022; {error}
           </li>
         );
       })) ||
@@ -59,7 +76,20 @@ const FormInput = ({
     return () => clearTimeout(timeout);
   }, [watchField, watchFieldPrev]);
 
-  console.log('isTyping', isTyping);
+  const isFocusedAndValid =
+    dirtyField &&
+    // errors == null &&
+    errorsArray.length === 0 &&
+    !isTyping &&
+    'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:ring-1 focus:ring-[var(--color-green-light)]';
+  const isInputValidClass =
+    // errors != null &&
+    errorsArray.length > 0 &&
+    dirtyField &&
+    !isTyping &&
+    'border-2 border-[var(--color-red-light)] bg-[var(--color-red-light-2)]';
+  const isInputProcessingClass =
+    (dirtyField === false || errorsArray.length === 0) && 'border-2 border-[var(--color-blue-light)]';
 
   return (
     <>
@@ -70,10 +100,10 @@ const FormInput = ({
         {...register(name)}
         id={id}
         name={name}
-        className={`w-full ${!touchedField && errors == null && 'border-2 border-[var(--color-blue-light)]'} ${errors != null && touchedField && !isTyping && 'border-2 border-[var(--color-red-light)] bg-[var(--color-red-light-2)]'} mb-4 rounded-md  p-3 text-[var(--color-grey-dark-5)] ${dirtyField && errors == null && !isTyping && 'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:outline-none focus:ring-1 focus:ring-[var(--color-green-light)]'} `}
+        className={`w-full border-2 border-[var(--color-blue-light)] ${isInputProcessingClass} ${isInputValidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} rounded-md p-3  text-[var(--color-grey-dark-5)] focus:outline-none `}
         {...inputProps}
       />
-      {!isTyping ? <ul className="w-full">{errorMessages}</ul> : <></>}
+      {!isTyping && errorsArray.length > 0 ? <ul className="mt-2 w-full">{errorMessages}</ul> : <></>}
     </>
   );
 };

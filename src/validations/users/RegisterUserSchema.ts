@@ -26,9 +26,12 @@ const RegisterUserSchema = yup.object().shape({
       return true;
     })
     .required(),
-  passwordConfirm: yup.string().test('passwords-match', 'Passwords must match', function (value) {
-    return this.parent.password === value;
-  }),
+  passwordConfirm: yup
+    .string()
+    .test('passwords-match', 'Passwords must match', function (value) {
+      return this.parent.password === value;
+    })
+    .required(),
 });
 
 export default RegisterUserSchema;

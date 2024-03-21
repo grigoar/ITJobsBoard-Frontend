@@ -1,20 +1,45 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import RegisterUserSchema from '@/validations/users/RegisterUserSchema';
-import LoginUserModel from '@/models/Users/LoginUserModel';
+import { useCheckUniqueEmailMutation, useRegisterUserMutation } from '@/api/authenticationApi';
+import * as Sentry from '@sentry/nextjs';
+import { RegisterUserModel } from '@/models/Users/RegisterUserModel';
+import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
+import { AuthErrorModel } from '@/models/Errors/RegisterError';
+import { useRouter, useSearchParams } from 'next/navigation';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
 import FormWrapper from '../common/Form/FormWrapper';
+import MessageResult from '../common/MessageResult/MessageResult';
+
+const typeGuardRegister = (tbd: any): tbd is AuthErrorModel => true;
+
+// TODO: check the spinner loading
+// todo: check the cookies
+// TODO: hide/show login and register
+// TODO: style the login and register on navbar
 
 const RegisterUser = () => {
+  const [registerUser, { isLoading: registerUserLoading }] = useRegisterUserMutation();
+  const [checkUniqueEmail, { error: uniqueEmailError }] = useCheckUniqueEmailMutation();
+
+  const { showResultErrorMessage, showResultSuccessMessage, isMessageError, resultMessageDisplay } =
+    useDisplayResultMessage(0);
+
+  // console.log('dataUniqueEmail', mutationResult);
+  // console.log('error', error);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const {
     register,
     handleSubmit,
-    formState: { errors, touchedFields, dirtyFields },
+    // formState: { errors, touchedFields, dirtyFields },
+    formState: { errors, dirtyFields },
     reset,
     watch,
   } = useForm({
@@ -24,13 +49,51 @@ const RegisterUser = () => {
   });
 
   useEffect(() => {
-    // console.log(errors);
-  }, [errors]);
+    // implement a debounce to check if the user is typing
 
-  const onSubmitHandler = (data: LoginUserModel) => {
-    console.log(errors);
-    console.log(data.email, data.password);
-    reset();
+    if (watch('email') === '') return;
+
+    const timeout = setTimeout(() => {
+      checkUniqueEmail({ email: watch('email') });
+    }, 1500);
+
+    return () => clearTimeout(timeout);
+  }, [checkUniqueEmail, watch('email'), errors.email?.message, watch]);
+
+  const sendNotificationSuccess = useCallback(() => {
+    // dispatchAppStore(appGlobalSettingsActions.setActiveNotification(NotificationSignUpSuccess));
+    // if (router.query['go-pro'] === 'true') {
+
+    if (searchParams?.get('go-pro') === 'true') {
+      router.replace('/go-pro');
+    } else {
+      router.replace('/?new-user=true');
+    }
+  }, [router, searchParams]);
+
+  const registerNewUserHandler = async (user: RegisterUserModel) => {
+    try {
+      await registerUser(user).unwrap();
+      reset();
+      // dispatchAppStore(raceStateActions.setIsNewTextNeeded(true));
+
+      showResultSuccessMessage('User registered successfully!');
+      // setIsButtonSignUpDisabled(true);
+      sendNotificationSuccess();
+    } catch (err: any) {
+      Sentry.captureMessage(JSON.stringify(err, null, 2), 'error');
+      reset({ password: '', passwordConfirm: '' });
+      if (typeGuardRegister(err)) {
+        showResultErrorMessage(err.data.message);
+      } else {
+        showResultErrorMessage('Something Went Wrong! Please try again!');
+      }
+    }
+  };
+
+  const onSubmitHandler = (data: RegisterUserModel) => {
+    registerNewUserHandler(data);
+    // reset();
   };
   return (
     <Card>
@@ -47,9 +110,10 @@ const RegisterUser = () => {
           label="Email"
           required
           errors={errors.email?.message}
-          touchedField={touchedFields.email}
+          // touchedField={touchedFields.email}
           dirtyField={dirtyFields.email}
           watchField={watch('email')}
+          extraError={typeGuardRegister(uniqueEmailError) ? uniqueEmailError?.data.message : undefined}
         />
         {/* <p>{errors.email ? errors.email : ''}</p> */}
 
@@ -62,7 +126,7 @@ const RegisterUser = () => {
           label="Password"
           required
           errors={errors.password?.message}
-          touchedField={touchedFields.password}
+          // touchedField={touchedFields.password}
           dirtyField={dirtyFields.password}
           watchField={watch('password')}
         />
@@ -75,7 +139,7 @@ const RegisterUser = () => {
           label="Password Confirm"
           required
           errors={errors.passwordConfirm?.message}
-          touchedField={touchedFields.passwordConfirm}
+          // touchedField={touchedFields.passwordConfirm}
           dirtyField={dirtyFields.passwordConfirm}
           watchField={watch('passwordConfirm')}
         />
@@ -86,6 +150,14 @@ const RegisterUser = () => {
           Sign in
         </Button>
       </FormWrapper>
+      <MessageResult
+        // isLoadingAction={isLoading || isButtonLoginDisabled}
+        // isError={isMessageError}
+        // message={resultMessageDisplay}
+        isLoadingAction={registerUserLoading}
+        isError={isMessageError}
+        message={resultMessageDisplay}
+      />
     </Card>
   );
 };
