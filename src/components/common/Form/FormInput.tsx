@@ -32,18 +32,15 @@ const FormInput = ({
 
   useEffect(() => {
     let errorsForm = [];
-    console.log('------------------------');
     if (extraError !== undefined && extraError !== '') {
       errorsForm = errors?.split(',') || [];
       errorsForm?.push(extraError);
     } else {
       errorsForm = errors?.split(',') || [];
     }
-    console.log('errorsForm', errorsForm);
     setErrorsArray(errorsForm || []);
   }, [errors, extraError]);
 
-  console.log('extraError', extraError);
   const errorMessages =
     // ((isTyping || touchedField) &&
     (!isTyping &&
@@ -59,11 +56,6 @@ const FormInput = ({
         );
       })) ||
     [];
-
-  console.log('SSS', errors?.concat(extraError || ''));
-  console.log('errorMessages', errorMessages);
-  console.log('errorsArray', errorsArray);
-  console.log('errorsArray.length', errorsArray.length);
 
   // ${dirtyField && errors == null && 'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:outline-none focus:ring-1 focus:ring-[var(--color-green-light)]'}`}
 

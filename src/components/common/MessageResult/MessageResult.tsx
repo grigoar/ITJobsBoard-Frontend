@@ -9,7 +9,7 @@ interface Props {
   loadingMessage?: string;
 }
 const MessageResult = ({ message, isError, isLoadingAction, loadingMessage }: Props) => {
-  if (!isLoadingAction) {
+  if (isLoadingAction) {
     return (
       <div
         className={`mt-3 flex flex-row items-center justify-center text-center ${isError ? 'text-[var(--color-red-light)]' : 'text-[var(--color-green-light)]'}`}

@@ -92,9 +92,6 @@ const RegisterUser = () => {
   };
 
   const onSubmitHandler = (data: RegisterUserModel) => {
-    console.log(errors);
-    console.log(data.email, data.password);
-    console.log(data);
     registerNewUserHandler(data);
     // reset();
   };

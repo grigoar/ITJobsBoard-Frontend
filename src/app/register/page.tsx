@@ -1,8 +1,12 @@
 import RegisterUser from '@/components/RegisterUser/RegisterUser';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const RegisterPage = () => {
-  return <RegisterUser />;
+  return (
+    <Suspense>
+      <RegisterUser />
+    </Suspense>
+  );
 };
 
 export default RegisterPage;
