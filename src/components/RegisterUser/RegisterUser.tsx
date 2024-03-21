@@ -18,10 +18,12 @@ import MessageResult from '../common/MessageResult/MessageResult';
 
 const typeGuardRegister = (tbd: any): tbd is AuthErrorModel => true;
 
-// TODO: check the spinner loading
 // todo: check the cookies
 // TODO: hide/show login and register
 // TODO: style the login and register on navbar
+
+// TODO: Add notifications using react-toastify
+// TODO: Implement Logout functionality
 
 const RegisterUser = () => {
   const [registerUser, { isLoading: registerUserLoading }] = useRegisterUserMutation();

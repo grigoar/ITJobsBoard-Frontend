@@ -1,8 +1,12 @@
 import LoginUser from '@/components/LoginUser/LoginUser';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const LoginPage = () => {
-  return <LoginUser />;
+  return (
+    <Suspense>
+      <LoginUser />
+    </Suspense>
+  );
 };
 
 export default LoginPage;
