@@ -20,6 +20,7 @@ const Header = () => {
   const blogsPageLinkClassActive = `${pathName === '/posts' ? 'activeTab' : 'inactiveTab'}`;
   const aboutPageLinkClassActive = `${pathName === '/contact' ? 'activeTab' : 'inactiveTab'}`;
   const loginLinkClassActive = `${pathName === '/login' ? 'activeTab' : 'inactiveTab'}`;
+  const registerLinkClassActive = `${pathName === '/register' ? 'activeTab' : 'inactiveTab'}`;
 
   let pageTitle = '';
   if (pathName === '/') {
@@ -32,6 +33,8 @@ const Header = () => {
     pageTitle = 'Disclaimer';
   } else if (pathName === '/login') {
     pageTitle = 'Login';
+  } else if (pathName === '/register') {
+    pageTitle = 'Register';
   } else if (pathName === '/404') {
     pageTitle = '404';
   } else {
@@ -53,6 +56,9 @@ const Header = () => {
           </Link>
           <Link className={`${loginLinkClassActive}`} href="/login">
             Login
+          </Link>
+          <Link className={`${registerLinkClassActive}`} href="/register">
+            Register
           </Link>
         </div>
         <div className="flex items-center justify-center">

@@ -15,8 +15,6 @@ export const config = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return new Promise<void>((resolve, reject) => {
     req.url = req.url?.replace(/^\/api/, '');
-    console.log('-----------------req.url-------------', req.url);
-    console.log('API_SERVER_URL', API_SERVER_URL);
 
     proxy.web(req, res, { target: API_SERVER_URL, changeOrigin: true, xfwd: true });
     proxy.once('error', reject);

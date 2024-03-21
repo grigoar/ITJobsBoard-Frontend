@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const NewUserSchema = yup.object().shape({
+const RegisterUserSchema = yup.object().shape({
   email: yup.string().email('Email must be valid.').min(12, 'Email must be at least 12 characters.').required(),
   password: yup
     .string()
@@ -26,6 +26,9 @@ const NewUserSchema = yup.object().shape({
       return true;
     })
     .required(),
+  passwordConfirm: yup.string().test('passwords-match', 'Passwords must match', function (value) {
+    return this.parent.password === value;
+  }),
 });
 
-export default NewUserSchema;
+export default RegisterUserSchema;
