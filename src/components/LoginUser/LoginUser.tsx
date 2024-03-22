@@ -21,6 +21,9 @@ import MessageResult from '../common/MessageResult/MessageResult';
 const typeGuardLogin = (tbd: any): tbd is AuthErrorModel => true;
 
 // TODO: check the refresh page and the theme
+// TODO: check the failure from google login
+// TODO: Add the button for the google login with styling
+// TODO: Add the option to link the accounts if the user is already has an account (google login and email login) ( send user to set a password when this happens)
 const LoginUser = () => {
   const dispatchAppStore = useAppDispatch();
 
@@ -96,6 +99,10 @@ const LoginUser = () => {
     loginUserHandler(data);
   };
 
+  const googleAuthHandler = async () => {
+    window.open(`http://localhost:3000/api/v1/google`, '_self');
+  };
+
   return (
     <Card>
       <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)}>
@@ -142,6 +149,9 @@ const LoginUser = () => {
         isError={isMessageError}
         message={resultMessageDisplay}
       />
+      <Button style={`btn btn-ghost `} type="submit" action={googleAuthHandler}>
+        Sign in with Google
+      </Button>
     </Card>
   );
 };
