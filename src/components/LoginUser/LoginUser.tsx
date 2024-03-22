@@ -12,6 +12,7 @@ import { AuthErrorModel } from '@/models/Errors/RegisterError';
 import { userDataActions } from '@/store/slices/userDataSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { toastifySuccess } from '@/utils/helpers';
+import { FcGoogle } from 'react-icons/fc';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -21,8 +22,6 @@ import MessageResult from '../common/MessageResult/MessageResult';
 const typeGuardLogin = (tbd: any): tbd is AuthErrorModel => true;
 
 // TODO: check the refresh page and the theme
-// TODO: check the failure from google login
-// TODO: Add the button for the google login with styling
 // TODO: Add the option to link the accounts if the user is already has an account (google login and email login) ( send user to set a password when this happens)
 const LoginUser = () => {
   const dispatchAppStore = useAppDispatch();
@@ -100,7 +99,7 @@ const LoginUser = () => {
   };
 
   const googleAuthHandler = async () => {
-    window.open(`http://localhost:3000/api/v1/google`, '_self');
+    window.open(`${process.env.NEXT_PUBLIC_SERVER_API_URL}/google`, '_self');
   };
 
   return (
@@ -149,8 +148,14 @@ const LoginUser = () => {
         isError={isMessageError}
         message={resultMessageDisplay}
       />
-      <Button style={`btn btn-ghost `} type="submit" action={googleAuthHandler}>
+      {/* <Button style={`btn btn-ghost `} type="submit" action={googleAuthHandler}>
         Sign in with Google
+      </Button> */}
+      <Button style={`btn btn-ghost `} type="submit" action={googleAuthHandler}>
+        <div className="flex items-center justify-center gap-2">
+          <FcGoogle />
+          Sign in with Google
+        </div>
       </Button>
     </Card>
   );
