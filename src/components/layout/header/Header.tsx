@@ -89,7 +89,7 @@ const Header = () => {
   } else if (pathName === '/disclaimer') {
     pageTitle = 'Disclaimer';
   } else if (pathName === '/login') {
-    pageTitle = 'Login';
+    pageTitle = 'Log In';
   } else if (pathName === '/register') {
     pageTitle = 'Register';
   } else if (pathName === '/profile') {
@@ -118,7 +118,7 @@ const Header = () => {
           {!isUserLogged && (
             <div>
               <Button style={`${loginLinkClassActive}`} link="/login">
-                Login
+                Log In
               </Button>
               <Button style={`${registerLinkClassActive}`} link="/register">
                 Register

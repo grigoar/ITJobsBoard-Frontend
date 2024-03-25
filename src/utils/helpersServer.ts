@@ -33,6 +33,10 @@ export const checkUserIsLoggedIn = async () => {
   }
   const userToken = decodeJWTToken(token)?.user;
 
+  if (!userToken?.roles) {
+    return false;
+  }
+
   if (userToken && userToken.roles.includes(constants.USER_ROLE_USER)) {
     return true;
   }

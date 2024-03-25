@@ -15,6 +15,7 @@ const testingApi = itJobsBoardApi.injectEndpoints({
         method: 'POST',
         body: newUser,
       }),
+
       // invalidatesTags: [constants.USER_PROFILE_TAG, constants.USER_SETTING_TAG],
       invalidatesTags: [constants.USER_PROFILE_TAG],
     }),
@@ -51,8 +52,20 @@ const testingApi = itJobsBoardApi.injectEndpoints({
       }),
       invalidatesTags: [constants.USER_PROFILE_TAG],
     }),
+
+    // ! This is not working
+    googleAuthHandler: builder.query<CheckLoggedInUserResponseModel, void>({
+      query: () => ({
+        url: 'google',
+        method: 'GET',
+        mode: 'no-cors',
+        credentials: 'same-origin',
+      }),
+    }),
   }),
 });
+
+// window.open(`http://localhost:3000/api/v1/google`, '_self');
 
 export const {
   useRegisterUserMutation,
@@ -60,4 +73,5 @@ export const {
   useLoginUserMutation,
   useLogoutCurrentUserMutation,
   useCheckLoggedUserQuery,
+  useLazyGoogleAuthHandlerQuery,
 } = testingApi;
