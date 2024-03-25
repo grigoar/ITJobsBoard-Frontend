@@ -113,7 +113,6 @@ const RegisterUser = () => {
         <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)}>
           <h2>Lets register you!</h2>
 
-          {/* <input className="text-black" {...register('email')} placeholder="email" type="email" required /> */}
           <FormInput
             register={register}
             placeholder="john.doe@gmail.com"
