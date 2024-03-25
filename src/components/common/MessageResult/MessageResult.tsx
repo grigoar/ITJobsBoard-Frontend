@@ -7,9 +7,9 @@ interface Props {
   isError: boolean;
   isLoadingAction: boolean;
   loadingMessage?: string;
-  maxWidth?: number;
+  maxWidth?: string;
 }
-const MessageResult = ({ message, isError, isLoadingAction, loadingMessage, maxWidth }: Props) => {
+const MessageResult = ({ message, isError, isLoadingAction, loadingMessage, maxWidth = '450px' }: Props) => {
   if (isLoadingAction) {
     return (
       <div
@@ -29,7 +29,7 @@ const MessageResult = ({ message, isError, isLoadingAction, loadingMessage, maxW
   }
   return (
     <div
-      className={`mt-3 flex max-w-[${maxWidth}px] flex-col items-center justify-center ${isError ? 'text-[var(--color-red-light)]' : 'text-[var(--color-green-light)]'}`}
+      className={`mt-3 flex max-w-[${maxWidth}]  flex-col items-center justify-center ${isError ? 'text-[var(--color-red-light)]' : 'text-[var(--color-green-light)]'}`}
     >
       {!isLoadingAction && <p>{message}</p>}
     </div>

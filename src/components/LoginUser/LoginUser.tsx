@@ -20,6 +20,7 @@ import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
 import FormWrapper from '../common/Form/FormWrapper';
 import MessageResult from '../common/MessageResult/MessageResult';
+import LoginSuggestion from '../common/LogInSuggestion/LoginSuggestion';
 
 const typeGuardLogin = (tbd: any): tbd is AuthErrorModel => true;
 
@@ -146,7 +147,7 @@ const LoginUser = () => {
 
           <FormInput
             register={register}
-            placeholder="password"
+            placeholder="***********"
             type="password"
             name="password"
             id="password"
@@ -169,23 +170,35 @@ const LoginUser = () => {
           isLoadingAction={isLoading || isButtonLoginDisabled}
           isError={isMessageError}
           message={resultMessageDisplay}
-          maxWidth={450}
+          maxWidth={'450px'}
         />
         {/* <Button style={`btn btn-ghost `} type="submit" action={googleAuthHandler}>
         Sign in with Google
       </Button> */}
       </Card>
-      <Button
-        style={`btn btn-ghost `}
-        type="button"
-        action={googleAuthHandler}
-        focus={federatedAccount?.issuer === FederatedCredentialsIssuer.GOOGLE}
-      >
-        <div className="flex items-center justify-center gap-2">
-          <FcGoogle />
-          Sign in with Google
+
+      <Card className="m-0 mt-0 justify-start self-start">
+        <div className={'mb-2'}>
+          <LoginSuggestion
+            messageBefore="Don't have an account?"
+            messageAfter=""
+            linkPath={federatedAccount?.email ? `/register?email-social=${federatedAccount.email}` : '/register'}
+            linkName="Register"
+          />
         </div>
-      </Button>
+        <div className={' flex items-center justify-center'}>OR</div>
+        <Button
+          style={`btn btn-ghost flex items-center justify-center w-full mt-2`}
+          type="button"
+          action={googleAuthHandler}
+          focus={federatedAccount?.issuer === FederatedCredentialsIssuer.GOOGLE}
+        >
+          <div className="flex items-center justify-center gap-2">
+            <FcGoogle />
+            Log in with Google
+          </div>
+        </Button>
+      </Card>
     </div>
   );
 };
