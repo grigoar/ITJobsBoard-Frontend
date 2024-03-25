@@ -9,6 +9,7 @@ type Props = {
   dirtyField?: boolean;
   watchField?: string;
   extraError?: string;
+  submitted?: boolean;
 
   [extra: string]: any;
 };
@@ -23,6 +24,7 @@ const FormInput = ({
   watchField,
   // touchedField,
   extraError,
+  submitted,
   ...inputProps
 }: Props) => {
   const [isTyping, setIsTyping] = useState(false);
@@ -43,8 +45,7 @@ const FormInput = ({
 
   const errorMessages =
     // ((isTyping || touchedField) &&
-    (!isTyping &&
-      dirtyField &&
+    (((!isTyping && dirtyField) || submitted) &&
       errorsArray.map((error: string, index) => {
         return (
           <li
@@ -59,6 +60,8 @@ const FormInput = ({
 
   // ${dirtyField && errors == null && 'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:outline-none focus:ring-1 focus:ring-[var(--color-green-light)]'}`}
 
+  console.log('errorMessages', errorMessages);
+  console.log('errorsMessages.length', errorMessages.length);
   useEffect(() => {
     // implement a debounce to check if the user is typing
 
@@ -82,10 +85,10 @@ const FormInput = ({
     errorsArray.length === 0 &&
     !isTyping &&
     'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:ring-1 focus:ring-[var(--color-green-light)]';
-  const isInputValidClass =
+  const isInputInvalidClass =
     // errors != null &&
     errorsArray.length > 0 &&
-    dirtyField &&
+    (dirtyField || submitted) &&
     !isTyping &&
     'border-2 border-[var(--color-red-light)] bg-[var(--color-red-light-2)]';
   const isInputProcessingClass =
@@ -100,10 +103,10 @@ const FormInput = ({
         {...register(name)}
         id={id}
         name={name}
-        className={`w-full border-2 border-[var(--color-blue-light)] ${isInputProcessingClass} ${isInputValidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} rounded-md p-3  text-[var(--color-grey-dark-5)] focus:outline-none `}
+        className={`w-full border-2 border-[var(--color-blue-light)] ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} rounded-md p-3  text-[var(--color-grey-dark-5)] focus:outline-none `}
         {...inputProps}
       />
-      {!isTyping && errorsArray.length > 0 ? <ul className="mt-2 w-full">{errorMessages}</ul> : <></>}
+      {!isTyping && errorMessages.length > 0 && <ul className="mt-2 w-full">{errorMessages}</ul>}
     </>
   );
 };

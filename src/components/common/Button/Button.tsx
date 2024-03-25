@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface Props {
   link?: string;
@@ -9,11 +9,25 @@ interface Props {
   isDisabled?: boolean;
   areaLabelCustom?: string;
   type?: 'button' | 'submit' | 'reset';
+  focus?: boolean;
 }
 const Button = (props: Props) => {
+  const linkRef = React.useRef<HTMLAnchorElement>(null);
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (props.focus && linkRef.current) {
+      linkRef.current.focus();
+    }
+    if (props.focus && buttonRef.current) {
+      buttonRef.current.focus();
+    }
+  }, [props.focus]);
+
   if (props.link) {
     return (
       <Link
+        ref={linkRef}
         href={props.link}
         onClick={props.action}
         tabIndex={0}
@@ -28,6 +42,7 @@ const Button = (props: Props) => {
 
   return (
     <button
+      ref={buttonRef}
       onClick={props.action}
       disabled={props.isDisabled}
       tabIndex={0}
