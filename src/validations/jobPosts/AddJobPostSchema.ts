@@ -10,23 +10,23 @@ const AddJobPostSchema = yup.object().shape({
 
     return this.parent.minSalary <= value;
   }),
-  // passwordConfirm: yup
-  // .string()
-  // .test('passwords-match', 'Passwords must match', function (value) {
-  //   return this.parent.password === value;
-  // })
-  // .required(),
-  companyID: yup.string().required(),
-  // company: yup
-  //   .object()
-  //   .shape({
-  //     name: yup.string().required(),
-  //     description: yup.string().required(),
-  //     email: yup.string().email().required(),
-  //     logoImage: yup.string().required(),
-  //     websiteURL: yup.string().required(),
-  //   })
-  //   .required(),
+  // companyID: yup.string().required(),
+
+  // TODO: Fix this validation by adding when() to check if newCompany is not empty
+  companyID: yup.string(),
+  newCompany: yup.object().shape({
+    name: yup.string().required(),
+    description: yup.string().required(),
+    email: yup.string().email().required(),
+    logoImage: yup.string().required(),
+    websiteURL: yup.string().url().required(),
+  }),
+  // companyID: yup.string().when('newCompany', {
+  //   is: (newCompany: Record<string, unknown>) => Object.keys(newCompany).length !== 5,
+  //   then: yup.string().required('Company is required.'),
+  //   otherwise: yup.string(),
+  // }),
+
   location: yup.string().required(),
   // websiteURL: yup.string().required(),
   // isHighlighted: yup.boolean(),

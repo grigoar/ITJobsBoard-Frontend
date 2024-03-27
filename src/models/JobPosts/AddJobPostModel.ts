@@ -1,4 +1,4 @@
-// import { AddCompanyModel } from '../Companies/AddCompanyModel';
+import { AddCompanyModel } from '../Companies/AddCompanyModel';
 
 type AddJobPostModel = {
   description: string;
@@ -10,8 +10,8 @@ type AddJobPostModel = {
   enabledColor?: boolean;
   color?: string;
   isPremium?: boolean;
-  companyID: string;
-  // company: AddCompanyModel;
+  companyID?: string;
+  newCompany?: AddCompanyModel;
 };
 
 export default AddJobPostModel;

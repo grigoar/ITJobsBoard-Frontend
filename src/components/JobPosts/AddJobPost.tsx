@@ -107,6 +107,14 @@ const AddJobPost = () => {
   //   isPremium: yup.boolean(),
   // });
 
+  // export type AddCompanyModel = {
+  //   name: string;
+  //   description: string;
+  //   email: string;
+  //   logoImage: string;
+  //   websiteURL: string;
+  // };
+
   return (
     <div className="flex flex-col">
       <Card className="max-w-[800px]">
@@ -207,6 +215,81 @@ const AddJobPost = () => {
             // touchedField={touchedFields.email}
             dirtyField={dirtyFields.companyID}
             watchField={watch('companyID')}
+            submitted={isSubmitted}
+          />
+
+          <FormInput
+            register={register}
+            placeholder="Add a company name here..."
+            type="text"
+            name="newCompany.name"
+            id="newCompany.name"
+            label="Company Name"
+            required
+            errors={errors.newCompany?.name?.message}
+            // touchedField={touchedFields.email}
+            dirtyField={dirtyFields.newCompany?.name}
+            watchField={watch('newCompany.name')}
+            submitted={isSubmitted}
+          />
+
+          <FormInput
+            register={register}
+            placeholder="Add a company description here..."
+            type="text"
+            name="newCompany.description"
+            id="newCompany.description"
+            label="Company Description"
+            required
+            errors={errors.newCompany?.description?.message}
+            // touchedField={touchedFields.email}
+            dirtyField={dirtyFields.newCompany?.description}
+            watchField={watch('newCompany.description')}
+            submitted={isSubmitted}
+          />
+
+          <FormInput
+            register={register}
+            placeholder="Add a company email here..."
+            type="email"
+            name="newCompany.email"
+            id="newCompany.email"
+            label="Company Email"
+            required
+            errors={errors.newCompany?.email?.message}
+            // touchedField={touchedFields.email}
+            dirtyField={dirtyFields.newCompany?.email}
+            watchField={watch('newCompany.email')}
+            submitted={isSubmitted}
+          />
+
+          <FormInput
+            register={register}
+            placeholder="Add a company logo image here..."
+            type="text"
+            name="newCompany.logoImage"
+            id="newCompany.logoImage"
+            label="Company Logo Image"
+            required
+            errors={errors.newCompany?.logoImage?.message}
+            // touchedField={touchedFields.email}
+            dirtyField={dirtyFields.newCompany?.logoImage}
+            watchField={watch('newCompany.logoImage')}
+            submitted={isSubmitted}
+          />
+
+          <FormInput
+            register={register}
+            placeholder="Add a company website URL here..."
+            type="text"
+            name="newCompany.websiteURL"
+            id="newCompany.websiteURL"
+            label="Company Website URL"
+            required
+            errors={errors.newCompany?.websiteURL?.message}
+            // touchedField={touchedFields.email}
+            dirtyField={dirtyFields.newCompany?.websiteURL}
+            watchField={watch('newCompany.websiteURL')}
             submitted={isSubmitted}
           />
 
