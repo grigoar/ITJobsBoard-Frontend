@@ -4,7 +4,18 @@ const AddJobPostSchema = yup.object().shape({
   // profileID: yup.string().required(),
   description: yup.string().required('Description is required.'),
   title: yup.string().required(),
-  salary: yup.number(),
+  minSalary: yup.number(),
+  maxSalary: yup.number().test('maxSalary', 'Max salary must be greater than min salary', function (value) {
+    if (!value) return true;
+
+    return this.parent.minSalary <= value;
+  }),
+  // passwordConfirm: yup
+  // .string()
+  // .test('passwords-match', 'Passwords must match', function (value) {
+  //   return this.parent.password === value;
+  // })
+  // .required(),
   companyID: yup.string().required(),
   // company: yup
   //   .object()
@@ -19,6 +30,7 @@ const AddJobPostSchema = yup.object().shape({
   location: yup.string().required(),
   // websiteURL: yup.string().required(),
   // isHighlighted: yup.boolean(),
+  enabledColor: yup.boolean(),
   color: yup.string(),
   // isPremium: yup.boolean(),
 });

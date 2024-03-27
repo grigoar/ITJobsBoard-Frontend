@@ -49,7 +49,7 @@
   --text-color-calm-strong: hsl(266, 8%, 83%);
   --color-accent-text: hsl(266, 8%, 93%);
 
-  --color-accent-blog: hsl(163, 100%, 33%);
+  --color-accent-blog: rgb(0, 168, 121);
   --color-blog-title: hsl(196, 54%, 77%);
 
   --color-green-light: #32f87b;

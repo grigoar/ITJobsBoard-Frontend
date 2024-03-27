@@ -15,6 +15,7 @@ import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
 import FormWrapper from '../common/Form/FormWrapper';
 import MessageResult from '../common/MessageResult/MessageResult';
+import FormTextarea from '../common/Form/FormTextarea';
 
 // TODO: check the refresh page and the theme
 // TODO: Add a switch input for form
@@ -28,6 +29,7 @@ const AddJobPost = () => {
   const { showResultErrorMessage, showResultSuccessMessage, isMessageError, resultMessageDisplay } =
     useDisplayResultMessage(0);
   const [isButtonLoginDisabled, setIsButtonLoginDisabled] = useState(false);
+  // const [isPostColored, setIsPostColored] = useState(true);
   // const [federatedAccount, setFederatedAccount] = useState<FederatedAccountError | undefined>();
 
   const router = useRouter();
@@ -46,8 +48,14 @@ const AddJobPost = () => {
 
     defaultValues: {
       color: '#0000ff',
+      companyID: '0ae17a03-bc39-43bc-95cb-8f0af3527d4d',
     },
   });
+
+  // const addPostColorHandler = () => {
+  //   // setShowCredits((prev) => !prev);
+  //   setIsPostColored((prev) => !prev);
+  // };
 
   const sendNotificationSuccess = useCallback(() => {
     toastifySuccess('Logged in successfully!');
@@ -101,17 +109,18 @@ const AddJobPost = () => {
 
   return (
     <div className="flex flex-col">
-      <Card>
-        <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)}>
+      <Card className="max-w-[800px]">
+        <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)} addStyles="max-w-[800px]">
           <h2>Lets post a new job!</h2>
 
-          <FormInput
+          <FormTextarea
             register={register}
             placeholder="Add a job description here..."
             type="description"
             name="description"
             id="description"
             label="Description"
+            styling="[&]:h-40 [&]:p-0 max-h-[400px]"
             required
             errors={errors.description?.message}
             // touchedField={touchedFields.email}
@@ -135,20 +144,41 @@ const AddJobPost = () => {
             submitted={isSubmitted}
           />
 
-          <FormInput
-            register={register}
-            placeholder="Add a salary here..."
-            type="salary"
-            name="salary"
-            id="salary"
-            label="Salary"
-            required
-            errors={errors.salary?.message}
-            // touchedField={touchedFields.email}
-            dirtyField={dirtyFields.salary}
-            watchField={watch('salary')}
-            submitted={isSubmitted}
-          />
+          <div className="flex w-full gap-4">
+            <div className="flex w-full flex-col">
+              <FormInput
+                register={register}
+                placeholder="Add a min salary here..."
+                type="minSalary"
+                name="minSalary"
+                id="minSalary"
+                label="Min Salary"
+                styling="flex flex-col"
+                required
+                errors={errors.minSalary?.message}
+                // touchedField={touchedFields.email}
+                dirtyField={dirtyFields.minSalary}
+                watchField={watch('minSalary')}
+                submitted={isSubmitted}
+              />
+            </div>
+            <div className="flex w-full flex-col">
+              <FormInput
+                register={register}
+                placeholder="Add a max salary here..."
+                type="maxSalary"
+                name="maxSalary"
+                id="maxSalary"
+                label="Max Salary"
+                required
+                errors={errors.maxSalary?.message}
+                // touchedField={touchedFields.email}
+                dirtyField={dirtyFields.maxSalary}
+                watchField={watch('maxSalary')}
+                submitted={isSubmitted}
+              />
+            </div>
+          </div>
 
           <FormInput
             register={register}
@@ -195,21 +225,54 @@ const AddJobPost = () => {
             submitted={isSubmitted}
           /> */}
 
-          <FormInput
-            register={register}
-            placeholder="Add a color here..."
-            type="color"
-            name="color"
-            id="color"
-            label="Color"
-            styling="w-16 p-0 flex"
-            required
-            errors={errors.color?.message}
-            // touchedField={touchedFields.email}
-            dirtyField={dirtyFields.color}
-            watchField={watch('color')}
-            submitted={isSubmitted}
-          />
+          <div className="flex items-center justify-center">
+            <FormInput
+              register={register}
+              placeholder=""
+              type="checkbox"
+              name="enabledColor"
+              id="enabledColor"
+              label=""
+              // styling="[&]:w-6 [&]:p-0 !mb-0 h-6 ml-1  cursor-pointer accent-[var(--color-accent-blog)] "
+              styling="[&]:w-6 [&]:p-0 !mb-0 h-6 ml-1  cursor-pointer accent-[var(--color-green-light)] "
+              required
+              errors={errors.enabledColor?.message}
+              // touchedField={touchedFields.email}
+              dirtyField={dirtyFields.enabledColor}
+              watchField={watch('enabledColor')}
+              submitted={isSubmitted}
+            ></FormInput>
+            {/* <Switch
+              onChange={addPostColorHandler}
+              checked={isPostColored}
+              // className={classes.switchBtn}
+              className="inline-block"
+              onColor="#00a879"
+              offColor="#4C0000"
+              // onHandleColor="#ff4500"
+              onHandleColor="#2500A8"
+              offHandleColor="#ffa091"
+              title="Add a color to the post"
+            /> */}
+            <label className="mx-4" htmlFor="color">
+              Add a color to the post
+            </label>
+            <FormInput
+              register={register}
+              placeholder="Add a color here..."
+              type="color"
+              name="color"
+              id="color"
+              label="Color: "
+              styling="[&]:w-20 [&]:p-0 !mb-0 "
+              required
+              errors={errors.color?.message}
+              // touchedField={touchedFields.email}
+              dirtyField={dirtyFields.color}
+              watchField={watch('color')}
+              submitted={isSubmitted}
+            ></FormInput>
+          </div>
 
           {/* <input type="color" id="color" name="color" value="#0000ff" /> */}
 

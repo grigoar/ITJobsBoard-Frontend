@@ -14,17 +14,19 @@ import { changeBodyTheme, toastifySuccess } from '@/utils/helpers';
 const Header = () => {
   const dispatch = useAppDispatch();
   const [logoutUser] = useLogoutCurrentUserMutation();
-  const { data: checkUserStatusData, isLoading } = useCheckLoggedUserQuery();
-  const { loggedInUser, isUserLogged, isUserAdmin } = useAppSelector((state) => state.userData);
+  const { data: checkUserStatusData } = useCheckLoggedUserQuery();
+  const { isUserLogged } = useAppSelector((state) => state.userData);
+  // const { data: checkUserStatusData, isLoading } = useCheckLoggedUserQuery();
+  // const { loggedInUser, isUserLogged, isUserAdmin } = useAppSelector((state) => state.userData);
   // const { activeTheme, setNewActiveTheme } = useChangeAppTheme(loggedInUser);
 
   const router = useRouter();
   // const searchParams = useSearchParams();
 
-  console.log('loggedInUser', loggedInUser);
-  console.log('isUserAdmin', isUserAdmin);
-  console.log('isUserLogged', isUserLogged);
-  console.log('isLoading', isLoading);
+  // console.log('loggedInUser', loggedInUser);
+  // console.log('isUserAdmin', isUserAdmin);
+  // console.log('isUserLogged', isUserLogged);
+  // console.log('isLoading', isLoading);
 
   const pathName = usePathname();
   const { activeTheme, toggleTheme } = useThemeToggle();
@@ -92,6 +94,8 @@ const Header = () => {
     pageTitle = 'Log In';
   } else if (pathName === '/register') {
     pageTitle = 'Register';
+  } else if (pathName === '/add-job') {
+    pageTitle = 'Add a New Job Post';
   } else if (pathName === '/profile') {
     pageTitle = 'Profile';
   } else if (pathName === '/404') {

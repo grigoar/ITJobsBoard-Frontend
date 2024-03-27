@@ -3,9 +3,11 @@
 type AddJobPostModel = {
   description: string;
   title: string;
-  salary?: number;
+  minSalary?: number;
+  maxSalary?: number;
   location: string;
   isHighlighted?: boolean;
+  enabledColor?: boolean;
   color?: string;
   isPremium?: boolean;
   companyID: string;
