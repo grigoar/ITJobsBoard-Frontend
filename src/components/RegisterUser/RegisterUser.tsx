@@ -8,20 +8,18 @@ import { useCheckUniqueEmailMutation, useRegisterUserMutation } from '@/api/auth
 import * as Sentry from '@sentry/nextjs';
 import { RegisterUserModel } from '@/models/Users/RegisterUserModel';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
-import { AuthErrorModel } from '@/models/Errors/RegisterError';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { userDataActions } from '@/store/slices/userDataSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { toastifySuccess } from '@/utils/helpers';
 import { FcGoogle } from 'react-icons/fc';
+import { typeGuardGeneralError } from '@/models/Errors/typeguards';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
 import FormWrapper from '../common/Form/FormWrapper';
 import MessageResult from '../common/MessageResult/MessageResult';
 import LoginSuggestion from '../common/LogInSuggestion/LoginSuggestion';
-
-const typeGuardRegister = (tbd: any): tbd is AuthErrorModel => true;
 
 // TODO: style the login and register on navbar
 // TODO: Sign in with google account and linke the accounts
@@ -90,7 +88,7 @@ const RegisterUser = () => {
     } catch (err: any) {
       Sentry.captureMessage(JSON.stringify(err, null, 2), 'error');
       reset({ password: '', passwordConfirm: '' });
-      if (typeGuardRegister(err)) {
+      if (typeGuardGeneralError(err)) {
         showResultErrorMessage(err.data.message);
       } else {
         showResultErrorMessage('Something Went Wrong! Please try again!');
@@ -125,7 +123,7 @@ const RegisterUser = () => {
             // touchedField={touchedFields.email}
             dirtyField={dirtyFields.email}
             watchField={watch('email')}
-            extraError={typeGuardRegister(uniqueEmailError) ? uniqueEmailError?.data.message : undefined}
+            extraError={typeGuardGeneralError(uniqueEmailError) ? uniqueEmailError?.data.message : undefined}
           />
 
           <FormInput

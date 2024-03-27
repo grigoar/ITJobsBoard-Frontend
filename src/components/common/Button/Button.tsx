@@ -48,7 +48,7 @@ const Button = (props: Props) => {
       onClick={props.action}
       disabled={props.isDisabled}
       tabIndex={0}
-      className={`cursor-pointer  ${props.style ? props.style : ''}`}
+      className={`cursor-pointer  ${props.style ? props.style : ''} `}
       aria-label={`${props.areaLabelCustom || ''}`}
       type={props.type || 'button'}
     >

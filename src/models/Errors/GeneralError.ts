@@ -1,6 +1,6 @@
 import { FederatedAccountError } from '../Users/FederatedAccountError';
 
-export interface AuthErrorModel {
+export interface ErrorGeneralModel {
   data: {
     status: string;
     message: string;

@@ -8,13 +8,13 @@ import LoginUserSchema from '@/validations/users/LoginUserSchema';
 import { useLoginUserMutation, useLogoutCurrentUserMutation } from '@/api/authenticationApi';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { AuthErrorModel } from '@/models/Errors/RegisterError';
 import { userDataActions } from '@/store/slices/userDataSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { toastifySuccess } from '@/utils/helpers';
 import { FcGoogle } from 'react-icons/fc';
 import { FederatedCredentialsIssuer } from '@/models/Users/FederatedCredentialsIssuer';
 import { FederatedAccountError } from '@/models/Users/FederatedAccountError';
+import { typeGuardGeneralError } from '@/models/Errors/typeguards';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -22,15 +22,7 @@ import FormWrapper from '../common/Form/FormWrapper';
 import MessageResult from '../common/MessageResult/MessageResult';
 import LoginSuggestion from '../common/LogInSuggestion/LoginSuggestion';
 
-const typeGuardLogin = (tbd: any): tbd is AuthErrorModel => true;
-
 // TODO: check the refresh page and the theme
-// TODO: Add the option to link the accounts if the user is already has an account (google login and email login) ( send user to set a password when this happens)
-// TODO: Add options to redirect from login to register and vice versa
-// TODO: Add link to create a new account if the user tries to login with a google account
-// TODO: Prefill the email if the user tries to register after trying to login with a google account
-// TODO: If the user press log in the errors are not shown
-// ! TODO: Add the remaining env on vercel and heroku
 const LoginUser = () => {
   const dispatchAppStore = useAppDispatch();
 
@@ -55,8 +47,6 @@ const LoginUser = () => {
     // mode: 'onTouched',
     mode: 'all',
   });
-
-  console.log('isSubmitted', isSubmitted);
 
   // ? this is because of some clearing bug
   const logoutHandler = useCallback(async () => {
@@ -96,7 +86,7 @@ const LoginUser = () => {
     } catch (err: any) {
       // resetPasswordInput();
       reset({ password: '' });
-      if (typeGuardLogin(err)) {
+      if (typeGuardGeneralError(err)) {
         showResultErrorMessage(err?.data?.message);
 
         if (err?.data?.err?.extra?.email) {

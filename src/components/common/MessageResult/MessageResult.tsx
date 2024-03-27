@@ -29,7 +29,7 @@ const MessageResult = ({ message, isError, isLoadingAction, loadingMessage, maxW
   }
   return (
     <div
-      className={`mt-3 flex max-w-[${maxWidth}]  flex-col items-center justify-center ${isError ? 'text-[var(--color-red-light)]' : 'text-[var(--color-green-light)]'}`}
+      className={`mt-3 flex max-w-[${maxWidth}] max-w-[450px]  flex-col items-center justify-center ${isError ? 'text-[var(--color-red-light)]' : 'text-[var(--color-green-light)]'}`}
     >
       {!isLoadingAction && <p>{message}</p>}
     </div>

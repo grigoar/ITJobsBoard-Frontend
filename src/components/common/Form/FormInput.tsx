@@ -7,9 +7,10 @@ type Props = {
   errors?: string;
   touchedField?: boolean;
   dirtyField?: boolean;
-  watchField?: string;
+  watchField?: any;
   extraError?: string;
   submitted?: boolean;
+  styling?: string;
 
   [extra: string]: any;
 };
@@ -25,6 +26,7 @@ const FormInput = ({
   // touchedField,
   extraError,
   submitted,
+  styling,
   ...inputProps
 }: Props) => {
   const [isTyping, setIsTyping] = useState(false);
@@ -103,7 +105,7 @@ const FormInput = ({
         {...register(name)}
         id={id}
         name={name}
-        className={`w-full border-2 border-[var(--color-blue-light)] ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} rounded-md p-3  text-[var(--color-grey-dark-5)] focus:outline-none `}
+        className={`w-full border-2 border-[var(--color-blue-light)] ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} rounded-md p-3  text-[var(--color-grey-dark-5)] focus:outline-none ${styling}`}
         {...inputProps}
       />
       {!isTyping && errorMessages.length > 0 && <ul className="mt-2 w-full">{errorMessages}</ul>}
