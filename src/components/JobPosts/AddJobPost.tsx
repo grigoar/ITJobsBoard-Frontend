@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
@@ -10,6 +10,8 @@ import AddJobPostSchema from '@/validations/jobPosts/AddJobPostSchema';
 import AddJobPostModel from '@/models/JobPosts/AddJobPostModel';
 import { useAddNewJobPostMutation } from '@/api/jobPostsApi';
 import { typeGuardGeneralError } from '@/models/Errors/typeguards';
+import { useGetAllProfileCompaniesQuery } from '@/api/profilesApi';
+import { useAppSelector } from '@/store/hooks';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -20,11 +22,16 @@ import FormTextarea from '../common/Form/FormTextarea';
 // TODO: check the refresh page and the theme
 // TODO: Add a switch input for form
 // TODO: Add a textarea input for form
+// TODO: The company email should be the same as the user email and disable the input
 const AddJobPost = () => {
   // const dispatchAppStore = useAppDispatch();
 
   // const [loginUser, { isLoading }] = useLoginUserMutation();
   const [addNewJobPost, { isLoading }] = useAddNewJobPostMutation();
+  // const { data: userPracticeData } = useGetAllProfileCompaniesQuery(loggedInUser.id, { skip: loggedInUser.id === '' });
+  const { loggedInUser } = useAppSelector((state) => state.userData);
+  // TODO: Change the endpoint to get the companies for a logged in user
+  const { data: userCompaniesRes } = useGetAllProfileCompaniesQuery(loggedInUser.id, { skip: loggedInUser.id === '' });
   // const [logoutUser] = useLogoutCurrentUserMutation();
   const { showResultErrorMessage, showResultSuccessMessage, isMessageError, resultMessageDisplay } =
     useDisplayResultMessage(0);
@@ -32,6 +39,7 @@ const AddJobPost = () => {
   // const [isPostColored, setIsPostColored] = useState(true);
   // const [federatedAccount, setFederatedAccount] = useState<FederatedAccountError | undefined>();
 
+  console.log('userCompanies', userCompaniesRes);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -41,6 +49,7 @@ const AddJobPost = () => {
     formState: { errors, dirtyFields, isSubmitted },
     reset,
     watch,
+    setValue,
   } = useForm({
     resolver: yupResolver(AddJobPostSchema, { abortEarly: false, recursive: true }),
     // mode: 'onTouched',
@@ -56,6 +65,20 @@ const AddJobPost = () => {
   //   // setShowCredits((prev) => !prev);
   //   setIsPostColored((prev) => !prev);
   // };
+
+  useEffect(() => {
+    console.log('userCompanies', userCompaniesRes);
+    if (userCompaniesRes?.companies && userCompaniesRes?.companies?.length > 0) {
+      const userCompany = userCompaniesRes?.companies[0];
+      // console.log('userCompanies', userCompanies);
+      setValue('companyID', userCompany?.id);
+      setValue('newCompany.name', userCompany?.name);
+      setValue('newCompany.description', userCompany?.description);
+      setValue('newCompany.email', userCompany?.email);
+      setValue('newCompany.logoImage', userCompany?.logoImage);
+      setValue('newCompany.websiteURL', userCompany?.websiteURL);
+    }
+  }, [userCompaniesRes, setValue]);
 
   const sendNotificationSuccess = useCallback(() => {
     toastifySuccess('Logged in successfully!');
