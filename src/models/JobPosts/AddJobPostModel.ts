@@ -11,7 +11,7 @@ type AddJobPostModel = {
   color?: string;
   isPremium?: boolean;
   companyID?: string;
-  newCompany?: AddCompanyModel;
+  newCompany?: Partial<AddCompanyModel>;
 };
 
 export default AddJobPostModel;

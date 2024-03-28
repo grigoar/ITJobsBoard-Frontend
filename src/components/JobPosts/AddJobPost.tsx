@@ -12,22 +12,23 @@ import { useAddNewJobPostMutation } from '@/api/jobPostsApi';
 import { typeGuardGeneralError } from '@/models/Errors/typeguards';
 import { useGetAllProfileCompaniesQuery } from '@/api/profilesApi';
 import { useAppSelector } from '@/store/hooks';
+import { CompanyEntity } from '@/models/Companies/CompanyEntity';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
 import FormWrapper from '../common/Form/FormWrapper';
 import MessageResult from '../common/MessageResult/MessageResult';
 import FormTextarea from '../common/Form/FormTextarea';
+import FormSelect from '../common/Form/FormSelect';
 
 // TODO: check the refresh page and the theme
-// TODO: Add a switch input for form
-// TODO: Add a textarea input for form
-// TODO: The company email should be the same as the user email and disable the input
+// TODO: Maybe check the styling for select, but it should work fine for now
 const AddJobPost = () => {
   // const dispatchAppStore = useAppDispatch();
 
   // const [loginUser, { isLoading }] = useLoginUserMutation();
   const [addNewJobPost, { isLoading }] = useAddNewJobPostMutation();
+
   // const { data: userPracticeData } = useGetAllProfileCompaniesQuery(loggedInUser.id, { skip: loggedInUser.id === '' });
   const { loggedInUser } = useAppSelector((state) => state.userData);
   // TODO: Change the endpoint to get the companies for a logged in user
@@ -36,6 +37,14 @@ const AddJobPost = () => {
   const { showResultErrorMessage, showResultSuccessMessage, isMessageError, resultMessageDisplay } =
     useDisplayResultMessage(0);
   const [isButtonLoginDisabled, setIsButtonLoginDisabled] = useState(false);
+  // const [toggleAddNewCompany, setToggleAddNewCompany] = useState(false);
+  // const [companySelectedOption, setCompanySelectedOption] = useState<string | null>(null);
+  const [companySelectedOption, setCompanySelectedOption] = useState<CompanyEntity | null>(null);
+  // const [copmaniesOptions, setCompaniesOptions] = useState<string[]>([]);
+
+  const [profileCompanies, setProfileCompanies] = useState<CompanyEntity[]>([]);
+  const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
+  const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);
   // const [isPostColored, setIsPostColored] = useState(true);
   // const [federatedAccount, setFederatedAccount] = useState<FederatedAccountError | undefined>();
 
@@ -50,6 +59,7 @@ const AddJobPost = () => {
     reset,
     watch,
     setValue,
+    control,
   } = useForm({
     resolver: yupResolver(AddJobPostSchema, { abortEarly: false, recursive: true }),
     // mode: 'onTouched',
@@ -57,7 +67,9 @@ const AddJobPost = () => {
 
     defaultValues: {
       color: '#0000ff',
-      companyID: '0ae17a03-bc39-43bc-95cb-8f0af3527d4d',
+      // minSalary: 0,
+      // maxSalary: 0,
+      // companyID: '0ae17a03-bc39-43bc-95cb-8f0af3527d4d',
     },
   });
 
@@ -67,18 +79,36 @@ const AddJobPost = () => {
   // };
 
   useEffect(() => {
-    console.log('userCompanies', userCompaniesRes);
-    if (userCompaniesRes?.companies && userCompaniesRes?.companies?.length > 0) {
-      const userCompany = userCompaniesRes?.companies[0];
-      // console.log('userCompanies', userCompanies);
-      setValue('companyID', userCompany?.id);
-      setValue('newCompany.name', userCompany?.name);
-      setValue('newCompany.description', userCompany?.description);
-      setValue('newCompany.email', userCompany?.email);
-      setValue('newCompany.logoImage', userCompany?.logoImage);
-      setValue('newCompany.websiteURL', userCompany?.websiteURL);
-    }
+    // if (userCompaniesRes?.companies && userCompaniesRes?.companies?.length > 0) {
+    //   const userCompany = userCompaniesRes?.companies[0];
+    //   // console.log('userCompanies', userCompanies);
+    //   setValue('companyID', userCompany?.id);
+    //   setValue('newCompany.name', userCompany?.name);
+    //   setValue('newCompany.description', userCompany?.description);
+    //   setValue('newCompany.email', userCompany?.email);
+    //   setValue('newCompany.logoImage', userCompany?.logoImage);
+    //   setValue('newCompany.websiteURL', userCompany?.websiteURL);
+    // }
+    setProfileCompanies(userCompaniesRes?.companies || []);
+    // setCompanySelectedOption(userCompaniesRes?.companies[0].name || null);
+    setCompanySelectedOption(userCompaniesRes?.companies[0] || null);
+    // setCompaniesOptions(userCompaniesRes?.companies.map((company) => company.name) || []);
+    // setValue('companyID', userCompaniesRes?.companies[0]?.id);
+
+    setIsNewCompanyNeeded(userCompaniesRes?.companies?.length === 0 || !userCompaniesRes?.companies);
+    setIsUserAddingNewCompany(userCompaniesRes?.companies?.length === 0 || !userCompaniesRes?.companies);
   }, [userCompaniesRes, setValue]);
+
+  useEffect(() => {
+    if (companySelectedOption) {
+      setValue('companyID', companySelectedOption.id);
+      setValue('newCompany.name', companySelectedOption.name);
+      setValue('newCompany.description', companySelectedOption.description);
+      setValue('newCompany.email', companySelectedOption.email);
+      setValue('newCompany.logoImage', companySelectedOption.logoImage);
+      setValue('newCompany.websiteURL', companySelectedOption.websiteURL);
+    }
+  }, [companySelectedOption, setValue]);
 
   const sendNotificationSuccess = useCallback(() => {
     toastifySuccess('Logged in successfully!');
@@ -138,6 +168,36 @@ const AddJobPost = () => {
   //   websiteURL: string;
   // };
 
+  const toggleAddNewCompanyHandler = () => {
+    if (isNewCompanyNeeded) {
+      // setToggleAddNewCompany(true);
+
+      setIsUserAddingNewCompany(true);
+      return;
+    }
+    // setToggleAddNewCompany((prev) => !prev);
+    setIsUserAddingNewCompany((prev) => !prev);
+  };
+
+  const handleCompanyChange = (selectedOption: CompanyEntity | null) => {
+    console.log('selectedOption', selectedOption);
+    setCompanySelectedOption(selectedOption);
+    // setCompaniesOptions(userCompaniesRes?.companies.map((company) => company.name) || []);
+  };
+
+  const textExistingCompany = () => {
+    if ((isUserAddingNewCompany && userCompaniesRes?.companies?.length === 0) || !userCompaniesRes?.companies) {
+      return 'Add New Company';
+    }
+    if (!isNewCompanyNeeded && isUserAddingNewCompany && userCompaniesRes?.companies?.length > 0) {
+      return 'Select Existing Company';
+    }
+    if (userCompaniesRes?.companies?.length === 0 || !userCompaniesRes?.companies) {
+      return 'Add New Company';
+    }
+    return 'Add New Company';
+  };
+
   return (
     <div className="flex flex-col">
       <Card className="max-w-[800px]">
@@ -154,7 +214,6 @@ const AddJobPost = () => {
             styling="[&]:h-40 [&]:p-0 max-h-[400px]"
             required
             errors={errors.description?.message}
-            // touchedField={touchedFields.email}
             dirtyField={dirtyFields.description}
             watchField={watch('description')}
             submitted={isSubmitted}
@@ -169,7 +228,6 @@ const AddJobPost = () => {
             label="Title"
             required
             errors={errors.title?.message}
-            // touchedField={touchedFields.email}
             dirtyField={dirtyFields.title}
             watchField={watch('title')}
             submitted={isSubmitted}
@@ -187,7 +245,6 @@ const AddJobPost = () => {
                 styling="flex flex-col"
                 required
                 errors={errors.minSalary?.message}
-                // touchedField={touchedFields.email}
                 dirtyField={dirtyFields.minSalary}
                 watchField={watch('minSalary')}
                 submitted={isSubmitted}
@@ -203,7 +260,6 @@ const AddJobPost = () => {
                 label="Max Salary"
                 required
                 errors={errors.maxSalary?.message}
-                // touchedField={touchedFields.email}
                 dirtyField={dirtyFields.maxSalary}
                 watchField={watch('maxSalary')}
                 submitted={isSubmitted}
@@ -220,13 +276,12 @@ const AddJobPost = () => {
             label="Location"
             required
             errors={errors.location?.message}
-            // touchedField={touchedFields.email}
             dirtyField={dirtyFields.location}
             watchField={watch('location')}
             submitted={isSubmitted}
           />
 
-          <FormInput
+          {/* <FormInput
             register={register}
             placeholder="Add a company ID here..."
             type="companyID"
@@ -235,101 +290,138 @@ const AddJobPost = () => {
             label="Company ID"
             required
             errors={errors.companyID?.message}
-            // touchedField={touchedFields.email}
             dirtyField={dirtyFields.companyID}
             watchField={watch('companyID')}
             submitted={isSubmitted}
-          />
-
-          <FormInput
-            register={register}
-            placeholder="Add a company name here..."
-            type="text"
-            name="newCompany.name"
-            id="newCompany.name"
-            label="Company Name"
-            required
-            errors={errors.newCompany?.name?.message}
-            // touchedField={touchedFields.email}
-            dirtyField={dirtyFields.newCompany?.name}
-            watchField={watch('newCompany.name')}
-            submitted={isSubmitted}
-          />
-
-          <FormInput
-            register={register}
-            placeholder="Add a company description here..."
-            type="text"
-            name="newCompany.description"
-            id="newCompany.description"
-            label="Company Description"
-            required
-            errors={errors.newCompany?.description?.message}
-            // touchedField={touchedFields.email}
-            dirtyField={dirtyFields.newCompany?.description}
-            watchField={watch('newCompany.description')}
-            submitted={isSubmitted}
-          />
-
-          <FormInput
-            register={register}
-            placeholder="Add a company email here..."
-            type="email"
-            name="newCompany.email"
-            id="newCompany.email"
-            label="Company Email"
-            required
-            errors={errors.newCompany?.email?.message}
-            // touchedField={touchedFields.email}
-            dirtyField={dirtyFields.newCompany?.email}
-            watchField={watch('newCompany.email')}
-            submitted={isSubmitted}
-          />
-
-          <FormInput
-            register={register}
-            placeholder="Add a company logo image here..."
-            type="text"
-            name="newCompany.logoImage"
-            id="newCompany.logoImage"
-            label="Company Logo Image"
-            required
-            errors={errors.newCompany?.logoImage?.message}
-            // touchedField={touchedFields.email}
-            dirtyField={dirtyFields.newCompany?.logoImage}
-            watchField={watch('newCompany.logoImage')}
-            submitted={isSubmitted}
-          />
-
-          <FormInput
-            register={register}
-            placeholder="Add a company website URL here..."
-            type="text"
-            name="newCompany.websiteURL"
-            id="newCompany.websiteURL"
-            label="Company Website URL"
-            required
-            errors={errors.newCompany?.websiteURL?.message}
-            // touchedField={touchedFields.email}
-            dirtyField={dirtyFields.newCompany?.websiteURL}
-            watchField={watch('newCompany.websiteURL')}
-            submitted={isSubmitted}
-          />
-
-          {/* <FormInput
-            register={register}
-            placeholder="http://www.example.com"
-            type="text"
-            name="websiteURL"
-            id="websiteURL"
-            label="Website URL"
-            required
-            errors={errors.company.websiteURL?.message}
-            // touchedField={touchedFields.email}
-            dirtyField={dirtyFields.websiteURL}
-            watchField={watch('websiteURL')}
-            submitted={isSubmitted}
           /> */}
+
+          {!isNewCompanyNeeded && !isUserAddingNewCompany && (
+            <FormSelect
+              control={control}
+              options={profileCompanies}
+              inputValueField="companyID"
+              selectOptionField="id"
+              selectOptionLabel="name"
+              handleOptionsChange={handleCompanyChange}
+              label="Company"
+              watchField={watch('companyID')}
+              errors={errors.companyID?.message}
+              dirtyField={dirtyFields.companyID}
+              submitted={isSubmitted}
+              isSearchable={false}
+            />
+          )}
+          {/* <Controller
+            name="companyID"
+            control={control}
+            render={({ field: { onChange, value, ref } }) => (
+              <Select
+                value={profileCompanies.find((company) => company.id === value)}
+                ref={ref}
+                onChange={(selectedCompany) => {
+                  onChange(selectedCompany?.id);
+                  handleCompanyChange(selectedCompany);
+                }}
+                options={profileCompanies}
+                className="w-full cursor-pointer rounded-md border-2 border-[var(--color-blue-light)]   text-[var(--color-grey-dark-5)]"
+                getOptionLabel={(option) => option.name}
+                getOptionValue={(option) => option.id}
+              />
+            )}
+            rules={{ required: true }}
+          /> */}
+          {/* <Select
+            value={companySelectedOption}
+            onChange={handleCompanyChange}
+            options={profileCompanies}
+            className="w-full cursor-pointer rounded-md border-2 border-[var(--color-blue-light)]   text-[var(--color-grey-dark-5)]"
+            getOptionLabel={(option) => option.name}
+            getOptionValue={(option) => option.id}
+          /> */}
+
+          <div className="block w-full">
+            <Button
+              style={`text-[var(--text-color-primary)] cursor-auto  ${!isNewCompanyNeeded && !isUserAddingNewCompany && 'hover:brightness-[80%] mb-4 ml-1 cursor-pointer'}  ${!isNewCompanyNeeded && '[&]:cursor-pointer'}`}
+              action={toggleAddNewCompanyHandler}
+            >
+              {/* {isNewCompanyNeeded && isUserAddingNewCompany ? 'Select Existing Company' : 'Add New Company'} */}
+              {textExistingCompany()}
+            </Button>
+          </div>
+          {isUserAddingNewCompany && (
+            <>
+              <FormInput
+                register={register}
+                placeholder="Add a company name here..."
+                type="text"
+                name="newCompany.name"
+                id="newCompany.name"
+                label="Company Name"
+                required
+                errors={errors.newCompany?.name?.message}
+                // touchedField={touchedFields.email}
+                dirtyField={dirtyFields.newCompany?.name}
+                watchField={watch('newCompany.name')}
+                submitted={isSubmitted}
+              />
+
+              <FormInput
+                register={register}
+                placeholder="Add a company description here..."
+                type="text"
+                name="newCompany.description"
+                id="newCompany.description"
+                label="Company Description"
+                required
+                errors={errors.newCompany?.description?.message}
+                dirtyField={dirtyFields.newCompany?.description}
+                watchField={watch('newCompany.description')}
+                submitted={isSubmitted}
+              />
+
+              <FormInput
+                register={register}
+                placeholder="Add a company email here..."
+                type="email"
+                name="newCompany.email"
+                id="newCompany.email"
+                label="Company Email"
+                required
+                errors={errors.newCompany?.email?.message}
+                dirtyField={dirtyFields.newCompany?.email}
+                watchField={watch('newCompany.email')}
+                submitted={isSubmitted}
+              />
+
+              <FormInput
+                register={register}
+                placeholder="Add a company logo image here..."
+                type="text"
+                name="newCompany.logoImage"
+                id="newCompany.logoImage"
+                label="Company Logo Image"
+                required
+                errors={errors.newCompany?.logoImage?.message}
+                dirtyField={dirtyFields.newCompany?.logoImage}
+                watchField={watch('newCompany.logoImage')}
+                submitted={isSubmitted}
+              />
+
+              <FormInput
+                register={register}
+                placeholder="Add a company website URL here..."
+                type="text"
+                name="newCompany.websiteURL"
+                id="newCompany.websiteURL"
+                label="Company Website URL"
+                required
+                errors={errors.newCompany?.websiteURL?.message}
+                dirtyField={dirtyFields.newCompany?.websiteURL}
+                watchField={watch('newCompany.websiteURL')}
+                submitted={isSubmitted}
+              />
+            </>
+          )}
 
           <div className="flex items-center justify-center">
             <FormInput
@@ -339,27 +431,14 @@ const AddJobPost = () => {
               name="enabledColor"
               id="enabledColor"
               label=""
-              // styling="[&]:w-6 [&]:p-0 !mb-0 h-6 ml-1  cursor-pointer accent-[var(--color-accent-blog)] "
               styling="[&]:w-6 [&]:p-0 !mb-0 h-6 ml-1  cursor-pointer accent-[var(--color-green-light)] "
               required
               errors={errors.enabledColor?.message}
-              // touchedField={touchedFields.email}
               dirtyField={dirtyFields.enabledColor}
               watchField={watch('enabledColor')}
               submitted={isSubmitted}
             ></FormInput>
-            {/* <Switch
-              onChange={addPostColorHandler}
-              checked={isPostColored}
-              // className={classes.switchBtn}
-              className="inline-block"
-              onColor="#00a879"
-              offColor="#4C0000"
-              // onHandleColor="#ff4500"
-              onHandleColor="#2500A8"
-              offHandleColor="#ffa091"
-              title="Add a color to the post"
-            /> */}
+
             <label className="mx-4" htmlFor="color">
               Add a color to the post
             </label>
