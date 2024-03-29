@@ -11,7 +11,7 @@ interface Props {
   };
 }
 
-const PostDetailPage = ({ params }: Props) => {
+const PostDetailPage = async ({ params }: Props) => {
   const post: BlogPostModel = getPostData(params.slug);
   const relatedPosts = getRandomFeaturedPostsLocalFiles(params.slug, 2);
 

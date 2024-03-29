@@ -6,7 +6,7 @@ import { CheckLoggedInUserResponseModel } from '@/models/Users/CheckLoggedInUser
 import LoginUserModel from '@/models/Users/LoginUserModel';
 import itJobsBoardApi from './indexITJobsBoardApi';
 
-const testingApi = itJobsBoardApi.injectEndpoints({
+const authenticationApi = itJobsBoardApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
     registerUser: builder.mutation<UserAuthResponse, RegisterUserModel>({
@@ -74,4 +74,4 @@ export const {
   useLogoutCurrentUserMutation,
   useCheckLoggedUserQuery,
   useLazyGoogleAuthHandlerQuery,
-} = testingApi;
+} = authenticationApi;

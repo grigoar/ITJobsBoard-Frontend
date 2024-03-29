@@ -26,7 +26,7 @@ const FormInput = ({
   // touchedField,
   extraError,
   submitted,
-  styling,
+  styling = '',
   ...inputProps
 }: Props) => {
   const [isTyping, setIsTyping] = useState(false);
@@ -62,8 +62,8 @@ const FormInput = ({
 
   // ${dirtyField && errors == null && 'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:outline-none focus:ring-1 focus:ring-[var(--color-green-light)]'}`}
 
-  // console.log('errorMessages', errorMessages);
-  // console.log('errorsMessages.length', errorMessages.length);
+  console.log('errorMessages', errorMessages);
+  console.log('errorsMessages.length', errorMessages.length);
   useEffect(() => {
     // implement a debounce to check if the user is typing
 
@@ -105,9 +105,26 @@ const FormInput = ({
         {...register(name)}
         id={id}
         name={name}
-        className={`w-full border-2 border-[var(--color-blue-light)] ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} rounded-md p-3  text-[var(--color-grey-dark-5)] focus:outline-none ${styling}`}
+        className={`w-full border-2 border-[var(--color-blue-light)] ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} !mb-0   h-6 w-6 shrink-0 cursor-pointer appearance-none rounded-md rounded-sm  border-2 border-blue-500 bg-white p-0 text-[var(--color-grey-dark-5)] checked:border-0 checked:bg-blue-800 focus:outline-none
+        ${styling}`}
         {...inputProps}
       />
+      <label htmlFor="some_id">This is the checkbox label</label>
+      <svg
+        className="
+      absolute 
+      mt-1 hidden h-4
+      w-4 peer-checked:block"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
       {!isTyping && errorMessages.length > 0 && <ul className="mt-2 w-full">{errorMessages}</ul>}
     </>
   );

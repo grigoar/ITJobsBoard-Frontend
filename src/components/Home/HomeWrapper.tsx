@@ -27,11 +27,11 @@ const HomeWrapper = () => {
   };
 
   useEffect(() => {
-    console.log('serverHealth', serverHealth);
+    // console.log('serverHealth', serverHealth);
   }, [serverHealth]);
 
   useEffect(() => {
-    console.log('serverFailure', serverFailure);
+    // console.log('serverFailure', serverFailure);
   }, [serverFailure]);
 
   return (
