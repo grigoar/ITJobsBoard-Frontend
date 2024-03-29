@@ -1,8 +1,12 @@
 import AddJobPost from '@/components/JobPosts/AddJobPost';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const AddJobPostPage = () => {
-  return <AddJobPost />;
+  return (
+    <Suspense>
+      <AddJobPost />
+    </Suspense>
+  );
 };
 
 export default AddJobPostPage;
