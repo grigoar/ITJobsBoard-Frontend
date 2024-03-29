@@ -23,6 +23,9 @@ import FormSelect from '../common/Form/FormSelect';
 
 // TODO: check the refresh page and the theme
 // TODO: Maybe check the styling for select, but it should work fine for now
+// TODO: Add skills to the job post
+// TODO: Add a role to the user that can edit a company if it is the owner
+// TODO: Create a profile for a company so it can be edited without the user logging in ( some email and token for the authorization)
 const AddJobPost = () => {
   // const dispatchAppStore = useAppDispatch();
 
