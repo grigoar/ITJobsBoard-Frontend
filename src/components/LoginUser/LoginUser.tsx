@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import LoginUserModel from '@/models/Users/LoginUserModel';
-import LoginUserSchema from '@/validations/users/LoginUserSchema';
+import LoginUserValidationBody from '@/validations/users/LoginUserValidationBody';
 import { useLoginUserMutation, useLogoutCurrentUserMutation } from '@/api/authenticationApi';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -43,7 +43,7 @@ const LoginUser = () => {
     reset,
     watch,
   } = useForm({
-    resolver: yupResolver(LoginUserSchema, { abortEarly: false, recursive: true }),
+    resolver: yupResolver(LoginUserValidationBody, { abortEarly: false, recursive: true }),
     // mode: 'onTouched',
     mode: 'all',
   });

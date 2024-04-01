@@ -1,13 +1,9 @@
 import * as yup from 'yup';
 
-const LoginUserSchema = yup.object().shape({
+const SignUpUserValidationBody = yup.object().shape({
   email: yup.string().email('Email must be valid.').min(12, 'Email must be at least 12 characters.').required(),
   password: yup
     .string()
-    // .min(12)
-    // .max(32)
-    // .matches(/(.*[A-Z].*)/, 'The password must contain at least one uppercase letter')
-    // .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Special')
     .test('password', 'Password must contain at least one number', (value) => {
       const errors = [];
       if (!value) {
@@ -26,6 +22,12 @@ const LoginUserSchema = yup.object().shape({
       return true;
     })
     .required(),
+  passwordConfirm: yup
+    .string()
+    .test('passwords-match', 'Passwords must match', function (value) {
+      return this.parent.password === value;
+    })
+    .required(),
 });
 
-export default LoginUserSchema;
+export default SignUpUserValidationBody;

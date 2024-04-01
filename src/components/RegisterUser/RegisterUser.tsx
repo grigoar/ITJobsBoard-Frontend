@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import RegisterUserSchema from '@/validations/users/RegisterUserSchema';
+import SignUpUserValidationBody from '@/validations/users/SignUpUserValidationBody';
 import { useCheckUniqueEmailMutation, useRegisterUserMutation } from '@/api/authenticationApi';
 import * as Sentry from '@sentry/nextjs';
 import { RegisterUserModel } from '@/models/Users/RegisterUserModel';
@@ -46,7 +46,7 @@ const RegisterUser = () => {
     reset,
     watch,
   } = useForm({
-    resolver: yupResolver(RegisterUserSchema, { abortEarly: false, recursive: true }),
+    resolver: yupResolver(SignUpUserValidationBody, { abortEarly: false, recursive: true }),
     // mode: 'onTouched',
     mode: 'all',
     defaultValues: {
