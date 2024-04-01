@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toastifySuccess } from '@/utils/helpers';
-import AddJobPostSchema from '@/validations/jobPosts/AddJobPostSchema';
+import AddJobPostValidationBody from '@/validations/jobPosts/AddJobPostSchema';
 import AddJobPostModel from '@/models/JobPosts/AddJobPostModel';
 import { useAddNewJobPostMutation } from '@/api/jobPostsApi';
 import { typeGuardGeneralError } from '@/models/Errors/typeguards';
@@ -64,7 +64,7 @@ const AddJobPost = () => {
     setValue,
     control,
   } = useForm({
-    resolver: yupResolver(AddJobPostSchema, { abortEarly: false, recursive: true }),
+    resolver: yupResolver(AddJobPostValidationBody, { abortEarly: false, recursive: true }),
     // mode: 'onTouched',
     mode: 'all',
 
