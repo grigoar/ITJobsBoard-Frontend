@@ -11,13 +11,14 @@ type FormSelectProps = {
   selectOptionLabel: string;
   handleOptionsChange?: any;
   errors?: string;
-  touchedField?: boolean;
-  dirtyField?: boolean;
+  touchedField?: boolean | boolean[];
+  dirtyField?: boolean | boolean[];
   watchField?: any;
   extraError?: string;
   submitted?: boolean;
   styling?: string;
   isSearchable?: boolean;
+  isMulti?: boolean;
 };
 
 const FormSelect = ({
@@ -35,6 +36,7 @@ const FormSelect = ({
   submitted,
   styling,
   isSearchable = true,
+  isMulti = false,
 }: FormSelectProps) => {
   const [isTyping, setIsTyping] = useState(false);
   // const [watchFieldPrev, setWatchFieldPrev] = useState<string | undefined>('');
@@ -145,7 +147,11 @@ const FormSelect = ({
             ref={ref}
             onChange={(selectedOption: any) => {
               // onChange(selectedCompany?.id);
-              onChange(selectedOption[selectOptionField]);
+              if (isMulti) {
+                onChange(selectedOption.map((option: any) => option[selectOptionField]));
+              } else {
+                onChange(selectedOption[selectOptionField]);
+              }
               handleOptionsChange(selectedOption);
             }}
             options={options}
@@ -156,6 +162,7 @@ const FormSelect = ({
             getOptionValue={(option) => option[selectOptionField]}
             // TODO: the text search outline styling is broken
             isSearchable={isSearchable}
+            isMulti={isMulti}
             // isSearchable={false}
           />
         )}

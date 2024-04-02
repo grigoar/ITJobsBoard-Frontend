@@ -12,6 +12,8 @@ type AddJobPostModel = {
   isPremium?: boolean;
   companyID?: string;
   newCompany?: Partial<AddCompanyModel>;
+  defaultTags?: string[];
+  customTags?: string[];
 };
 
 export default AddJobPostModel;

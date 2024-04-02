@@ -1,5 +1,7 @@
 import constants from '@/utils/constants';
-import { GetCompaniesRes } from '@/models/Companies/GetCompaniesRes';
+// import { GetCompaniesRes } from '@/models/Companies/GetCompaniesRes';
+import { CompanyEntity } from '@/models/Companies/CompanyEntity';
+import { ApiGetAllGenericResponse } from '@/models/Common/ApiGetAllGenericResponse';
 import itJobsBoardApi from './indexITJobsBoardApi';
 
 const companiesApi = itJobsBoardApi.injectEndpoints({
@@ -13,7 +15,7 @@ const companiesApi = itJobsBoardApi.injectEndpoints({
     //   }),
     //   invalidatesTags: [constants.JOB_POSTS_TAG],
     // }),
-    getAllProfileCompanies: builder.query<GetCompaniesRes, string>({
+    getAllProfileCompanies: builder.query<ApiGetAllGenericResponse<CompanyEntity>, string>({
       query: (userID: string) => {
         return {
           url: `profiles/${userID}/companies`,

@@ -64,6 +64,7 @@ export default {
   GUEST_USER_TAG: 'GUEST_USER',
   JOB_POSTS_TAG: 'JOB_POST',
   COMPANIES_TAG: 'COMPANIES',
+  TAGS_TAG: 'FILTER_TAGS',
 
   // Books Categories
   RANDOM_RACE_TYPE: 'RANDOM',
