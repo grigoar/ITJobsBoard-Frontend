@@ -302,7 +302,7 @@ const AddJobPost = () => {
             dirtyField={dirtyFields.defaultTags}
             // touchedField={touchedFields.defaultTags}
             submitted={isSubmitted}
-            isSearchable={false}
+            isSearchable={true}
             isMulti={true}
           />
 
