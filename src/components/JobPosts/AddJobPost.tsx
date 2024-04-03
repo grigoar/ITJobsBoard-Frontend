@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
+// import { usePlacesWidget } from 'react-google-autocomplete';
+import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
@@ -23,12 +25,20 @@ import FormWrapper from '../common/Form/FormWrapper';
 import MessageResult from '../common/MessageResult/MessageResult';
 import FormTextarea from '../common/Form/FormTextarea';
 import FormSelect from '../common/Form/FormSelect';
+import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
+
+type GooglePlaces = {
+  label: string;
+  value: string;
+};
 
 // TODO: check the refresh page and the theme
 // TODO: Maybe check the styling for select, but it should work fine for now
 // TODO: Add skills to the job post
 // TODO: Add a role to the user that can edit a company if it is the owner
 // TODO: Create a profile for a company so it can be edited without the user logging in ( some email and token for the authorization)
+
+// TODO: For the custom tags add on the backend the custom tags that havent any ID
 const AddJobPost = () => {
   // const dispatchAppStore = useAppDispatch();
 
@@ -50,6 +60,7 @@ const AddJobPost = () => {
   // const [copmaniesOptions, setCompaniesOptions] = useState<string[]>([]);
 
   const [profileCompanies, setProfileCompanies] = useState<CompanyEntity[]>([]);
+  const [googlePlaces, setGooglePlaces] = useState<GooglePlaces[]>([]);
   const [techTags, setTechTags] = useState<TagEntity[]>([]);
   const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
   const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);
@@ -61,6 +72,46 @@ const AddJobPost = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // const { ref, autocompleteRef } = usePlacesWidget({
+  //   apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+  //   onPlaceSelected: (place: string) => {
+  //     console.log('place', place);
+  //   },
+  //   options: {
+  //     // types: ['(cities)', '(regions)', '(country)'],
+  //     types: ['(regions)'],
+  //     // types: ['address'],
+  //   },
+  // });
+
+  const { placePredictions, getPlacePredictions } = usePlacesService({
+    apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    debounce: 500,
+    options: {
+      // types: ['(cities)', '(regions)', '(country)'],
+      types: ['(regions)'],
+    },
+  });
+
+  useEffect(() => {
+    console.log('placePredictions------------------------------------------------------------', placePredictions);
+
+    if (placePredictions.length === 0) return;
+
+    const placesStrings = placePredictions.map((place) => {
+      return {
+        label: place.description,
+        value: place.description,
+      };
+    });
+
+    console.log('placesStrings', placesStrings);
+    // console.log('userCustomPlaces', userCustomPlaces);
+    setGooglePlaces(placesStrings);
+    // setOptionsExtended([...placesStrings, ...userCustomPlaces]);
+    // setGooglePlaces(placesStrings);
+    // setOptionsExtended(placesStrings);
+  }, [placePredictions]);
   const {
     register,
     handleSubmit,
@@ -206,11 +257,27 @@ const AddJobPost = () => {
     return 'Add New Company';
   };
 
+  console.log('googlePlaces', googlePlaces);
+
+  // const handlePlaceChange = (place: string) => {
+  //   // console.log('place', place);
+  //   // getPlacePredictions({ input: evt.target.value });
+  //   console.log('input changed', place);
+  //   getPlacePredictions({ input: place });
+  // };
+
+  const onLocationInputChange = (inputValue: string) => {
+    getPlacePredictions({ input: inputValue });
+  };
+
   return (
     <div className="flex flex-col">
       <Card className="max-w-[800px]">
         <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)} addStyles="max-w-[800px]">
           <h2>Lets post a new job!</h2>
+
+          {/* <input type="text" ref={ref} style={{ display: 'none' }} /> */}
+          {/* <input type="text" ref={ref} /> */}
 
           <FormTextarea
             register={register}
@@ -275,7 +342,7 @@ const AddJobPost = () => {
             </div>
           </div>
 
-          <FormInput
+          {/* <FormInput
             register={register}
             placeholder="Add a location here..."
             type="location"
@@ -287,7 +354,7 @@ const AddJobPost = () => {
             dirtyField={dirtyFields.location}
             watchField={watch('location')}
             submitted={isSubmitted}
-          />
+          /> */}
 
           <FormSelect
             control={control}
@@ -304,6 +371,23 @@ const AddJobPost = () => {
             submitted={isSubmitted}
             isSearchable={true}
             isMulti={true}
+          />
+
+          <FormSelectAsyncCreate
+            control={control}
+            options={googlePlaces}
+            inputValueField="location"
+            selectOptionField="value"
+            selectOptionLabel="label"
+            // handleOptionsChange={handlePlaceChange}
+            label="Location"
+            watchField={watch('location')}
+            setValue={setValue}
+            errors={errors.location?.message}
+            dirtyField={dirtyFields.location}
+            submitted={isSubmitted}
+            isSearchable={true}
+            onInputChange={onLocationInputChange}
           />
 
           {/* <FormInput
