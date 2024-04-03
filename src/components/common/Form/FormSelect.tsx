@@ -155,7 +155,7 @@ const FormSelect = ({
     }),
     multiValue: (base: any) => ({
       ...base,
-      backgroundColor: 'var(--color-blue-light)',
+      // backgroundColor: 'var(--color-blue-light)',
 
       // color: 'white',
       marginRight: '5px',
@@ -164,7 +164,7 @@ const FormSelect = ({
     }),
     multiValueLabel: (base: any) => ({
       ...base,
-      color: 'white',
+      // color: 'white',
     }),
   };
 

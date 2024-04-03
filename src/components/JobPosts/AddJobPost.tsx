@@ -296,7 +296,7 @@ const AddJobPost = () => {
             selectOptionField="id"
             selectOptionLabel="name"
             handleOptionsChange={handleTagsChange}
-            label="Default Tags"
+            label="Technology Tags"
             watchField={watch('defaultTags')}
             errors={errors.defaultTags?.message}
             dirtyField={dirtyFields.defaultTags}
