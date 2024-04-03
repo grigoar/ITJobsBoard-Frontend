@@ -22,6 +22,7 @@ const itJobsBoardApi = createApi({
     constants.USER_PROFILE_TAG,
     constants.COMPANIES_TAG,
     constants.JOB_POSTS_TAG,
+    constants.TAGS_TAG,
     // constants.USER_RACES_TAG,
     // constants.RACE_DATA_TAG,
     // constants.USER_GENERAL_STATS_TAG,

@@ -20,7 +20,7 @@ const HomeWrapper = () => {
   return (
     <section className=" flex max-w-[800px] flex-col  items-center justify-between self-center pb-0  text-xl font-semibold">
       <div className="my-8">
-        <JobPostsList jobPosts={jobPostsData?.jobPosts} />
+        <JobPostsList jobPosts={jobPostsData?.items} />
       </div>
     </section>
   );

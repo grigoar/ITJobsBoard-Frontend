@@ -11,13 +11,14 @@ type FormSelectProps = {
   selectOptionLabel: string;
   handleOptionsChange?: any;
   errors?: string;
-  touchedField?: boolean;
-  dirtyField?: boolean;
+  touchedField?: boolean | boolean[];
+  dirtyField?: boolean | boolean[];
   watchField?: any;
   extraError?: string;
   submitted?: boolean;
   styling?: string;
   isSearchable?: boolean;
+  isMulti?: boolean;
 };
 
 const FormSelect = ({
@@ -35,6 +36,7 @@ const FormSelect = ({
   submitted,
   styling,
   isSearchable = true,
+  isMulti = false,
 }: FormSelectProps) => {
   const [isTyping, setIsTyping] = useState(false);
   // const [watchFieldPrev, setWatchFieldPrev] = useState<string | undefined>('');
@@ -131,8 +133,43 @@ const FormSelect = ({
   //   isValid &&
   //   'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:ring-1 focus:ring-[var(--color-green-light)]';
 
+  const selectStyles = {
+    control: (base: any) => ({
+      ...base,
+      // fontSize: '16px',
+      // fontWeight: 'bold',
+      // borderRadius: '8px',
+      padding: '3px 0px',
+      // border: '1px solid #21274F !important',
+      boxShadow: 'none',
+      color: 'red',
+      '&:focus': {
+        // border: '2px !important',
+        border: '8px solid var(--color-red-light) !important',
+      },
+      margin: '0px',
+      '&:focus-within': {
+        boxShadow: '0 0 10px var(--color-green-light)',
+        border: '1px solid var(--color-green-light)',
+      },
+    }),
+    multiValue: (base: any) => ({
+      ...base,
+      // backgroundColor: 'var(--color-blue-light)',
+
+      // color: 'white',
+      marginRight: '5px',
+      borderRadius: '5px',
+      boxShadow: '0 0 4px var(--color-blue-light)',
+    }),
+    multiValueLabel: (base: any) => ({
+      ...base,
+      // color: 'white',
+    }),
+  };
+
   return (
-    <div className="cursor-pointe4 mb-4 w-full [&>div:focus]:border-4 ">
+    <div className="cursor-pointe4 ![&>input:focus-visible]:outline-none mb-4 w-full [&>div:focus]:border-4">
       <label className="block  ">{label}</label>
       <Controller
         // name="companyID"
@@ -145,18 +182,25 @@ const FormSelect = ({
             ref={ref}
             onChange={(selectedOption: any) => {
               // onChange(selectedCompany?.id);
-              onChange(selectedOption[selectOptionField]);
+              if (isMulti) {
+                onChange(selectedOption.map((option: any) => option[selectOptionField]));
+              } else {
+                onChange(selectedOption[selectOptionField]);
+              }
               handleOptionsChange(selectedOption);
             }}
             options={options}
-            className={`w-full cursor-pointer border-2 border-[var(--color-blue-light)]  ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} rounded-md text-[var(--color-grey-dark-5)] focus:outline-none [&_input:focus]:outline-none ${styling} `}
+            className={`w-full cursor-pointer border-2 border-[var(--color-blue-light)]  ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} ![&>input:focus-visible]:outline-none rounded-md text-[var(--color-grey-dark-5)] focus:outline-none ${styling}    [&_input:focus-within]:!shadow-none [&_input]:!min-w-[60px]`}
             // getOptionLabel={(option) => option.name}
             getOptionLabel={(option) => option[selectOptionLabel]}
             // getOptionValue={(option) => option.id}
             getOptionValue={(option) => option[selectOptionField]}
             // TODO: the text search outline styling is broken
             isSearchable={isSearchable}
+            isMulti={isMulti}
             // isSearchable={false}
+            closeMenuOnSelect={!isMulti}
+            styles={selectStyles}
           />
         )}
         rules={{ required: true }}

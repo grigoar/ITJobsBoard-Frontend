@@ -6,13 +6,16 @@ import { useForm } from 'react-hook-form';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toastifySuccess } from '@/utils/helpers';
-import AddJobPostSchema from '@/validations/jobPosts/AddJobPostSchema';
+import AddJobPostValidationBody from '@/validations/jobPosts/AddJobPostValidationBody';
 import AddJobPostModel from '@/models/JobPosts/AddJobPostModel';
 import { useAddNewJobPostMutation } from '@/api/jobPostsApi';
 import { typeGuardGeneralError } from '@/models/Errors/typeguards';
 import { useGetAllProfileCompaniesQuery } from '@/api/profilesApi';
 import { useAppSelector } from '@/store/hooks';
 import { CompanyEntity } from '@/models/Companies/CompanyEntity';
+import { useGetAllTagsQuery } from '@/api/tagsApi';
+import { TagListName } from '@/models/tags/TagList.type';
+import { TagEntity } from '@/models/tags/TagEntity';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -31,6 +34,7 @@ const AddJobPost = () => {
 
   // const [loginUser, { isLoading }] = useLoginUserMutation();
   const [addNewJobPost, { isLoading }] = useAddNewJobPostMutation();
+  const { data: allTagsRes } = useGetAllTagsQuery(null);
 
   // const { data: userPracticeData } = useGetAllProfileCompaniesQuery(loggedInUser.id, { skip: loggedInUser.id === '' });
   const { loggedInUser } = useAppSelector((state) => state.userData);
@@ -46,12 +50,14 @@ const AddJobPost = () => {
   // const [copmaniesOptions, setCompaniesOptions] = useState<string[]>([]);
 
   const [profileCompanies, setProfileCompanies] = useState<CompanyEntity[]>([]);
+  const [techTags, setTechTags] = useState<TagEntity[]>([]);
   const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
   const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);
   // const [isPostColored, setIsPostColored] = useState(true);
   // const [federatedAccount, setFederatedAccount] = useState<FederatedAccountError | undefined>();
 
   console.log('userCompanies', userCompaniesRes);
+  console.log('allTagsRes', allTagsRes);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -64,7 +70,7 @@ const AddJobPost = () => {
     setValue,
     control,
   } = useForm({
-    resolver: yupResolver(AddJobPostSchema, { abortEarly: false, recursive: true }),
+    resolver: yupResolver(AddJobPostValidationBody, { abortEarly: false, recursive: true }),
     // mode: 'onTouched',
     mode: 'all',
 
@@ -82,25 +88,16 @@ const AddJobPost = () => {
   // };
 
   useEffect(() => {
-    // if (userCompaniesRes?.companies && userCompaniesRes?.companies?.length > 0) {
-    //   const userCompany = userCompaniesRes?.companies[0];
-    //   // console.log('userCompanies', userCompanies);
-    //   setValue('companyID', userCompany?.id);
-    //   setValue('newCompany.name', userCompany?.name);
-    //   setValue('newCompany.description', userCompany?.description);
-    //   setValue('newCompany.email', userCompany?.email);
-    //   setValue('newCompany.logoImage', userCompany?.logoImage);
-    //   setValue('newCompany.websiteURL', userCompany?.websiteURL);
-    // }
-    setProfileCompanies(userCompaniesRes?.companies || []);
-    // setCompanySelectedOption(userCompaniesRes?.companies[0].name || null);
-    setCompanySelectedOption(userCompaniesRes?.companies[0] || null);
-    // setCompaniesOptions(userCompaniesRes?.companies.map((company) => company.name) || []);
-    // setValue('companyID', userCompaniesRes?.companies[0]?.id);
-
-    setIsNewCompanyNeeded(userCompaniesRes?.companies?.length === 0 || !userCompaniesRes?.companies);
-    setIsUserAddingNewCompany(userCompaniesRes?.companies?.length === 0 || !userCompaniesRes?.companies);
+    setProfileCompanies(userCompaniesRes?.items || []);
+    setCompanySelectedOption(userCompaniesRes?.items[0] || null);
+    setIsNewCompanyNeeded(userCompaniesRes?.items?.length === 0 || !userCompaniesRes?.items);
+    setIsUserAddingNewCompany(userCompaniesRes?.items?.length === 0 || !userCompaniesRes?.items);
   }, [userCompaniesRes, setValue]);
+
+  useEffect(() => {
+    const techTagsOnly = allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.TECH_SKILL) || [];
+    setTechTags(techTagsOnly);
+  }, [allTagsRes, setTechTags]);
 
   useEffect(() => {
     if (companySelectedOption) {
@@ -114,7 +111,7 @@ const AddJobPost = () => {
   }, [companySelectedOption, setValue]);
 
   const sendNotificationSuccess = useCallback(() => {
-    toastifySuccess('Logged in successfully!');
+    toastifySuccess('Job Post Added Successfully!');
     if (searchParams?.get('go-pro') === 'true') {
       router.replace('/go-pro');
     } else {
@@ -182,20 +179,28 @@ const AddJobPost = () => {
     setIsUserAddingNewCompany((prev) => !prev);
   };
 
+  console.log("watch('defaultTags')", watch('defaultTags'));
+
   const handleCompanyChange = (selectedOption: CompanyEntity | null) => {
     console.log('selectedOption', selectedOption);
     setCompanySelectedOption(selectedOption);
     // setCompaniesOptions(userCompaniesRes?.companies.map((company) => company.name) || []);
   };
 
+  const handleTagsChange = (selectedOption: TagEntity | null) => {
+    console.log('selectedOptionTags', selectedOption);
+    // setCompanySelectedOption(selectedOption);
+    // setCompaniesOptions(userCompaniesRes?.companies.map((company) => company.name) || []);
+  };
+
   const textExistingCompany = () => {
-    if ((isUserAddingNewCompany && userCompaniesRes?.companies?.length === 0) || !userCompaniesRes?.companies) {
+    if ((isUserAddingNewCompany && userCompaniesRes?.items?.length === 0) || !userCompaniesRes?.items) {
       return 'Add New Company';
     }
-    if (!isNewCompanyNeeded && isUserAddingNewCompany && userCompaniesRes?.companies?.length > 0) {
+    if (!isNewCompanyNeeded && isUserAddingNewCompany && userCompaniesRes?.items?.length > 0) {
       return 'Select Existing Company';
     }
-    if (userCompaniesRes?.companies?.length === 0 || !userCompaniesRes?.companies) {
+    if (userCompaniesRes?.items?.length === 0 || !userCompaniesRes?.items) {
       return 'Add New Company';
     }
     return 'Add New Company';
@@ -282,6 +287,23 @@ const AddJobPost = () => {
             dirtyField={dirtyFields.location}
             watchField={watch('location')}
             submitted={isSubmitted}
+          />
+
+          <FormSelect
+            control={control}
+            options={techTags}
+            inputValueField="defaultTags"
+            selectOptionField="id"
+            selectOptionLabel="name"
+            handleOptionsChange={handleTagsChange}
+            label="Technology Tags"
+            watchField={watch('defaultTags')}
+            errors={errors.defaultTags?.message}
+            dirtyField={dirtyFields.defaultTags}
+            // touchedField={touchedFields.defaultTags}
+            submitted={isSubmitted}
+            isSearchable={true}
+            isMulti={true}
           />
 
           {/* <FormInput
