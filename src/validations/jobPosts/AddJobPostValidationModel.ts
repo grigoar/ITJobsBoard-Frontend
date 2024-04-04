@@ -26,6 +26,9 @@ type AddJobPostValidationModel = {
   seniorityTags?: TagsValidationType[];
   employmentTypeTags?: TagsValidationType[];
   companySizeTag?: TagsValidationType;
+  companyTypeTag?: TagsValidationType;
+  workLocationTag?: TagsValidationType;
+  companyDomainTag?: TagsValidationType;
 };
 
 export default AddJobPostValidationModel;

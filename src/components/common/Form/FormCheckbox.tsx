@@ -62,8 +62,6 @@ const FormInput = ({
 
   // ${dirtyField && errors == null && 'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:outline-none focus:ring-1 focus:ring-[var(--color-green-light)]'}`}
 
-  console.log('errorMessages', errorMessages);
-  console.log('errorsMessages.length', errorMessages.length);
   useEffect(() => {
     // implement a debounce to check if the user is typing
 
