@@ -41,7 +41,6 @@ const FormSelect = ({
   selectPlaceholder,
 }: FormSelectProps) => {
   const [isTyping, setIsTyping] = useState(false);
-  // const [watchFieldPrev, setWatchFieldPrev] = useState<string | undefined>('');
 
   const [errorsArray, setErrorsArray] = useState<string[]>([]);
 
@@ -71,10 +70,6 @@ const FormSelect = ({
       })) ||
     [];
 
-  // ${dirtyField && errors == null && 'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:outline-none focus:ring-1 focus:ring-[var(--color-green-light)]'}`}
-
-  // console.log('errorMessages', errorMessages);
-  // console.log('errorsMessages.length', errorMessages.length);
   useEffect(() => {
     // implement a debounce to check if the user is typing
 
@@ -108,32 +103,6 @@ const FormSelect = ({
   const isInputProcessingClass =
     (dirtyField === false || errorsArray.length === 0) && 'border-2 border-[var(--color-blue-light)]';
   // const [isValid, setIsValid] = React.useState(false);
-
-  // useEffect(() => {
-  //   // implement a debounce to check if the user is typing
-
-  //   if (watchField === undefined) return;
-
-  //   // if (watchFieldPrev !== watchField) {
-  //   //   setIsTyping(true);
-  //   //   setWatchFieldPrev(watchField);
-  //   // }
-
-  //   // const timeout = setTimeout(() => {
-  //   //   setIsTyping(false);
-  //   // }, 2000);
-
-  //   // return () => clearTimeout(timeout);
-  //   if (watchField !== false && watchField !== '') {
-  //     setIsValid(true);
-  //   }
-  // }, [watchField]);
-
-  // console.log('isValid', isValid);
-  // console.log('watchField', watchField);
-  // const isFocusedAndValid =
-  //   isValid &&
-  //   'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:ring-1 focus:ring-[var(--color-green-light)]';
 
   const selectStyles = {
     control: (base: any) => ({
@@ -169,14 +138,6 @@ const FormSelect = ({
       // color: 'white',
     }),
   };
-  // const optionsArrayWithLabelAndValue = options.map((option: any) => {
-  //   return {
-  //     // ...option,
-  //     label: option[selectOptionLabel],
-  //     value: option[selectOptionField],
-  //   };
-  // });
-  console.log('errorMessages', errorMessages);
 
   return (
     <div className="cursor-pointe4 ![&>input:focus-visible]:outline-none  w-full [&>div:focus]:border-4">
@@ -209,7 +170,6 @@ const FormSelect = ({
             getOptionLabel={(option: any) => option[selectOptionLabel]}
             // getOptionValue={(option) => option.id}
             getOptionValue={(option: any) => option[selectOptionField]}
-            // TODO: the text search outline styling is broken
             isSearchable={isSearchable}
             isMulti={isMulti}
             // isSearchable={false}
