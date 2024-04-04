@@ -36,6 +36,7 @@ import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
 // TODO: Create a profile for a company so it can be edited without the user logging in ( some email and token for the authorization)
 
 // TODO: Some issue with the location validation when it is empty
+// TODO: Maybe give a scale for the experience level tags(1-100)
 const AddJobPost = () => {
   const [addNewJobPost, { isLoading }] = useAddNewJobPostMutation();
   const { data: allTagsRes } = useGetAllTagsQuery(null);
@@ -51,6 +52,7 @@ const AddJobPost = () => {
   const [profileCompanies, setProfileCompanies] = useState<CompanyEntity[]>([]);
   const [googlePlaces, setGooglePlaces] = useState<LocationPlace[]>([]);
   const [techTags, setTechTags] = useState<TagEntity[]>([]);
+  const [seniorityTags, setSeniorityTags] = useState<TagEntity[]>([]);
   const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
   const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);
 
@@ -88,7 +90,6 @@ const AddJobPost = () => {
     control,
   } = useForm({
     resolver: yupResolver(AddJobPostValidationBody, { abortEarly: false, recursive: true }),
-    // mode: 'onTouched',
     mode: 'all',
 
     defaultValues: {
@@ -105,8 +106,11 @@ const AddJobPost = () => {
 
   useEffect(() => {
     const techTagsOnly = allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.TECH_SKILL) || [];
+    const seniorityTagsOnly =
+      allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.EXPERIENCE_LEVEL) || [];
     setTechTags(techTagsOnly);
-  }, [allTagsRes, setTechTags]);
+    setSeniorityTags(seniorityTagsOnly);
+  }, [allTagsRes, setTechTags, setSeniorityTags]);
 
   useEffect(() => {
     if (companySelectedOption) {
@@ -152,6 +156,25 @@ const AddJobPost = () => {
   };
 
   const onSubmitHandler = (data: AddJobPostValidationModel) => {
+    const jobTechTags =
+      data.techTags?.map((tag) => {
+        return {
+          id: tag.value,
+          name: tag.label,
+          isCustom: tag.__isNew__,
+          type: TagListName.TECH_SKILL,
+        };
+      }) || [];
+    const jobSeniorityTags =
+      data.seniorityTags?.map((tag) => {
+        return {
+          id: tag.value,
+          name: tag.label,
+          isCustom: tag.__isNew__,
+          type: TagListName.EXPERIENCE_LEVEL,
+        };
+      }) || [];
+    const jobTags = [...jobTechTags, ...jobSeniorityTags];
     const jobPost: AddJobPostModel = {
       description: data.description,
       title: data.title,
@@ -159,15 +182,7 @@ const AddJobPost = () => {
       maxSalary: data.maxSalary,
       companyID: data.companyID,
       location: data.location?.label || '',
-      newTags:
-        data.newTags?.map((tag) => {
-          return {
-            id: tag.value,
-            name: tag.label,
-            isCustom: tag.__isNew__,
-            type: TagListName.TECH_SKILL,
-          };
-        }) || [],
+      tags: jobTags,
       color: data.color,
       isHighlighted: data.enabledColor,
       isPremium: false,
@@ -277,12 +292,24 @@ const AddJobPost = () => {
 
           <FormSelectAsyncCreate
             control={control}
+            options={seniorityTags}
+            inputValueField="seniorityTags"
+            selectOptionField="id"
+            selectOptionLabel="labelName"
+            label="Experience"
+            watchField={watch('seniorityTags')}
+            submitted={isSubmitted}
+            isSearchable={true}
+            isMulti={true}
+          />
+          <FormSelectAsyncCreate
+            control={control}
             options={techTags}
-            inputValueField="newTags"
+            inputValueField="techTags"
             selectOptionField="id"
             selectOptionLabel="labelName"
             label="Technology Tags"
-            watchField={watch('newTags')}
+            watchField={watch('techTags')}
             submitted={isSubmitted}
             isSearchable={true}
             isMulti={true}

@@ -19,7 +19,7 @@ type AddJobPostModel = {
   isPremium?: boolean;
   companyID?: string;
   newCompany?: Partial<AddCompanyModel> | null;
-  newTags?: AddTagModel[];
+  tags?: AddTagModel[];
   customTags?: string[];
 };
 

@@ -68,14 +68,19 @@ const AddJobPostValidationBody = yup.object().shape({
   }),
   enabledColor: yup.boolean(),
   color: yup.string(),
-  newTags: yup.array().of(
+  techTags: yup.array().of(
     yup.object().shape({
       label: yup.string(),
       value: yup.string(),
       __isNew__: yup.boolean(),
     })
   ),
-
-  customTags: yup.array().of(yup.string().required('Tag is required')),
+  seniorityTags: yup.array().of(
+    yup.object().shape({
+      label: yup.string(),
+      value: yup.string(),
+      __isNew__: yup.boolean(),
+    })
+  ),
 });
 export default AddJobPostValidationBody;

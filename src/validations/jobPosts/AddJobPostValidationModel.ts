@@ -15,7 +15,13 @@ type AddJobPostValidationModel = {
   isPremium?: boolean;
   companyID?: string;
   newCompany?: Partial<AddCompanyModel> | null;
-  newTags?: {
+  techTags?: {
+    label?: string;
+    value?: string;
+    __isNew__?: boolean;
+    type?: string;
+  }[];
+  seniorityTags?: {
     label?: string;
     value?: string;
     __isNew__?: boolean;
