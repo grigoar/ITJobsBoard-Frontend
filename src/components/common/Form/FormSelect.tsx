@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
-import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 
 type FormSelectProps = {
   label: string;
@@ -19,6 +19,7 @@ type FormSelectProps = {
   styling?: string;
   isSearchable?: boolean;
   isMulti?: boolean;
+  selectPlaceholder?: string;
 };
 
 const FormSelect = ({
@@ -37,6 +38,7 @@ const FormSelect = ({
   styling,
   isSearchable = true,
   isMulti = false,
+  selectPlaceholder,
 }: FormSelectProps) => {
   const [isTyping, setIsTyping] = useState(false);
   // const [watchFieldPrev, setWatchFieldPrev] = useState<string | undefined>('');
@@ -167,6 +169,14 @@ const FormSelect = ({
       // color: 'white',
     }),
   };
+  // const optionsArrayWithLabelAndValue = options.map((option: any) => {
+  //   return {
+  //     // ...option,
+  //     label: option[selectOptionLabel],
+  //     value: option[selectOptionField],
+  //   };
+  // });
+  console.log('errorMessages', errorMessages);
 
   return (
     <div className="cursor-pointe4 ![&>input:focus-visible]:outline-none  w-full [&>div:focus]:border-4">
@@ -175,36 +185,42 @@ const FormSelect = ({
         // name="companyID"
         name={inputValueField}
         control={control}
-        render={({ field: { onChange, value, ref } }) => (
-          <Select
+        // render={({ field: { onChange, value, ref } }) => (
+        render={({ field }) => (
+          // <Select
+          <CreatableSelect
+            {...field}
             // value={profileCompanies.find((company) => company.id === value)}
-            value={options.find((option: any) => option[selectOptionField] === value)}
-            ref={ref}
+            value={options.find((option: any) => option[selectOptionField] === field.value)}
+            // ref={ref}
             onChange={(selectedOption: any) => {
               // onChange(selectedCompany?.id);
               if (isMulti) {
-                onChange(selectedOption.map((option: any) => option[selectOptionField]));
+                field.onChange(selectedOption.map((option: any) => option[selectOptionField]));
               } else {
-                onChange(selectedOption[selectOptionField]);
+                field.onChange(selectedOption[selectOptionField]);
               }
               handleOptionsChange(selectedOption);
             }}
+            // options={optionsArrayWithLabelAndValue}
             options={options}
             className={`w-full cursor-pointer border-2 border-[var(--color-blue-light)]  ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} ![&>input:focus-visible]:outline-none rounded-md text-[var(--color-grey-dark-5)] focus:outline-none ${styling}    [&_input:focus-within]:!shadow-none [&_input]:!min-w-[60px]`}
             // getOptionLabel={(option) => option.name}
-            getOptionLabel={(option) => option[selectOptionLabel]}
+            getOptionLabel={(option: any) => option[selectOptionLabel]}
             // getOptionValue={(option) => option.id}
-            getOptionValue={(option) => option[selectOptionField]}
+            getOptionValue={(option: any) => option[selectOptionField]}
             // TODO: the text search outline styling is broken
             isSearchable={isSearchable}
             isMulti={isMulti}
             // isSearchable={false}
-            closeMenuOnSelect={!isMulti}
+            // closeMenuOnSelect={!isMulti}
             styles={selectStyles}
+            placeholder={selectPlaceholder}
           />
         )}
         rules={{ required: true }}
       />
+      {!isTyping && errorMessages.length > 0 && <ul className="mt-2 w-full">{errorMessages}</ul>}
     </div>
   );
 };

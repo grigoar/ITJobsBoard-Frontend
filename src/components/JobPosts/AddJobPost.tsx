@@ -18,6 +18,8 @@ import { CompanyEntity } from '@/models/Companies/CompanyEntity';
 import { useGetAllTagsQuery } from '@/api/tagsApi';
 import { TagListName } from '@/models/tags/TagList.type';
 import { TagEntity } from '@/models/tags/TagEntity';
+import { LocationPlace } from '@/models/Common/LocationPlace';
+import AddJobPostValidationModel from '@/validations/jobPosts/AddJobPostValidationModel';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -27,11 +29,6 @@ import FormTextarea from '../common/Form/FormTextarea';
 import FormSelect from '../common/Form/FormSelect';
 import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
 
-type GooglePlaces = {
-  label: string;
-  value: string;
-};
-
 // TODO: check the refresh page and the theme
 // TODO: Maybe check the styling for select, but it should work fine for now
 // TODO: Add skills to the job post
@@ -39,6 +36,8 @@ type GooglePlaces = {
 // TODO: Create a profile for a company so it can be edited without the user logging in ( some email and token for the authorization)
 
 // TODO: For the custom tags add on the backend the custom tags that havent any ID
+// TODO: Some issue with the location validation when it is empty
+// TODO: Bugg for the Technology tags when trying to create a new custom one
 const AddJobPost = () => {
   // const dispatchAppStore = useAppDispatch();
 
@@ -60,7 +59,7 @@ const AddJobPost = () => {
   // const [copmaniesOptions, setCompaniesOptions] = useState<string[]>([]);
 
   const [profileCompanies, setProfileCompanies] = useState<CompanyEntity[]>([]);
-  const [googlePlaces, setGooglePlaces] = useState<GooglePlaces[]>([]);
+  const [googlePlaces, setGooglePlaces] = useState<LocationPlace[]>([]);
   const [techTags, setTechTags] = useState<TagEntity[]>([]);
   const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
   const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);
@@ -101,7 +100,8 @@ const AddJobPost = () => {
     const placesStrings = placePredictions.map((place) => {
       return {
         label: place.description,
-        value: place.description,
+        id: place.place_id,
+        name: place.structured_formatting.main_text,
       };
     });
 
@@ -193,9 +193,29 @@ const AddJobPost = () => {
     }
   };
 
-  const onSubmitHandler = (data: AddJobPostModel) => {
-    console.log('data', data);
-    addNewJobPostHandler(data);
+  const onSubmitHandler = (data: AddJobPostValidationModel) => {
+    const jobPost: AddJobPostModel = {
+      description: data.description,
+      title: data.title,
+      minSalary: data.minSalary,
+      maxSalary: data.maxSalary,
+      companyID: data.companyID,
+      location: data.location?.label || '',
+      newTags:
+        data.newTags?.map((tag) => {
+          return {
+            id: tag.value,
+            name: tag.label,
+            isCustom: tag.__isNew__,
+            type: TagListName.TECH_SKILL,
+          };
+        }) || [],
+      color: data.color,
+      isHighlighted: data.enabledColor,
+      isPremium: false,
+      newCompany: data.newCompany,
+    };
+    addNewJobPostHandler(jobPost);
     // loginUserHandler(data);
   };
 
@@ -230,17 +250,9 @@ const AddJobPost = () => {
     setIsUserAddingNewCompany((prev) => !prev);
   };
 
-  console.log("watch('defaultTags')", watch('defaultTags'));
-
   const handleCompanyChange = (selectedOption: CompanyEntity | null) => {
     console.log('selectedOption', selectedOption);
     setCompanySelectedOption(selectedOption);
-    // setCompaniesOptions(userCompaniesRes?.companies.map((company) => company.name) || []);
-  };
-
-  const handleTagsChange = (selectedOption: TagEntity | null) => {
-    console.log('selectedOptionTags', selectedOption);
-    // setCompanySelectedOption(selectedOption);
     // setCompaniesOptions(userCompaniesRes?.companies.map((company) => company.name) || []);
   };
 
@@ -257,17 +269,34 @@ const AddJobPost = () => {
     return 'Add New Company';
   };
 
-  console.log('googlePlaces', googlePlaces);
-
-  // const handlePlaceChange = (place: string) => {
-  //   // console.log('place', place);
-  //   // getPlacePredictions({ input: evt.target.value });
-  //   console.log('input changed', place);
-  //   getPlacePredictions({ input: place });
-  // };
-
   const onLocationInputChange = (inputValue: string) => {
     getPlacePredictions({ input: inputValue });
+  };
+
+  const createNewLocationOption = (inputValue: string): LocationPlace => {
+    return {
+      id: 'CUSTOM_TAG_ID',
+      name: inputValue,
+      label: inputValue,
+      value: inputValue,
+    };
+  };
+
+  const createNewTagOption = (
+    inputValue: string
+  ): TagEntity & {
+    label: string;
+    value: string;
+  } => {
+    return {
+      id: `CUSTOM_TAG_ID|${inputValue}`,
+      name: inputValue,
+      type: TagListName.TECH_SKILL,
+      isCustom: true,
+      label: inputValue,
+      value: inputValue,
+      labelName: inputValue,
+    };
   };
 
   return (
@@ -342,70 +371,62 @@ const AddJobPost = () => {
             </div>
           </div>
 
-          {/* <FormInput
-            register={register}
-            placeholder="Add a location here..."
-            type="location"
-            name="location"
-            id="location"
-            label="Location"
-            required
-            errors={errors.location?.message}
-            dirtyField={dirtyFields.location}
-            watchField={watch('location')}
-            submitted={isSubmitted}
-          /> */}
-
-          <FormSelect
+          <FormSelectAsyncCreate
             control={control}
             options={techTags}
-            inputValueField="defaultTags"
+            inputValueField="newTags"
             selectOptionField="id"
-            selectOptionLabel="name"
-            handleOptionsChange={handleTagsChange}
+            selectOptionLabel="labelName"
+            // handleOptionsChange={handleTagsChange}
+            createNewOptionObject={createNewTagOption}
             label="Technology Tags"
-            watchField={watch('defaultTags')}
-            errors={errors.defaultTags?.message}
-            dirtyField={dirtyFields.defaultTags}
-            // touchedField={touchedFields.defaultTags}
+            watchField={watch('newTags')}
+            setValueHookForm={setValue}
+            // errors={errors.newTags?.message}
+            // dirtyField={dirtyFields.newTags?.map((field) => field.label)}
             submitted={isSubmitted}
             isSearchable={true}
             isMulti={true}
           />
+          {/* <FormSelect
+            control={control}
+            options={newTags}
+            inputValueField="newTags"
+            selectOptionField="id"
+            selectOptionLabel="name"
+            handleOptionsChange={handleTagsChange}
+            label="Technology Tags"
+            watchField={watch('newTags')}
+            errors={errors.newTags?.message}
+            dirtyField={dirtyFields.newTags}
+            // touchedField={touchedFields.newTags}
+            submitted={isSubmitted}
+            isSearchable={true}
+            isMulti={true}
+          /> */}
 
           <FormSelectAsyncCreate
             control={control}
             options={googlePlaces}
             inputValueField="location"
-            selectOptionField="value"
+            selectOptionField="id"
             selectOptionLabel="label"
+            createNewOptionObject={createNewLocationOption}
             // handleOptionsChange={handlePlaceChange}
             label="Location"
             watchField={watch('location')}
-            setValue={setValue}
-            errors={errors.location?.message}
-            dirtyField={dirtyFields.location}
+            setValueHookForm={setValue}
+            errors={errors.location?.label?.message}
+            // dirtyField={dirtyFields.location}
             submitted={isSubmitted}
             isSearchable={true}
             onInputChange={onLocationInputChange}
+            selectPlaceholder="Add a job location..."
           />
-
-          {/* <FormInput
-            register={register}
-            placeholder="Add a company ID here..."
-            type="companyID"
-            name="companyID"
-            id="companyID"
-            label="Company ID"
-            required
-            errors={errors.companyID?.message}
-            dirtyField={dirtyFields.companyID}
-            watchField={watch('companyID')}
-            submitted={isSubmitted}
-          /> */}
 
           {!isNewCompanyNeeded && !isUserAddingNewCompany && (
             <FormSelect
+              // <FormSelectAsyncCreate
               control={control}
               options={profileCompanies}
               inputValueField="companyID"

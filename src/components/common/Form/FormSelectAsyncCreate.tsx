@@ -1,3 +1,4 @@
+import { GenericSelectOption } from '@/models/Common/GenericSelectOption';
 import React, { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 // import Select from 'react-select';
@@ -5,19 +6,21 @@ import { Controller } from 'react-hook-form';
 // import AsyncSelect from 'react-select/async';
 import CreatableSelect from 'react-select/creatable';
 
-type LocationPlaces = {
-  label: string;
-  value: string;
-};
+// type LocationPlaces = {
+//   label: string;
+//   value: string;
+// };
 
 type FormSelectProps = {
   label: string;
   control: any;
-  options: LocationPlaces[];
+  // options: LocationPlaces[];
+  options: GenericSelectOption[];
   inputValueField: string;
   selectOptionField: string;
   selectOptionLabel: string;
   handleOptionsChange?: any;
+  createNewOptionObject: (_inputValue: string) => GenericSelectOption;
   errors?: string;
   touchedField?: boolean | boolean[];
   dirtyField?: boolean | boolean[];
@@ -27,8 +30,9 @@ type FormSelectProps = {
   styling?: string;
   isSearchable?: boolean;
   isMulti?: boolean;
-  setValue?: any;
+  setValueHookForm: any;
   onInputChange?: any;
+  selectPlaceholder?: string;
 };
 
 const FormSelectAsyncCreate = ({
@@ -38,9 +42,9 @@ const FormSelectAsyncCreate = ({
   control,
   options,
   label,
-  handleOptionsChange,
+  // handleOptionsChange,
   watchField,
-  setValue,
+  // setValueHookForm,
   errors,
   dirtyField,
   extraError,
@@ -49,10 +53,14 @@ const FormSelectAsyncCreate = ({
   isSearchable = true,
   isMulti = false,
   onInputChange,
+  selectPlaceholder,
+  // createNewOptionObject: createNewOption,
 }: FormSelectProps) => {
+  // const [inputValue, setInputValue] = React.useState('');
+  // const [value, setValue] = React.useState<readonly GenericSelectOption[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [optionsExtended, setOptionsExtended] = useState<LocationPlaces[]>([]);
-  const [userCustomOptions, setUserCustomOptions] = useState<LocationPlaces[]>([]);
+  // const [optionsExtended, setOptionsExtended] = useState<GenericSelectOption[]>([]);
+  // const [userCustomOptions, setUserCustomOptions] = useState<GenericSelectOption[]>([]);
   // const [googlePlaces, setGooglePlaces] = useState<LocationPlaces[]>([]);
   // const [watchFieldPrev, setWatchFieldPrev] = useState<string | undefined>('');
   // const { placePredictions, getPlacePredictions } = usePlacesService({
@@ -64,9 +72,9 @@ const FormSelectAsyncCreate = ({
   //   },
   // });
 
-  useEffect(() => {
-    setOptionsExtended([...options, ...userCustomOptions]);
-  }, [options, userCustomOptions]);
+  // useEffect(() => {
+  //   setOptionsExtended([...options, ...userCustomOptions]);
+  // }, [options, userCustomOptions]);
 
   // useEffect(() => {
   //   console.log('placePredictions------------------------------------------------------------', placePredictions);
@@ -171,14 +179,55 @@ const FormSelectAsyncCreate = ({
     }),
   };
 
-  const onOptionCreateHandler = (place: LocationPlaces) => {
-    setOptionsExtended([...options, ...userCustomOptions, place]);
-    setUserCustomOptions([...userCustomOptions, place]);
-    setValue(inputValueField, place.value);
-  };
+  // const onOptionCreateHandler = (option: GenericSelectOption) => {
+  //   console.log('option to CREATE-------------------', option);
+  //   setOptionsExtended([...options, ...userCustomOptions, option]);
+  //   setUserCustomOptions([...userCustomOptions, option]);
+  //   // THIS works for single select
+  //   if (!isMulti) {
+  //     setValueHookForm(inputValueField, option.name);
+  //   }
+  // };
 
   // console.log('googlePlaces+++++++++++++++++', googlePlaces);
   // console.log('optionsExtended+++++++++++++++++', optionsExtended);
+
+  // const handleKeyDown: KeyboardEventHandler = (event: any) => {
+  //   console.log('aaaaaa================', inputValue);
+  //   if (!inputValue) return;
+  //   console.log('================', inputValue);
+  //   switch (event.key) {
+  //     case 'Enter':
+  //     case 'Tab': {
+  //       // setValueHookForm(createNewOption(inputValue));
+  //       const newOption = createNewOption(inputValue);
+  //       console.log('newOption', newOption);
+  //       setValue((prev) => {
+  //         return [...prev, newOption];
+  //       });
+  //       // setValue((prev: any) => {
+  //       //   // console.log('prev', prev);
+  //       //   // return [...prev, createNewOption(inputValue)];
+  //       //   return createNewOption(inputValue);
+  //       // });
+
+  //       setInputValue('');
+  //       // event.preventDefault();
+  //       break; // Add a break statement here
+  //     }
+  //     default:
+  //   }
+  // };
+
+  const optionsArrayWithLabelAndValue = options.map((option: any) => {
+    return {
+      // ...option,
+      label: option[selectOptionLabel],
+      value: option[selectOptionField],
+    };
+  });
+
+  // console.log('optionsArrayWithLabelAndValue', optionsArrayWithLabelAndValue);
 
   return (
     <div className="cursor-pointe4 ![&>input:focus-visible]:outline-none  w-full [&>div:focus]:border-4">
@@ -187,37 +236,42 @@ const FormSelectAsyncCreate = ({
         // name="companyID"
         name={inputValueField}
         control={control}
-        render={({ field: { onChange: onChanged, value, ref } }) => (
+        render={({ field }) => (
+          // render={({ field: { onChange: onChanged, value, ref } }) => (
           // <AsyncCreatableSelect
           // <Select
           <CreatableSelect
+            {...field}
             // value={profileCompanies.find((company) => company.id === value)}
             // value={options.find((option: any) => option[selectOptionField] === value)}
-            value={optionsExtended.find((option: any) => option[selectOptionField] === value)}
-            ref={ref}
-            onChange={async (selectedOption: any) => {
-              // onChange(selectedCompany?.id);
-              if (isMulti) {
-                onChanged(selectedOption.map((option: any) => option[selectOptionField]));
-              } else {
-                onChanged(selectedOption[selectOptionField]);
-              }
+            // value={optionsExtended.find((option: any) => option[selectOptionField] === value)}
+            // onChange={async (selectedOption: any) => {
+            //   // onChange(selectedCompany?.id);
+            //   if (isMulti) {
+            //     field.onChange(selectedOption.map((option: any) => option[selectOptionField]));
+            //   } else {
+            //     field.onChange(selectedOption[selectOptionField]);
+            //   }
 
-              // * something in the future
-              handleOptionsChange?.(selectedOption);
-            }}
+            //   // * something in the future
+            //   handleOptionsChange?.(selectedOption);
+            // }}
             // options={googlePlaces}
-            options={optionsExtended}
+            // options={optionsExtended}
+            options={optionsArrayWithLabelAndValue}
+            // options={options}
             className={`w-full cursor-pointer border-2 border-[var(--color-blue-light)]  ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} ![&>input:focus-visible]:outline-none rounded-md text-[var(--color-grey-dark-5)] focus:outline-none ${styling}    [&_input:focus-within]:!shadow-none [&_input]:!min-w-[60px]`}
             // getOptionLabel={(option) => option.name}
-            getOptionLabel={(option) => option[selectOptionLabel]}
+            // getOptionLabel={(option) => option.label}
+            // getOptionLabel={(option) => option[selectOptionLabel]}
             // getOptionValue={(option) => option.id}
-            getOptionValue={(option) => option[selectOptionField]}
+            // getOptionValue={(option) => option.value}
+            // getOptionValue={(option) => option[selectOptionField]}
             // TODO: the text search outline styling is broken
             isSearchable={isSearchable}
             isMulti={isMulti}
             // isSearchable={false}
-            // closeMenuOnSelect={!isMulti}
+            closeMenuOnSelect={!isMulti}
             // controlShouldRenderValue={true}
             styles={selectStyles}
             // loadOptions={loadOptions}
@@ -229,24 +283,34 @@ const FormSelectAsyncCreate = ({
               console.log('menu opened');
               // getPlacePredictions({ input: '' });
             }}
-            onInputChange={(inputValue) => {
+            // onChange={(newValue) => setValue(newValue)}
+            // onInputChange={(newValue) => setInputValue(newValue)}
+            // onChange={(newValue) => setValue(newValue)}
+            // onInputChange={(newValue) => setInputValue(newValue)}
+            // onKeyDown={handleKeyDown}
+            onInputChange={(inputValueSelect) => {
               // getPlacePredictions({ input: inputValue });
-              onInputChange?.(inputValue);
+              onInputChange?.(inputValueSelect);
             }}
-            onCreateOption={(inputValue) => {
-              // onLocationChange({ label: inputValue, value: inputValue });
-              onOptionCreateHandler({ label: inputValue, value: inputValue });
-
-              // if (isMulti) {
-              //   onChange(inputValue.map((option: any) => option[selectOptionField]));
-              // } else {
-              //   onChange(inputValue[selectOptionField]);
-              // }
-            }}
+            // onCreateOption={(inputValue) => {
+            //   // onLocationChange({ label: inputValue, value: inputValue });
+            //   // const newOption = onOptionCreateHandler({ label: inputValue, value: inputValue, id: 'CUSTOM_TAG_ID' });
+            //   const newOption = createNewOption(inputValue);
+            //   onOptionCreateHandler(newOption);
+            //   // onChanged(newOption.map((option: any) => option[selectOptionField]));
+            //   // if (isMulti) {
+            //   //   onChange(inputValue.map((option: any) => option[selectOptionField]));
+            //   // } else {
+            //   //   onChange(inputValue[selectOptionField]);
+            //   // }
+            // }}
+            // onKeyDown={handleKeyDown}
+            placeholder={selectPlaceholder}
           />
         )}
         rules={{ required: true }}
       />
+      {!isTyping && errorMessages.length > 0 && <ul className="mt-2 w-full">{errorMessages}</ul>}
     </div>
   );
 };

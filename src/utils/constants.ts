@@ -12,6 +12,9 @@ export default {
   TYPING_MUSCLE_LOGO: 'https://typing-muscle.s3.eu-central-1.amazonaws.com/TM-images/TypingMuscle-Logo-small.png',
   LOCAL_STORAGE_THEME: 'theme',
 
+  // GENERAL
+  NEW_TECH_TAG: 'NEW_TECH_TAG',
+
   // Cookies names (for cookie consent)
   COOKIE_AUTH_NAME: 'jwt',
   COOKIE_AUTH_NAME_EXPIRED: 'loggedout',
