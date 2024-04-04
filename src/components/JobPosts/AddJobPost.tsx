@@ -20,6 +20,7 @@ import { TagListName } from '@/models/tags/TagList.type';
 import { TagEntity } from '@/models/tags/TagEntity';
 import { LocationPlace } from '@/models/Common/LocationPlace';
 import AddJobPostValidationModel from '@/validations/jobPosts/AddJobPostValidationModel';
+import { createJobPostBackendTags } from '@/lib/jobPosts/jobPostsHelpers';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -36,6 +37,7 @@ import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
 // TODO: Create a profile for a company so it can be edited without the user logging in ( some email and token for the authorization)
 
 // TODO: Some issue with the location validation when it is empty
+// TODO: Maybe give a scale for the experience level tags(1-100)
 const AddJobPost = () => {
   const [addNewJobPost, { isLoading }] = useAddNewJobPostMutation();
   const { data: allTagsRes } = useGetAllTagsQuery(null);
@@ -50,7 +52,23 @@ const AddJobPost = () => {
 
   const [profileCompanies, setProfileCompanies] = useState<CompanyEntity[]>([]);
   const [googlePlaces, setGooglePlaces] = useState<LocationPlace[]>([]);
-  const [techTags, setTechTags] = useState<TagEntity[]>([]);
+  const [tags, setTags] = useState<{
+    techTags: TagEntity[];
+    seniorityTags: TagEntity[];
+    employmentTypeTags: TagEntity[];
+    companySizeTags: TagEntity[];
+    companyTypeTags: TagEntity[];
+    workLocationTags: TagEntity[];
+    companyDomainTags: TagEntity[];
+  }>({
+    techTags: [],
+    seniorityTags: [],
+    employmentTypeTags: [],
+    companySizeTags: [],
+    companyTypeTags: [],
+    workLocationTags: [],
+    companyDomainTags: [],
+  });
   const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
   const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);
 
@@ -88,7 +106,6 @@ const AddJobPost = () => {
     control,
   } = useForm({
     resolver: yupResolver(AddJobPostValidationBody, { abortEarly: false, recursive: true }),
-    // mode: 'onTouched',
     mode: 'all',
 
     defaultValues: {
@@ -105,8 +122,27 @@ const AddJobPost = () => {
 
   useEffect(() => {
     const techTagsOnly = allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.TECH_SKILL) || [];
-    setTechTags(techTagsOnly);
-  }, [allTagsRes, setTechTags]);
+    const seniorityTagsOnly =
+      allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.EXPERIENCE_LEVEL) || [];
+    const employmentTypeTagsOnly =
+      allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.EMPLOYMENT_TYPE) || [];
+    const companySizeTagsOnly =
+      allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.COMPANY_SIZE) || [];
+    const companyTypeTagsOnly =
+      allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.COMPANY_TYPE) || [];
+    const workLocationTagsOnly =
+      allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.WORK_PLACE) || [];
+    const companyDomainTagsOnly = allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.DOMAIN) || [];
+    setTags({
+      techTags: techTagsOnly,
+      seniorityTags: seniorityTagsOnly,
+      employmentTypeTags: employmentTypeTagsOnly,
+      companySizeTags: companySizeTagsOnly,
+      companyTypeTags: companyTypeTagsOnly,
+      workLocationTags: workLocationTagsOnly,
+      companyDomainTags: companyDomainTagsOnly,
+    });
+  }, [allTagsRes, setTags]);
 
   useEffect(() => {
     if (companySelectedOption) {
@@ -152,6 +188,35 @@ const AddJobPost = () => {
   };
 
   const onSubmitHandler = (data: AddJobPostValidationModel) => {
+    const jobTechTags = createJobPostBackendTags(TagListName.TECH_SKILL, data.techTags);
+    const jobSeniorityTags = createJobPostBackendTags(TagListName.EXPERIENCE_LEVEL, data.seniorityTags);
+    const jobEmploymentTypeTags = createJobPostBackendTags(TagListName.EMPLOYMENT_TYPE, data.employmentTypeTags);
+    const jobCompanySizeTags = createJobPostBackendTags(
+      TagListName.COMPANY_SIZE,
+      data.companySizeTag != null ? [data.companySizeTag] : []
+    );
+    const jobCompanyTypeTag = createJobPostBackendTags(
+      TagListName.COMPANY_TYPE,
+      data.companyTypeTag != null ? [data.companyTypeTag] : []
+    );
+    const jobWorkLocationTag = createJobPostBackendTags(
+      TagListName.WORK_PLACE,
+      data.workLocationTag != null ? [data.workLocationTag] : []
+    );
+    const jobCompanyDomainTag = createJobPostBackendTags(
+      TagListName.DOMAIN,
+      data.companyDomainTag != null ? [data.companyDomainTag] : []
+    );
+
+    const jobTags = [
+      ...jobTechTags,
+      ...jobSeniorityTags,
+      ...jobEmploymentTypeTags,
+      ...jobCompanySizeTags,
+      ...jobCompanyTypeTag,
+      ...jobWorkLocationTag,
+      ...jobCompanyDomainTag,
+    ];
     const jobPost: AddJobPostModel = {
       description: data.description,
       title: data.title,
@@ -159,15 +224,7 @@ const AddJobPost = () => {
       maxSalary: data.maxSalary,
       companyID: data.companyID,
       location: data.location?.label || '',
-      newTags:
-        data.newTags?.map((tag) => {
-          return {
-            id: tag.value,
-            name: tag.label,
-            isCustom: tag.__isNew__,
-            type: TagListName.TECH_SKILL,
-          };
-        }) || [],
+      tags: jobTags,
       color: data.color,
       isHighlighted: data.enabledColor,
       isPremium: false,
@@ -277,12 +334,84 @@ const AddJobPost = () => {
 
           <FormSelectAsyncCreate
             control={control}
-            options={techTags}
-            inputValueField="newTags"
+            options={tags.seniorityTags}
+            inputValueField="seniorityTags"
+            selectOptionField="id"
+            selectOptionLabel="labelName"
+            label="Experience"
+            watchField={watch('seniorityTags')}
+            submitted={isSubmitted}
+            isSearchable={true}
+            isMulti={true}
+          />
+          <FormSelectAsyncCreate
+            control={control}
+            options={tags.employmentTypeTags}
+            inputValueField="employmentTypeTags"
+            selectOptionField="id"
+            selectOptionLabel="labelName"
+            label="Employment Type"
+            watchField={watch('employmentTypeTags')}
+            submitted={isSubmitted}
+            isSearchable={true}
+            isMulti={true}
+          />
+          <FormSelectAsyncCreate
+            control={control}
+            options={tags.companySizeTags}
+            inputValueField="companySizeTag"
+            selectOptionField="id"
+            selectOptionLabel="labelName"
+            label="Company Size"
+            watchField={watch('companySizeTag')}
+            submitted={isSubmitted}
+            isSearchable={false}
+            isMulti={false}
+          />
+          <FormSelectAsyncCreate
+            control={control}
+            options={tags.companyTypeTags}
+            inputValueField="companyTypeTag"
+            selectOptionField="id"
+            selectOptionLabel="labelName"
+            label="Company Type"
+            watchField={watch('companyTypeTag')}
+            submitted={isSubmitted}
+            isSearchable={false}
+            isMulti={false}
+          />
+          <FormSelectAsyncCreate
+            control={control}
+            options={tags.workLocationTags}
+            inputValueField="workLocationTag"
+            selectOptionField="id"
+            selectOptionLabel="labelName"
+            label="Work Location"
+            watchField={watch('workLocationTag')}
+            submitted={isSubmitted}
+            isSearchable={false}
+            isMulti={false}
+          />
+          <FormSelectAsyncCreate
+            control={control}
+            options={tags.companyDomainTags}
+            inputValueField="companyDomainTag"
+            selectOptionField="id"
+            selectOptionLabel="labelName"
+            label="Company Main Domain"
+            watchField={watch('companyDomainTag')}
+            submitted={isSubmitted}
+            isSearchable={false}
+            isMulti={false}
+          />
+          <FormSelectAsyncCreate
+            control={control}
+            options={tags.techTags}
+            inputValueField="techTags"
             selectOptionField="id"
             selectOptionLabel="labelName"
             label="Technology Tags"
-            watchField={watch('newTags')}
+            watchField={watch('techTags')}
             submitted={isSubmitted}
             isSearchable={true}
             isMulti={true}
@@ -294,7 +423,7 @@ const AddJobPost = () => {
             inputValueField="location"
             selectOptionField="id"
             selectOptionLabel="label"
-            label="Location"
+            label="Company Location"
             watchField={watch('location')}
             errors={errors.location?.label?.message}
             submitted={isSubmitted}
@@ -421,7 +550,7 @@ const AddJobPost = () => {
             ></FormInput>
 
             <label className="mx-4" htmlFor="color">
-              Add a color to the post
+              Highlight the post
             </label>
             <FormInput
               register={register}

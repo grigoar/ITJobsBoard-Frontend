@@ -15,7 +15,7 @@ const jobPostsApi = itJobsBoardApi.injectEndpoints({
         method: 'POST',
         body: newJobPost,
       }),
-      invalidatesTags: [constants.JOB_POSTS_TAG],
+      invalidatesTags: [constants.JOB_POSTS_TAG, constants.COMPANIES_TAG, constants.TAGS_TAG],
     }),
     getAllJobPosts: builder.query<ApiGetAllGenericResponse<JobPostEntity>, null>({
       query: () => {
