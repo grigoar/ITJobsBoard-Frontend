@@ -5,9 +5,10 @@ export type TagEntity = {
   name: string;
   type: TagListNameType;
   isCustom: boolean;
+  labelName: string;
   // profiles?: ProfileEntity[];
   // jobPosts?: JobPostEntity[];
-  created_at: Date;
-  updated_at: Date;
-  deleted_at: Date;
+  created_at?: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
 };

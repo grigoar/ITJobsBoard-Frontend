@@ -62,10 +62,20 @@ const AddJobPostValidationBody = yup.object().shape({
     })
     .default(null),
 
-  location: yup.string().required('Location is required'),
+  location: yup.object().shape({
+    label: yup.string(),
+    value: yup.string(),
+  }),
   enabledColor: yup.boolean(),
   color: yup.string(),
-  defaultTags: yup.array().of(yup.string().required('Tag is required')),
+  newTags: yup.array().of(
+    yup.object().shape({
+      label: yup.string(),
+      value: yup.string(),
+      __isNew__: yup.boolean(),
+    })
+  ),
+
   customTags: yup.array().of(yup.string().required('Tag is required')),
 });
 export default AddJobPostValidationBody;

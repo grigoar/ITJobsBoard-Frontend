@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
+// import { usePlacesWidget } from 'react-google-autocomplete';
+import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
@@ -16,6 +18,8 @@ import { CompanyEntity } from '@/models/Companies/CompanyEntity';
 import { useGetAllTagsQuery } from '@/api/tagsApi';
 import { TagListName } from '@/models/tags/TagList.type';
 import { TagEntity } from '@/models/tags/TagEntity';
+import { LocationPlace } from '@/models/Common/LocationPlace';
+import AddJobPostValidationModel from '@/validations/jobPosts/AddJobPostValidationModel';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -23,44 +27,57 @@ import FormWrapper from '../common/Form/FormWrapper';
 import MessageResult from '../common/MessageResult/MessageResult';
 import FormTextarea from '../common/Form/FormTextarea';
 import FormSelect from '../common/Form/FormSelect';
+import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
 
 // TODO: check the refresh page and the theme
 // TODO: Maybe check the styling for select, but it should work fine for now
 // TODO: Add skills to the job post
 // TODO: Add a role to the user that can edit a company if it is the owner
 // TODO: Create a profile for a company so it can be edited without the user logging in ( some email and token for the authorization)
-const AddJobPost = () => {
-  // const dispatchAppStore = useAppDispatch();
 
-  // const [loginUser, { isLoading }] = useLoginUserMutation();
+// TODO: Some issue with the location validation when it is empty
+const AddJobPost = () => {
   const [addNewJobPost, { isLoading }] = useAddNewJobPostMutation();
   const { data: allTagsRes } = useGetAllTagsQuery(null);
 
-  // const { data: userPracticeData } = useGetAllProfileCompaniesQuery(loggedInUser.id, { skip: loggedInUser.id === '' });
   const { loggedInUser } = useAppSelector((state) => state.userData);
   // TODO: Change the endpoint to get the companies for a logged in user
   const { data: userCompaniesRes } = useGetAllProfileCompaniesQuery(loggedInUser.id, { skip: loggedInUser.id === '' });
-  // const [logoutUser] = useLogoutCurrentUserMutation();
   const { showResultErrorMessage, showResultSuccessMessage, isMessageError, resultMessageDisplay } =
     useDisplayResultMessage(0);
   const [isButtonLoginDisabled, setIsButtonLoginDisabled] = useState(false);
-  // const [toggleAddNewCompany, setToggleAddNewCompany] = useState(false);
-  // const [companySelectedOption, setCompanySelectedOption] = useState<string | null>(null);
   const [companySelectedOption, setCompanySelectedOption] = useState<CompanyEntity | null>(null);
-  // const [copmaniesOptions, setCompaniesOptions] = useState<string[]>([]);
 
   const [profileCompanies, setProfileCompanies] = useState<CompanyEntity[]>([]);
+  const [googlePlaces, setGooglePlaces] = useState<LocationPlace[]>([]);
   const [techTags, setTechTags] = useState<TagEntity[]>([]);
   const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
   const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);
-  // const [isPostColored, setIsPostColored] = useState(true);
-  // const [federatedAccount, setFederatedAccount] = useState<FederatedAccountError | undefined>();
 
-  console.log('userCompanies', userCompaniesRes);
-  console.log('allTagsRes', allTagsRes);
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const { placePredictions, getPlacePredictions } = usePlacesService({
+    apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    debounce: 500,
+    options: {
+      types: ['(regions)'],
+    },
+  });
+
+  useEffect(() => {
+    if (placePredictions.length === 0) return;
+
+    const placesStrings = placePredictions.map((place) => {
+      return {
+        label: place.description,
+        id: place.place_id,
+        name: place.structured_formatting.main_text,
+      };
+    });
+
+    setGooglePlaces(placesStrings);
+  }, [placePredictions]);
   const {
     register,
     handleSubmit,
@@ -76,16 +93,8 @@ const AddJobPost = () => {
 
     defaultValues: {
       color: '#0000ff',
-      // minSalary: 0,
-      // maxSalary: 0,
-      // companyID: '0ae17a03-bc39-43bc-95cb-8f0af3527d4d',
     },
   });
-
-  // const addPostColorHandler = () => {
-  //   // setShowCredits((prev) => !prev);
-  //   setIsPostColored((prev) => !prev);
-  // };
 
   useEffect(() => {
     setProfileCompanies(userCompaniesRes?.items || []);
@@ -142,54 +151,41 @@ const AddJobPost = () => {
     }
   };
 
-  const onSubmitHandler = (data: AddJobPostModel) => {
-    console.log('data', data);
-    addNewJobPostHandler(data);
-    // loginUserHandler(data);
+  const onSubmitHandler = (data: AddJobPostValidationModel) => {
+    const jobPost: AddJobPostModel = {
+      description: data.description,
+      title: data.title,
+      minSalary: data.minSalary,
+      maxSalary: data.maxSalary,
+      companyID: data.companyID,
+      location: data.location?.label || '',
+      newTags:
+        data.newTags?.map((tag) => {
+          return {
+            id: tag.value,
+            name: tag.label,
+            isCustom: tag.__isNew__,
+            type: TagListName.TECH_SKILL,
+          };
+        }) || [],
+      color: data.color,
+      isHighlighted: data.enabledColor,
+      isPremium: false,
+      newCompany: data.newCompany,
+    };
+    addNewJobPostHandler(jobPost);
   };
-
-  // const AddJobPostSchema = yup.object().shape({
-  //   // profileID: yup.string().required(),
-  //   description: yup.string().required('Description is required.'),
-  //   title: yup.string().required(),
-  //   salary: yup.number(),
-  //   companyID: yup.string().required(),
-  //   location: yup.string().required(),
-  //   isHighlighted: yup.boolean(),
-  //   color: yup.string(),
-  //   isPremium: yup.boolean(),
-  // });
-
-  // export type AddCompanyModel = {
-  //   name: string;
-  //   description: string;
-  //   email: string;
-  //   logoImage: string;
-  //   websiteURL: string;
-  // };
 
   const toggleAddNewCompanyHandler = () => {
     if (isNewCompanyNeeded) {
-      // setToggleAddNewCompany(true);
-
       setIsUserAddingNewCompany(true);
       return;
     }
-    // setToggleAddNewCompany((prev) => !prev);
     setIsUserAddingNewCompany((prev) => !prev);
   };
 
-  console.log("watch('defaultTags')", watch('defaultTags'));
-
   const handleCompanyChange = (selectedOption: CompanyEntity | null) => {
-    console.log('selectedOption', selectedOption);
     setCompanySelectedOption(selectedOption);
-    // setCompaniesOptions(userCompaniesRes?.companies.map((company) => company.name) || []);
-  };
-
-  const handleTagsChange = (selectedOption: TagEntity | null) => {
-    console.log('selectedOptionTags', selectedOption);
-    // setCompanySelectedOption(selectedOption);
     // setCompaniesOptions(userCompaniesRes?.companies.map((company) => company.name) || []);
   };
 
@@ -204,6 +200,10 @@ const AddJobPost = () => {
       return 'Add New Company';
     }
     return 'Add New Company';
+  };
+
+  const onLocationInputChange = (inputValue: string) => {
+    getPlacePredictions({ input: inputValue });
   };
 
   return (
@@ -275,53 +275,37 @@ const AddJobPost = () => {
             </div>
           </div>
 
-          <FormInput
-            register={register}
-            placeholder="Add a location here..."
-            type="location"
-            name="location"
-            id="location"
-            label="Location"
-            required
-            errors={errors.location?.message}
-            dirtyField={dirtyFields.location}
-            watchField={watch('location')}
-            submitted={isSubmitted}
-          />
-
-          <FormSelect
+          <FormSelectAsyncCreate
             control={control}
             options={techTags}
-            inputValueField="defaultTags"
+            inputValueField="newTags"
             selectOptionField="id"
-            selectOptionLabel="name"
-            handleOptionsChange={handleTagsChange}
+            selectOptionLabel="labelName"
             label="Technology Tags"
-            watchField={watch('defaultTags')}
-            errors={errors.defaultTags?.message}
-            dirtyField={dirtyFields.defaultTags}
-            // touchedField={touchedFields.defaultTags}
+            watchField={watch('newTags')}
             submitted={isSubmitted}
             isSearchable={true}
             isMulti={true}
           />
 
-          {/* <FormInput
-            register={register}
-            placeholder="Add a company ID here..."
-            type="companyID"
-            name="companyID"
-            id="companyID"
-            label="Company ID"
-            required
-            errors={errors.companyID?.message}
-            dirtyField={dirtyFields.companyID}
-            watchField={watch('companyID')}
+          <FormSelectAsyncCreate
+            control={control}
+            options={googlePlaces}
+            inputValueField="location"
+            selectOptionField="id"
+            selectOptionLabel="label"
+            label="Location"
+            watchField={watch('location')}
+            errors={errors.location?.label?.message}
             submitted={isSubmitted}
-          /> */}
+            isSearchable={true}
+            onInputChange={onLocationInputChange}
+            selectPlaceholder="Add a job location..."
+          />
 
           {!isNewCompanyNeeded && !isUserAddingNewCompany && (
             <FormSelect
+              // <FormSelectAsyncCreate
               control={control}
               options={profileCompanies}
               inputValueField="companyID"
@@ -336,33 +320,6 @@ const AddJobPost = () => {
               isSearchable={false}
             />
           )}
-          {/* <Controller
-            name="companyID"
-            control={control}
-            render={({ field: { onChange, value, ref } }) => (
-              <Select
-                value={profileCompanies.find((company) => company.id === value)}
-                ref={ref}
-                onChange={(selectedCompany) => {
-                  onChange(selectedCompany?.id);
-                  handleCompanyChange(selectedCompany);
-                }}
-                options={profileCompanies}
-                className="w-full cursor-pointer rounded-md border-2 border-[var(--color-blue-light)]   text-[var(--color-grey-dark-5)]"
-                getOptionLabel={(option) => option.name}
-                getOptionValue={(option) => option.id}
-              />
-            )}
-            rules={{ required: true }}
-          /> */}
-          {/* <Select
-            value={companySelectedOption}
-            onChange={handleCompanyChange}
-            options={profileCompanies}
-            className="w-full cursor-pointer rounded-md border-2 border-[var(--color-blue-light)]   text-[var(--color-grey-dark-5)]"
-            getOptionLabel={(option) => option.name}
-            getOptionValue={(option) => option.id}
-          /> */}
 
           <div className="block w-full">
             <Button
@@ -384,7 +341,6 @@ const AddJobPost = () => {
                 label="Company Name"
                 required
                 errors={errors.newCompany?.name?.message}
-                // touchedField={touchedFields.email}
                 dirtyField={dirtyFields.newCompany?.name}
                 watchField={watch('newCompany.name')}
                 submitted={isSubmitted}
@@ -484,38 +440,6 @@ const AddJobPost = () => {
             ></FormInput>
           </div>
 
-          {/* <input type="color" id="color" name="color" value="#0000ff" /> */}
-
-          {/* <FormInput
-            register={register}
-            placeholder="Add a isHighlighted here..."
-            type="isHighlighted"
-            name="isHighlighted"
-            id="isHighlighted"
-            label="Is Highlighted"
-            required
-            errors={errors.isHighlighted?.message}
-            // touchedField={touchedFields.email}
-            dirtyField={dirtyFields.isHighlighted}
-            watchField={watch('isHighlighted')}
-            submitted={isSubmitted}
-          /> */}
-
-          {/* <FormInput
-            register={register}
-            placeholder="Add a isPremium here..."
-            type="isPremium"
-            name="isPremium"
-            id="isPremium"
-            label="Is Premium"
-            required
-            errors={errors.isPremium?.message}
-            // touchedField={touchedFields.email}
-            dirtyField={dirtyFields.isPremium}
-            watchField={watch('isPremium')}
-            submitted={isSubmitted}
-          /> */}
-
           <div className="block w-full">
             <Button style={`btn btn-ghost `} type="submit" action={handleSubmit(onSubmitHandler)}>
               Add Job Post
@@ -528,9 +452,6 @@ const AddJobPost = () => {
           message={resultMessageDisplay}
           maxWidth={'450px'}
         />
-        {/* <Button style={`btn btn-ghost `} type="submit" action={googleAuthHandler}>
-        Sign in with Google
-      </Button> */}
       </Card>
     </div>
   );
