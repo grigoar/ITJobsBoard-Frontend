@@ -20,6 +20,7 @@ import { TagListName } from '@/models/tags/TagList.type';
 import { TagEntity } from '@/models/tags/TagEntity';
 import { LocationPlace } from '@/models/Common/LocationPlace';
 import AddJobPostValidationModel from '@/validations/jobPosts/AddJobPostValidationModel';
+import { createJobPostBackendTags } from '@/lib/jobPosts/jobPostsHelpers';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -53,6 +54,8 @@ const AddJobPost = () => {
   const [googlePlaces, setGooglePlaces] = useState<LocationPlace[]>([]);
   const [techTags, setTechTags] = useState<TagEntity[]>([]);
   const [seniorityTags, setSeniorityTags] = useState<TagEntity[]>([]);
+  const [employmentTypeTags, setEmploymentTypeTags] = useState<TagEntity[]>([]);
+  const [companySizeTags, setCompanySizeTags] = useState<TagEntity[]>([]);
   const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
   const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);
 
@@ -108,8 +111,14 @@ const AddJobPost = () => {
     const techTagsOnly = allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.TECH_SKILL) || [];
     const seniorityTagsOnly =
       allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.EXPERIENCE_LEVEL) || [];
+    const employmentTypeTagsOnly =
+      allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.EMPLOYMENT_TYPE) || [];
+    const companySizeTagsOnly =
+      allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.COMPANY_SIZE) || [];
     setTechTags(techTagsOnly);
     setSeniorityTags(seniorityTagsOnly);
+    setEmploymentTypeTags(employmentTypeTagsOnly);
+    setCompanySizeTags(companySizeTagsOnly);
   }, [allTagsRes, setTechTags, setSeniorityTags]);
 
   useEffect(() => {
@@ -156,25 +165,15 @@ const AddJobPost = () => {
   };
 
   const onSubmitHandler = (data: AddJobPostValidationModel) => {
-    const jobTechTags =
-      data.techTags?.map((tag) => {
-        return {
-          id: tag.value,
-          name: tag.label,
-          isCustom: tag.__isNew__,
-          type: TagListName.TECH_SKILL,
-        };
-      }) || [];
-    const jobSeniorityTags =
-      data.seniorityTags?.map((tag) => {
-        return {
-          id: tag.value,
-          name: tag.label,
-          isCustom: tag.__isNew__,
-          type: TagListName.EXPERIENCE_LEVEL,
-        };
-      }) || [];
-    const jobTags = [...jobTechTags, ...jobSeniorityTags];
+    const jobTechTags = createJobPostBackendTags(TagListName.TECH_SKILL, data.techTags);
+    const jobSeniorityTags = createJobPostBackendTags(TagListName.EXPERIENCE_LEVEL, data.seniorityTags);
+    const jobEmploymentTypeTags = createJobPostBackendTags(TagListName.EMPLOYMENT_TYPE, data.employmentTypeTags);
+    const jobCompanySizeTags = createJobPostBackendTags(
+      TagListName.COMPANY_SIZE,
+      data.companySizeTag != null ? [data.companySizeTag] : []
+    );
+
+    const jobTags = [...jobTechTags, ...jobSeniorityTags, ...jobEmploymentTypeTags, ...jobCompanySizeTags];
     const jobPost: AddJobPostModel = {
       description: data.description,
       title: data.title,
@@ -301,6 +300,30 @@ const AddJobPost = () => {
             submitted={isSubmitted}
             isSearchable={true}
             isMulti={true}
+          />
+          <FormSelectAsyncCreate
+            control={control}
+            options={employmentTypeTags}
+            inputValueField="employmentTypeTags"
+            selectOptionField="id"
+            selectOptionLabel="labelName"
+            label="Employment Type"
+            watchField={watch('employmentTypeTags')}
+            submitted={isSubmitted}
+            isSearchable={true}
+            isMulti={true}
+          />
+          <FormSelectAsyncCreate
+            control={control}
+            options={companySizeTags}
+            inputValueField="companySizeTag"
+            selectOptionField="id"
+            selectOptionLabel="labelName"
+            label="Company Size"
+            watchField={watch('companySizeTag')}
+            submitted={isSubmitted}
+            isSearchable={false}
+            isMulti={false}
           />
           <FormSelectAsyncCreate
             control={control}

@@ -82,5 +82,17 @@ const AddJobPostValidationBody = yup.object().shape({
       __isNew__: yup.boolean(),
     })
   ),
+  employmentTypeTags: yup.array().of(
+    yup.object().shape({
+      label: yup.string(),
+      value: yup.string(),
+      __isNew__: yup.boolean(),
+    })
+  ),
+  companySizeTag: yup.object().shape({
+    label: yup.string(),
+    value: yup.string(),
+    __isNew__: yup.boolean(),
+  }),
 });
 export default AddJobPostValidationBody;

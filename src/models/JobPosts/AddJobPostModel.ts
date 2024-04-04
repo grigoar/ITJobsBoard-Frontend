@@ -1,6 +1,6 @@
 import { AddCompanyModel } from '../Companies/AddCompanyModel';
 
-type AddTagModel = {
+export type AddTagModel = {
   id?: string;
   name?: string;
   isCustom?: boolean;

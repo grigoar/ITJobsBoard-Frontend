@@ -1,5 +1,12 @@
 import { AddCompanyModel } from '@/models/Companies/AddCompanyModel';
 
+export type TagsValidationType = {
+  label?: string;
+  value?: string;
+  __isNew__?: boolean;
+  type?: string;
+};
+
 type AddJobPostValidationModel = {
   description: string;
   title: string;
@@ -15,18 +22,10 @@ type AddJobPostValidationModel = {
   isPremium?: boolean;
   companyID?: string;
   newCompany?: Partial<AddCompanyModel> | null;
-  techTags?: {
-    label?: string;
-    value?: string;
-    __isNew__?: boolean;
-    type?: string;
-  }[];
-  seniorityTags?: {
-    label?: string;
-    value?: string;
-    __isNew__?: boolean;
-    type?: string;
-  }[];
+  techTags?: TagsValidationType[];
+  seniorityTags?: TagsValidationType[];
+  employmentTypeTags?: TagsValidationType[];
+  companySizeTag?: TagsValidationType;
 };
 
 export default AddJobPostValidationModel;
