@@ -17,7 +17,6 @@ type AddJobPostValidationModel = {
     value?: string;
   };
   isHighlighted?: boolean;
-  enabledColor?: boolean;
   color?: string;
   isPremium?: boolean;
   companyID?: string;

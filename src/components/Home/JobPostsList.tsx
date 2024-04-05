@@ -1,12 +1,12 @@
-import { JobPostEntity } from '@/models/JobPosts/JobPostEntity';
 import React from 'react';
+import { JobPostOverviewEntity } from '@/models/JobPosts/GetJobPostsRes';
 import JobPostCard from './JobPostCard';
 
 interface Props {
   // children: React.ReactNode;
   className?: string;
   // maxWidth?: number;
-  jobPosts?: JobPostEntity[];
+  jobPosts?: JobPostOverviewEntity[];
 }
 
 const JobPostsList = ({ jobPosts }: Props) => {

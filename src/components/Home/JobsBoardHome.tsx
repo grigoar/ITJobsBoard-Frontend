@@ -6,7 +6,7 @@ import { useGetAllJobPostsQuery } from '@/api/jobPostsApi';
 import JobPostsList from './JobPostsList';
 // import Button from '../common/Button/Button';
 
-const HomeWrapper = () => {
+const JobsBoardHome = () => {
   // const count = useAppSelector((state) => state.counter.value);
   // const dispatch = useAppDispatch();
   // const [getServerHealth, { data: serverHealth }] = useLazyGetServerHealthQuery();
@@ -26,4 +26,4 @@ const HomeWrapper = () => {
   );
 };
 
-export default HomeWrapper;
+export default JobsBoardHome;
