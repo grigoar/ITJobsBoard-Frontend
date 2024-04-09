@@ -6,7 +6,7 @@ import { useGetAllJobPostsQuery } from '@/api/jobPostsApi';
 import JobPostsList from './JobPostsList';
 // import Button from '../common/Button/Button';
 
-const HomeWrapper = () => {
+const JobsBoardHome = () => {
   // const count = useAppSelector((state) => state.counter.value);
   // const dispatch = useAppDispatch();
   // const [getServerHealth, { data: serverHealth }] = useLazyGetServerHealthQuery();
@@ -18,12 +18,12 @@ const HomeWrapper = () => {
   // ));
 
   return (
-    <section className=" flex max-w-[800px] flex-col  items-center justify-between self-center pb-0  text-xl font-semibold">
-      <div className="my-8">
+    <section className=" flex w-full max-w-[800px] flex-col  items-center justify-between self-center pb-0  text-xl font-semibold">
+      <div className="my-8 w-full">
         <JobPostsList jobPosts={jobPostsData?.items} />
       </div>
     </section>
   );
 };
 
-export default HomeWrapper;
+export default JobsBoardHome;

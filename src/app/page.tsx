@@ -1,5 +1,5 @@
-import HomeWrapper from '@/components/Home/HomeWrapper';
+import JobsBoardHome from '@/components/Home/JobsBoardHome';
 
 export default function Home() {
-  return <HomeWrapper />;
+  return <JobsBoardHome />;
 }

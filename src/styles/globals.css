@@ -5,6 +5,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* // $white: #fff;
+// $black: #000; */
+
 /* --color-accent: #175443;
 --color-accent-2: #541728;
 --color-accent-3: #251754;
@@ -182,7 +185,7 @@
 
   a:active,
   a:hover {
-    @apply text-[color:var(--text-color-primary)];
+    /* @apply text-[color:var(--text-color-primary)]; */
   }
 
   h1 {
@@ -198,3 +201,22 @@
     font-size: 1.3rem;
   }
 }
+
+/* @function set-text-color($color) {
+  @if (lightness($color) > 50) {
+    @return $black; // Lighter color, return black
+  } @else {
+    @return $white; // Darker color, return white
+  }
+} */
+
+/* .text--color {
+  background: $bg-color;
+  color: set-text-color($bg-color);
+}
+
+// this is here just for demon purpose
+.text {
+  padding: 10px;
+  text-align: center;
+} */

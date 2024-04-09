@@ -66,7 +66,7 @@ const AddJobPostValidationBody = yup.object().shape({
     label: yup.string(),
     value: yup.string(),
   }),
-  enabledColor: yup.boolean(),
+  isHighlighted: yup.boolean(),
   color: yup.string(),
   techTags: yup.array().of(
     yup.object().shape({

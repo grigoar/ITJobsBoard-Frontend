@@ -38,6 +38,7 @@ import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
 
 // TODO: Some issue with the location validation when it is empty
 // TODO: Maybe give a scale for the experience level tags(1-100)
+// TODO: Add capability for moving the multiple select options (https://react-select.netlify.app/advanced)
 const AddJobPost = () => {
   const [addNewJobPost, { isLoading }] = useAddNewJobPostMutation();
   const { data: allTagsRes } = useGetAllTagsQuery(null);
@@ -226,7 +227,7 @@ const AddJobPost = () => {
       location: data.location?.label || '',
       tags: jobTags,
       color: data.color,
-      isHighlighted: data.enabledColor,
+      isHighlighted: data.isHighlighted,
       isPremium: false,
       newCompany: data.newCompany,
     };
@@ -538,14 +539,14 @@ const AddJobPost = () => {
               register={register}
               placeholder=""
               type="checkbox"
-              name="enabledColor"
-              id="enabledColor"
+              name="isHighlighted"
+              id="isHighlighted"
               label=""
               styling="[&]:w-6 [&]:p-0 !mb-0 h-6 ml-1  cursor-pointer accent-[var(--color-green-light)] "
               required
-              errors={errors.enabledColor?.message}
-              dirtyField={dirtyFields.enabledColor}
-              watchField={watch('enabledColor')}
+              errors={errors.isHighlighted?.message}
+              dirtyField={dirtyFields.isHighlighted}
+              watchField={watch('isHighlighted')}
               submitted={isSubmitted}
             ></FormInput>
 

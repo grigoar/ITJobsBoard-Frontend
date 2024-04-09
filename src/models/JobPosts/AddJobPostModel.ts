@@ -14,7 +14,6 @@ type AddJobPostModel = {
   maxSalary?: number;
   location: string;
   isHighlighted?: boolean;
-  enabledColor?: boolean;
   color?: string;
   isPremium?: boolean;
   companyID?: string;
