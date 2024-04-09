@@ -18,7 +18,7 @@ const JobsBoardHome = () => {
   // ));
 
   return (
-    <section className=" flex max-w-[800px] flex-col  items-center justify-between self-center pb-0  text-xl font-semibold">
+    <section className=" flex w-full max-w-[800px] flex-col  items-center justify-between self-center pb-0  text-xl font-semibold">
       <div className="my-8 w-full">
         <JobPostsList jobPosts={jobPostsData?.items} />
       </div>

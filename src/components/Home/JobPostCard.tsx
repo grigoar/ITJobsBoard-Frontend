@@ -39,8 +39,11 @@ const JobPostCard = ({ jobPost }: Props) => {
       colorTextCard = 'var(--color-grey-dark-3)';
     }
   }
-  const tagsList = tags?.map((tag) => <TagLabel key={tag.id} name={tag.name} color={colorTextCard} />);
+  // return only the first 5 tags
+  const tagsList = tags?.slice(0, 5).map((tag) => <TagLabel key={tag.id} name={tag.name} color={colorTextCard} />);
+  // const tagsList = tags?.map((tag) => <TagLabel key={tag.id} name={tag.name} color={colorTextCard} />);
 
+  // hover:scale-[1.01]
   // bg-secondary
   return (
     <li
@@ -48,17 +51,17 @@ const JobPostCard = ({ jobPost }: Props) => {
         backgroundColor: isHighlighted ? color : 'var(--bg-color-secondary)',
         color: colorTextCard,
       }}
-      className={`postContainer mb-4 w-full rounded-xl  shadow-[0px_10px_15px_5px_rgba(0,0,0,0.25),0px_3px_10px_0px_rgba(0,0,0,0.25)] transition-all duration-200 ease-in-out hover:scale-[1.01] `}
+      className={`postContainer mb-4 w-full rounded-xl  shadow-[0px_10px_15px_5px_rgba(0,0,0,0.25),0px_3px_10px_0px_rgba(0,0,0,0.25)] transition-all duration-200 ease-in-out `}
     >
-      <Link href={linkPath} className={' flex h-full w-full items-center  '}>
+      <Link href={linkPath} className={' flex h-full w-full items-center hover:brightness-110 '}>
         <div
           className={
-            'relative ml-2 flex max-h-16 justify-start overflow-hidden border-0 border-[var(--color-button-primary)] '
+            'relative ml-2 flex h-full max-h-16  justify-start overflow-hidden border-0 border-[var(--color-button-primary)]'
           }
         >
           {/* <Image src={linkPath} alt={title} width={300} height={300} className="rounded-t-lg object-cover" />
            */}
-          <div className={'h-[90%] w-16'}>
+          <div className={'h-[90%] w-16 min-w-10'}>
             <Image
               className={'rounded-[50%] bg-slate-50'}
               src={imageLogoCompany}
@@ -69,27 +72,29 @@ const JobPostCard = ({ jobPost }: Props) => {
             />
           </div>
         </div>
-        <div>
+        <div className="w-full">
           <h3
             className={
-              'blogTitle flex h-[50px] items-center justify-start px-4 text-left align-middle text-xl font-bold'
+              'blogTitle align-start flex h-[50px] items-center justify-start px-4 text-left text-xl font-bold'
             }
           >
             {title}
           </h3>
-          <div className="flex">
-            <div className={'content flex flex-row px-4 pb-4 pt-4'}>
+          <div className="flex ">
+            <div className={'content flex grow flex-col px-4 pb-4 pt-2'}>
+              <div className="grow">{company?.name}</div>
               <div className={'blogCardHeaderContainer flex  flex-col justify-center'}>
-                <div>{company?.name}</div>
-                <div>
-                  <TagLabel name={`$${minSalary}-${maxSalary}`} color={colorTextCard} />
-                </div>
-                <div>
-                  <TagLabel name={shortLocation} color={colorTextCard} />
+                <div className="flex">
+                  <div>
+                    <TagLabel name={`$${minSalary}-${maxSalary}`} color={colorTextCard} />
+                  </div>
+                  <div>
+                    <TagLabel name={shortLocation} color={colorTextCard} />
+                  </div>
                 </div>
               </div>
             </div>
-            <div>{tagsList}</div>
+            <div className="flex max-w-[300px] flex-wrap items-center justify-center p-4 align-middle">{tagsList}</div>
           </div>
         </div>
       </Link>

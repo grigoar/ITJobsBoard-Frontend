@@ -11,7 +11,7 @@ const TagLabel = ({ name, color }: Props) => {
   return (
     <div
       style={{ border: `1px solid ${colorDefault}` }}
-      className={`mb-1 mr-1 inline-block rounded-xl border-2 p-1 text-sm `}
+      className={`mb-1 mr-1 inline-block h-fit rounded-xl border-2 p-1 text-sm `}
     >
       {name}
     </div>
