@@ -2,6 +2,8 @@ import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
 import { JobPostOverviewEntity } from '@/models/JobPosts/GetJobPostsRes';
+import Color from 'color';
+import TagLabel from './TagLabel';
 
 interface Props {
   // children: React.ReactNode;
@@ -19,23 +21,39 @@ const JobPostCard = ({ jobPost }: Props) => {
     console.log('color', color);
   }
 
+  const backgroundColor = Color(color);
+  // console.log('backgroundColor', backgroundColor.isDark());
+  // console.log('backgroundColor', backgroundColor.isLight());
+
   const linkPath = `/jobs/${jobPost.id}`;
   const imageLogoCompany = '/images/logos/logo1.png';
+
+  const shortLocation = location?.split(',')[0];
+
+  let colorTextCard: string | undefined;
+
+  if (isHighlighted) {
+    if (backgroundColor.isDark()) {
+      colorTextCard = 'var(--color-grey-light-2)';
+    } else {
+      colorTextCard = 'var(--color-grey-dark-3)';
+    }
+  }
+  const tagsList = tags?.map((tag) => <TagLabel key={tag.id} name={tag.name} color={colorTextCard} />);
+
   // bg-secondary
   return (
     <li
-      style={{ backgroundColor: isHighlighted ? color : 'var(--bg-color-secondary)' }}
-      className={`postContainer mb-4 w-full rounded-xl bg-secondary shadow-[0px_10px_15px_5px_rgba(0,0,0,0.25),0px_3px_10px_0px_rgba(0,0,0,0.25)] transition-all duration-200 ease-in-out hover:scale-[1.05]`}
+      style={{
+        backgroundColor: isHighlighted ? color : 'var(--bg-color-secondary)',
+        color: colorTextCard,
+      }}
+      className={`postContainer mb-4 w-full rounded-xl  shadow-[0px_10px_15px_5px_rgba(0,0,0,0.25),0px_3px_10px_0px_rgba(0,0,0,0.25)] transition-all duration-200 ease-in-out hover:scale-[1.01] `}
     >
-      <Link
-        href={linkPath}
-        className={
-          'itemLink  flex h-full w-full items-center hover:text-[var(--text-color-calm-strong)] hover:brightness-110'
-        }
-      >
+      <Link href={linkPath} className={' flex h-full w-full items-center  '}>
         <div
           className={
-            'relative ml-2 flex max-h-16 justify-start overflow-hidden border-0 border-[var(--color-button-primary)]'
+            'relative ml-2 flex max-h-16 justify-start overflow-hidden border-0 border-[var(--color-button-primary)] '
           }
         >
           {/* <Image src={linkPath} alt={title} width={300} height={300} className="rounded-t-lg object-cover" />
@@ -51,23 +69,29 @@ const JobPostCard = ({ jobPost }: Props) => {
             />
           </div>
         </div>
-        <div className={'content flex flex-row px-4 pb-4 pt-4'}>
-          <div className={'blogCardHeaderContainer flex flex-row justify-center'}>
-            <h3
-              className={
-                'blogTitle flex h-[50px] items-center justify-center text-center align-middle text-xl text-[var(--color-accent-blog)] '
-              }
-            >
-              {title}
-            </h3>
-            <div>{location}</div>
-            <div>
-              {minSalary}-{maxSalary}
+        <div>
+          <h3
+            className={
+              'blogTitle flex h-[50px] items-center justify-start px-4 text-left align-middle text-xl font-bold'
+            }
+          >
+            {title}
+          </h3>
+          <div className="flex">
+            <div className={'content flex flex-row px-4 pb-4 pt-4'}>
+              <div className={'blogCardHeaderContainer flex  flex-col justify-center'}>
+                <div>{company?.name}</div>
+                <div>
+                  <TagLabel name={`$${minSalary}-${maxSalary}`} color={colorTextCard} />
+                </div>
+                <div>
+                  <TagLabel name={shortLocation} color={colorTextCard} />
+                </div>
+              </div>
             </div>
-            <div>{company?.name}</div>
+            <div>{tagsList}</div>
           </div>
         </div>
-        {/* <div>{tags?.map((tag) => tag.name)}</div> */}
       </Link>
     </li>
   );
