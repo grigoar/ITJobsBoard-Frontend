@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { JobPostOverviewEntity } from '@/models/JobPosts/GetJobPostsRes';
 import Color from 'color';
+import { TagListName } from '@/models/tags/TagList.type';
 import TagLabel from './TagLabel';
 
 interface Props {
@@ -12,9 +13,17 @@ interface Props {
   jobPost: JobPostOverviewEntity;
 }
 
+// TODO: Split the tags into different categories and place them in different sections
 const JobPostCard = ({ jobPost }: Props) => {
   // const { title, description, company, color, location, minSalary, maxSalary, tags } = jobPost;
   const { title, company, color, location, minSalary, maxSalary, tags, isHighlighted } = jobPost;
+
+  const [techTags, setTechTags] = React.useState<any[]>([]);
+
+  useEffect(() => {
+    const tagsList = tags?.filter((tag) => tag.type === TagListName.TECH_SKILL) || [];
+    setTechTags(tagsList);
+  }, [tags]);
 
   console.log('tags', tags);
   if (isHighlighted) {
@@ -26,7 +35,11 @@ const JobPostCard = ({ jobPost }: Props) => {
   // console.log('backgroundColor', backgroundColor.isLight());
 
   const linkPath = `/jobs/${jobPost.id}`;
-  const imageLogoCompany = '/images/logos/logo1.png';
+  // const imageLogoCompany = '/images/logos/logo1.png';
+  // const imageLogoCompany = company.logoImage? company'/images/logos/logo1.png';
+
+  const photoImageAmzLink = `${process.env.NEXT_PUBLIC_AWS_STORAGE_PATH_URL}/${company.logoImage}?${Date.now()}`;
+  const imageSrcUserPhoto = company.logoImage ? photoImageAmzLink : '/images/logos/logo1.png';
 
   const shortLocation = location?.split(',')[0];
 
@@ -40,7 +53,7 @@ const JobPostCard = ({ jobPost }: Props) => {
     }
   }
   // return only the first 5 tags
-  const tagsList = tags?.slice(0, 5).map((tag) => <TagLabel key={tag.id} name={tag.name} color={colorTextCard} />);
+  const tagsList = techTags?.slice(0, 5).map((tag) => <TagLabel key={tag.id} name={tag.name} color={colorTextCard} />);
   // const tagsList = tags?.map((tag) => <TagLabel key={tag.id} name={tag.name} color={colorTextCard} />);
 
   // hover:scale-[1.01]
@@ -55,20 +68,20 @@ const JobPostCard = ({ jobPost }: Props) => {
     >
       <Link href={linkPath} className={' flex h-full w-full items-center hover:brightness-110 '}>
         <div
-          className={
-            'relative ml-2 flex h-full max-h-16  justify-start overflow-hidden border-0 border-[var(--color-button-primary)]'
-          }
+          className={'relative ml-2 flex justify-start overflow-hidden border-0 border-[var(--color-button-primary)]'}
         >
           {/* <Image src={linkPath} alt={title} width={300} height={300} className="rounded-t-lg object-cover" />
            */}
-          <div className={'h-[90%] w-16 min-w-10'}>
+          <div className={'w-[80px] min-w-10'}>
             <Image
-              className={'rounded-[50%] bg-slate-50'}
-              src={imageLogoCompany}
+              // className={' w-[80px] rounded-[100%]  bg-slate-50'}
+              className={' h-[80px] w-[80px]  bg-slate-50'}
+              // src={imageLogoCompany}
+              src={imageSrcUserPhoto}
               alt={'No Company profile photo'}
-              width={300}
-              height={300}
-              // object-cover
+              width={200}
+              height={200}
+              unoptimized={true}
             />
           </div>
         </div>
