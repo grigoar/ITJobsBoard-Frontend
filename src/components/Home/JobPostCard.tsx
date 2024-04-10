@@ -25,11 +25,6 @@ const JobPostCard = ({ jobPost }: Props) => {
     setTechTags(tagsList);
   }, [tags]);
 
-  console.log('tags', tags);
-  if (isHighlighted) {
-    console.log('color', color);
-  }
-
   const backgroundColor = Color(color);
   // console.log('backgroundColor', backgroundColor.isDark());
   // console.log('backgroundColor', backgroundColor.isLight());

@@ -118,8 +118,8 @@ const AddJobPost = () => {
       minSalary: 2000,
       maxSalary: 3000,
       location: {
-        label: 'Cluj-Napoca',
-        value: 'Cluj-Napoca',
+        label: 'Cluj, Romania',
+        value: 'ChIJiwtskR8MSUcR6Nk3QsedRkI',
       },
       techTags: [
         {

@@ -16,6 +16,7 @@ interface Props {
   imgMultipartPreview: File | null;
 }
 
+// TODO: Add default image for company logo in AWS
 const UploadCompanyLogo = ({
   newImageUpdateTime,
   // updateUserProfileImage,

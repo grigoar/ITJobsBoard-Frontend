@@ -141,9 +141,15 @@ const Header = () => {
           )}
         </div>
         <div className="absolute bottom-0 right-0 mt-4 flex translate-y-[125%] items-center justify-center">
-          <Button style={`btn btn-ghost !mt-0 mr-2`} link={'/add-job'}>
-            Post a Job
-          </Button>
+          {isUserLogged ? (
+            <Button style={`btn btn-ghost !mt-0 mr-2`} link={'/add-job'}>
+              Post a Job
+            </Button>
+          ) : (
+            <Button style={`btn btn-ghost !mt-0 mr-2`} link={'/login?add-job=true'}>
+              Login to Post a Job
+            </Button>
+          )}
           <Switch
             onChange={changeThemeHandler}
             checked={!isDark}
