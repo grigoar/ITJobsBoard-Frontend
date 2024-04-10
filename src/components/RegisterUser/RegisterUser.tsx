@@ -68,8 +68,10 @@ const RegisterUser = () => {
 
   const sendNotificationSuccess = useCallback(() => {
     toastifySuccess('Have a great journey!');
-    if (searchParams?.get('go-pro') === 'true') {
-      router.replace('/go-pro');
+    console.log('ooooo', searchParams);
+    if (searchParams?.get('add-job') === 'true') {
+      console.log("searchParams?.get('add-job')", searchParams?.get('add-job'));
+      router.replace('/add-job');
     } else {
       router.replace('/?new-user=true');
     }

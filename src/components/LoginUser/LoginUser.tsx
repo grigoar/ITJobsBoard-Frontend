@@ -63,10 +63,14 @@ const LoginUser = () => {
     return () => clearTimeout(clearLogoutHandler);
   }, [logoutHandler]);
 
+  /* <Button style={`btn btn-ghost !mt-0 mr-2`} link={'/login?add-job=true'}></Button> */
+
   const sendNotificationSuccess = useCallback(() => {
     toastifySuccess('Logged in successfully!');
-    if (searchParams?.get('go-pro') === 'true') {
-      router.replace('/go-pro');
+    console.log('ooooo', searchParams);
+    if (searchParams?.get('add-job') === 'true') {
+      console.log("searchParams?.get('add-job')", searchParams?.get('add-job'));
+      router.replace('/add-job');
     } else {
       router.replace('/?new-user=true');
     }
@@ -112,6 +116,13 @@ const LoginUser = () => {
     window.open(`${process.env.NEXT_PUBLIC_SERVER_API_URL}/google`, '_self');
   };
 
+  let registerLinkPath = '/register';
+  if (federatedAccount?.email) {
+    registerLinkPath = `/register?email-social=${federatedAccount.email}`;
+  }
+  if (searchParams?.get('add-job') === 'true') {
+    registerLinkPath = `/register?add-job=true`;
+  }
   return (
     <div className="flex flex-col">
       <Card>
@@ -172,7 +183,7 @@ const LoginUser = () => {
           <LoginSuggestion
             messageBefore="Don't have an account?"
             messageAfter=""
-            linkPath={federatedAccount?.email ? `/register?email-social=${federatedAccount.email}` : '/register'}
+            linkPath={registerLinkPath}
             linkName="Register"
           />
         </div>

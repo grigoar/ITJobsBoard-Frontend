@@ -61,9 +61,9 @@ const securityHeaders = (env) => {
 const nextConfig = (phase) => {
   return {
     // * not needed for now
-    // images: {
-    //   domains: ['typing-muscle.s3.eu-central-1.amazonaws.com'],
-    // },
+    images: {
+      domains: ['it-jobs-board-images.s3.eu-central-1.amazonaws.com'],
+    },
     // * not needed for now
     // async redirects() {
     //   return [

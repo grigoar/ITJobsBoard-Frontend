@@ -29,16 +29,17 @@ import MessageResult from '../common/MessageResult/MessageResult';
 import FormTextarea from '../common/Form/FormTextarea';
 import FormSelect from '../common/Form/FormSelect';
 import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
+import UploadCompanyLogo from './UploadCompanyLogo';
 
 // TODO: check the refresh page and the theme
 // TODO: Maybe check the styling for select, but it should work fine for now
-// TODO: Add skills to the job post
 // TODO: Add a role to the user that can edit a company if it is the owner
 // TODO: Create a profile for a company so it can be edited without the user logging in ( some email and token for the authorization)
 
-// TODO: Some issue with the location validation when it is empty
+// TODO: Some issue with the location validation when it is empty ( it needs to be added, because it is required)
 // TODO: Maybe give a scale for the experience level tags(1-100)
 // TODO: Add capability for moving the multiple select options (https://react-select.netlify.app/advanced)
+
 const AddJobPost = () => {
   const [addNewJobPost, { isLoading }] = useAddNewJobPostMutation();
   const { data: allTagsRes } = useGetAllTagsQuery(null);
@@ -72,6 +73,7 @@ const AddJobPost = () => {
   });
   const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
   const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);
+  const [imgMultipartPreview, setImgMultipartPreview] = useState<any>(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -111,6 +113,48 @@ const AddJobPost = () => {
 
     defaultValues: {
       color: '#0000ff',
+      title: 'Full Stack Developer',
+      description: 'We are looking for a full stack developer to join our team',
+      minSalary: 2000,
+      maxSalary: 3000,
+      location: {
+        label: 'Cluj, Romania',
+        value: 'ChIJiwtskR8MSUcR6Nk3QsedRkI',
+      },
+      techTags: [
+        {
+          label: 'React',
+          value: 'a39480dd-26cd-4b40-bfcd-2c169893b1bf',
+        },
+        {
+          label: 'Node.js',
+          value: '872abf06-e39e-4abd-88dc-5008ac058ead',
+        },
+      ],
+      seniorityTags: [
+        {
+          label: 'Senior',
+          value: 'd0c91a7e-eae0-4f6b-9630-17894bf27d57',
+        },
+      ],
+      employmentTypeTags: [
+        {
+          label: 'Part-time',
+          value: 'e08c0e6a-ab92-4fa7-ad88-112544671217',
+        },
+      ],
+      companySizeTag: {
+        label: '1-10',
+        value: '75ce19cc-f1ac-48ef-9bb2-54bd7b85ba77',
+      },
+      companyTypeTag: {
+        label: 'Startup',
+        value: '43e9f3a5-567d-4328-b5ed-dc4431136b41',
+      },
+      workLocationTag: {
+        label: 'Remote',
+        value: 'ab8d4da5-d168-44f2-9ccd-644684d2feb4',
+      },
     },
   });
 
@@ -165,8 +209,14 @@ const AddJobPost = () => {
     }
   }, [router, searchParams]);
 
-  const addNewJobPostHandler = async (jobPost: AddJobPostModel) => {
+  const changeImagePreviewHandler = (file: File | null) => {
+    setImgMultipartPreview(file);
+  };
+
+  // const addNewJobPostHandler = async (jobPost: AddJobPostModel) => {
+  const addNewJobPostHandler = async (jobPost: FormData) => {
     try {
+      console.log('jobPost', jobPost);
       await addNewJobPost(jobPost).unwrap();
       // dispatchAppStore(userDataActions.saveLoggedInUser(userLoggedIn.user));
 
@@ -189,6 +239,7 @@ const AddJobPost = () => {
   };
 
   const onSubmitHandler = (data: AddJobPostValidationModel) => {
+    console.log('data', data);
     const jobTechTags = createJobPostBackendTags(TagListName.TECH_SKILL, data.techTags);
     const jobSeniorityTags = createJobPostBackendTags(TagListName.EXPERIENCE_LEVEL, data.seniorityTags);
     const jobEmploymentTypeTags = createJobPostBackendTags(TagListName.EMPLOYMENT_TYPE, data.employmentTypeTags);
@@ -231,7 +282,25 @@ const AddJobPost = () => {
       isPremium: false,
       newCompany: data.newCompany,
     };
-    addNewJobPostHandler(jobPost);
+
+    const formData = new FormData();
+    formData.append('description', jobPost.description);
+    formData.append('title', jobPost.title);
+    formData.append('minSalary', jobPost.minSalary?.toString() || '');
+    formData.append('maxSalary', jobPost.maxSalary ? jobPost.maxSalary.toString() : '');
+    formData.append('companyID', isUserAddingNewCompany ? '' : jobPost.companyID || '');
+    formData.append('location', jobPost.location);
+    formData.append('color', jobPost.color?.toString() || '');
+    formData.append('isHighlighted', jobPost.isHighlighted ? 'true' : 'false');
+    formData.append('isPremium', jobPost.isPremium ? 'true' : 'false');
+    formData.append('newCompany', JSON.stringify(jobPost.newCompany));
+    jobTags.forEach((tag) => {
+      formData.append('tags', JSON.stringify(tag));
+    });
+    formData.append('companyLogo', imgMultipartPreview || '');
+
+    // addNewJobPostHandler(jobPost);
+    addNewJobPostHandler(formData);
   };
 
   const toggleAddNewCompanyHandler = () => {
@@ -516,6 +585,12 @@ const AddJobPost = () => {
                 dirtyField={dirtyFields.newCompany?.logoImage}
                 watchField={watch('newCompany.logoImage')}
                 submitted={isSubmitted}
+              />
+              <UploadCompanyLogo
+                companyLogoImagePath={companySelectedOption?.logoImage || '/images/logos/logo1.png'}
+                newImageUpdateTime={Date.now()}
+                changeImagePreview={changeImagePreviewHandler}
+                imgMultipartPreview={imgMultipartPreview}
               />
 
               <FormInput
