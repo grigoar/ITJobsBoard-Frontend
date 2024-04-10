@@ -42,13 +42,14 @@ const AddJobPostValidationBody = yup.object().shape({
           }
           return !!value;
         }),
-      logoImage: yup.string().test('logoImage', 'Company Logo is required.', function (value) {
-        const { companyID } = this.from?.[1] != null && this.from[1].value;
-        if (companyID) {
-          return true;
-        }
-        return !!value;
-      }),
+      // logoImage: yup.string().test('logoImage', 'Company Logo is required.', function (value) {
+      //   const { companyID } = this.from?.[1] != null && this.from[1].value;
+      //   if (companyID) {
+      //     return true;
+      //   }
+      //   return !!value;
+      // }),
+      logoImage: yup.string(),
       websiteURL: yup
         .string()
         .url()
@@ -111,5 +112,13 @@ const AddJobPostValidationBody = yup.object().shape({
     value: yup.string(),
     __isNew__: yup.boolean(),
   }),
+
+  benefitsTags: yup.array().of(
+    yup.object().shape({
+      label: yup.string(),
+      value: yup.string(),
+      __isNew__: yup.boolean(),
+    })
+  ),
 });
 export default AddJobPostValidationBody;
