@@ -28,6 +28,7 @@ type AddJobPostValidationModel = {
   companyTypeTag?: TagsValidationType;
   workLocationTag?: TagsValidationType;
   companyDomainTag?: TagsValidationType;
+  benefitsTags?: TagsValidationType[];
 };
 
 export default AddJobPostValidationModel;

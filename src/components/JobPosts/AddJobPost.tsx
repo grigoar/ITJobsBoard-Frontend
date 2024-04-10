@@ -62,6 +62,7 @@ const AddJobPost = () => {
     companyTypeTags: TagEntity[];
     workLocationTags: TagEntity[];
     companyDomainTags: TagEntity[];
+    benefitsTags: TagEntity[];
   }>({
     techTags: [],
     seniorityTags: [],
@@ -70,6 +71,7 @@ const AddJobPost = () => {
     companyTypeTags: [],
     workLocationTags: [],
     companyDomainTags: [],
+    benefitsTags: [],
   });
   const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
   const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);
@@ -178,6 +180,7 @@ const AddJobPost = () => {
     const workLocationTagsOnly =
       allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.WORK_PLACE) || [];
     const companyDomainTagsOnly = allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.DOMAIN) || [];
+    const benefitsTagsOnly = allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.BENEFITS) || [];
     setTags({
       techTags: techTagsOnly,
       seniorityTags: seniorityTagsOnly,
@@ -186,12 +189,14 @@ const AddJobPost = () => {
       companyTypeTags: companyTypeTagsOnly,
       workLocationTags: workLocationTagsOnly,
       companyDomainTags: companyDomainTagsOnly,
+      benefitsTags: benefitsTagsOnly,
     });
   }, [allTagsRes, setTags]);
 
   useEffect(() => {
     if (companySelectedOption) {
       setValue('companyID', companySelectedOption.id);
+      // TODO: This is not needed, because the company is selected or the user is adding a new company
       setValue('newCompany.name', companySelectedOption.name);
       setValue('newCompany.description', companySelectedOption.description);
       setValue('newCompany.email', companySelectedOption.email);
@@ -482,6 +487,18 @@ const AddJobPost = () => {
             selectOptionLabel="labelName"
             label="Technology Tags"
             watchField={watch('techTags')}
+            submitted={isSubmitted}
+            isSearchable={true}
+            isMulti={true}
+          />
+          <FormSelectAsyncCreate
+            control={control}
+            options={tags.benefitsTags}
+            inputValueField="benefitsTags"
+            selectOptionField="id"
+            selectOptionLabel="labelName"
+            label="Benefits"
+            watchField={watch('benefitsTags')}
             submitted={isSubmitted}
             isSearchable={true}
             isMulti={true}
