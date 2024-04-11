@@ -37,6 +37,21 @@
     color: var(--color-accent-text);
   }
 
+  .btn-full,
+  .btn-full:link,
+  .btn-full:visited,
+  input[type='submit'] {
+    background-color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    margin-left: 15px;
+    color: var(--color-accent-text);
+  }
+
+  .btn-full:active,
+  .btn-full:hover {
+    /* border: 1px solid var(--color-button-secondary); */
+  }
+
   .btn,
   .btn:link,
   .btn:visited,

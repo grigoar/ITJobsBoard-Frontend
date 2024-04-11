@@ -67,9 +67,7 @@ const LoginUser = () => {
 
   const sendNotificationSuccess = useCallback(() => {
     toastifySuccess('Logged in successfully!');
-    console.log('ooooo', searchParams);
     if (searchParams?.get('add-job') === 'true') {
-      console.log("searchParams?.get('add-job')", searchParams?.get('add-job'));
       router.replace('/add-job');
     } else {
       router.replace('/?new-user=true');
@@ -127,7 +125,11 @@ const LoginUser = () => {
     <div className="flex flex-col">
       <Card>
         <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)}>
-          <h2>Lets log you in!</h2>
+          {searchParams?.get('add-job') === 'true' ? (
+            <h2 className="block w-full">Log in to add a job!</h2>
+          ) : (
+            <h2 className="block w-full">Lets log you in!</h2>
+          )}
 
           {/* <input className="text-black" {...register('email')} placeholder="email" type="email" required /> */}
           <FormInput

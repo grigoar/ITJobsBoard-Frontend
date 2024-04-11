@@ -111,7 +111,11 @@ const RegisterUser = () => {
     <div className="flex flex-col">
       <Card>
         <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)}>
-          <h2>Lets register you!</h2>
+          {searchParams?.get('add-job') === 'true' ? (
+            <h2 className="block w-full">Register to add a job!</h2>
+          ) : (
+            <h2 className="block w-full">Lets register you!</h2>
+          )}
 
           <FormInput
             register={register}

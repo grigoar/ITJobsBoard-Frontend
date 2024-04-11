@@ -1,3 +1,4 @@
+import constants from '@/utils/constants';
 import React, { useEffect, useState } from 'react';
 
 type Props = {
@@ -11,6 +12,7 @@ type Props = {
   extraError?: string;
   submitted?: boolean;
   styling?: string;
+  setValue?: any;
 
   [extra: string]: any;
 };
@@ -27,10 +29,13 @@ const FormInput = ({
   extraError,
   submitted,
   styling,
+  setValue,
   ...inputProps
 }: Props) => {
   const [isTyping, setIsTyping] = useState(false);
   const [watchFieldPrev, setWatchFieldPrev] = useState<string | undefined>('');
+  const [colorValue, setColorValue] = useState<string>(constants.DEFAULT_COLOR_POST);
+  const [colorTimeout, setColorTimeout] = useState<any>(0);
 
   const [errorsArray, setErrorsArray] = useState<string[]>([]);
 
@@ -44,6 +49,12 @@ const FormInput = ({
     }
     setErrorsArray(errorsForm || []);
   }, [errors, extraError]);
+
+  useEffect(() => {
+    if (inputProps.type === 'color') {
+      setValue(name, colorValue);
+    }
+  }, [colorValue, inputProps.type, name, setValue]);
 
   const errorMessages =
     // ((isTyping || touchedField) &&
@@ -107,6 +118,26 @@ const FormInput = ({
         name={name}
         className={`w-full border-2 border-[var(--color-blue-light)] ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} rounded-md p-3  text-[var(--color-grey-dark-5)] focus:outline-none focus-visible:shadow-[0_0_10px_var(--color-green-light)] ${styling}`}
         {...inputProps}
+        onChange={(e) => {
+          if (inputProps.type === 'color') {
+            e.preventDefault();
+            clearTimeout(colorTimeout);
+            // set the color with a delay
+            setColorTimeout(
+              setTimeout(() => {
+                setColorValue(e.target.value);
+              }, 300)
+            );
+
+            // return () => clearTimeout(changeColorTimeout);
+
+            // console.log(e.target.value);
+            // set the value with delay
+            // const changeColorTimeout = setTimeout(() => {
+            //   e.target.value = e.target.value;
+            // }, 1000);
+          }
+        }}
       />
       {!isTyping && errorMessages.length > 0 && <ul className="mt-2 w-full">{errorMessages}</ul>}
     </>

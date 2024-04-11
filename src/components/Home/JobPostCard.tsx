@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import Image from 'next/image';
-import { JobPostOverviewEntity } from '@/models/JobPosts/GetJobPostsRes';
 import Color from 'color';
 import { TagListName } from '@/models/tags/TagList.type';
-import TagLabel from './TagLabel';
+import { JobPostOverviewEntity } from '@/models/JobPosts/JobPostOverviewEntity';
+import TagLabel from '../common/UI/TagLabel';
 
 interface Props {
   // children: React.ReactNode;
@@ -29,7 +29,7 @@ const JobPostCard = ({ jobPost }: Props) => {
   // console.log('backgroundColor', backgroundColor.isDark());
   // console.log('backgroundColor', backgroundColor.isLight());
 
-  const linkPath = `/jobs/${jobPost.id}`;
+  const linkPath = `/jobs/${jobPost.slug}`;
   // const imageLogoCompany = '/images/logos/logo1.png';
   // const imageLogoCompany = company.logoImage? company'/images/logos/logo1.png';
 

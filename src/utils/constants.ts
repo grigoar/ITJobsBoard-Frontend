@@ -14,6 +14,7 @@ export default {
 
   // GENERAL
   NEW_TECH_TAG: 'NEW_TECH_TAG',
+  DEFAULT_COLOR_POST: '#0000ff',
 
   // Cookies names (for cookie consent)
   COOKIE_AUTH_NAME: 'jwt',

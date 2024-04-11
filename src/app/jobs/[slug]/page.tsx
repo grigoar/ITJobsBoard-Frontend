@@ -4,7 +4,7 @@ import React from 'react';
 // import { BlogPostModel } from '@/models/BlogPosts/BlogPostModel';
 // import SEO from '@/components/common/SEO';
 // import PostContent from '@/components/Posts/PostDetails/PostContent';
-import JobPostDetails from '@/components/JobPosts/JobPostDetails';
+import JobPostDetailsData from '@/components/JobPosts/JobPostDetails/JobPostDetailsData';
 
 interface Props {
   params: {
@@ -26,7 +26,7 @@ const PostDetailPage = async ({ params }: Props) => {
     <>
       {/* <SEO pageCustomSEO={blogPageDetailsSEO} />
       <PostContent post={post} relatedPosts={relatedPosts} /> */}
-      <JobPostDetails slug={params.slug} />
+      <JobPostDetailsData slug={params.slug} />
     </>
   );
 };

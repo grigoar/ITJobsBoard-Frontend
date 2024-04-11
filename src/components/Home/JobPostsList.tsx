@@ -1,5 +1,5 @@
 import React from 'react';
-import { JobPostOverviewEntity } from '@/models/JobPosts/GetJobPostsRes';
+import { JobPostOverviewEntity } from '@/models/JobPosts/JobPostOverviewEntity';
 import JobPostCard from './JobPostCard';
 
 interface Props {
@@ -18,7 +18,7 @@ const JobPostsList = ({ jobPosts }: Props) => {
   return (
     <ul className="w-full">
       {jobPosts.map((jobPost) => (
-        <JobPostCard key={jobPost.id} jobPost={jobPost} />
+        <JobPostCard key={jobPost.slug} jobPost={jobPost} />
       ))}
     </ul>
   );
