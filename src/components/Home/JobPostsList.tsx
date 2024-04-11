@@ -1,5 +1,5 @@
 import React from 'react';
-import { JobPostOverviewEntity } from '@/models/JobPosts/GetJobPostsRes';
+import { JobPostOverviewEntity } from '@/models/JobPosts/JobPostOverviewEntity';
 import JobPostCard from './JobPostCard';
 
 interface Props {

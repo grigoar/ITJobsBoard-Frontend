@@ -21,6 +21,7 @@ import { TagEntity } from '@/models/tags/TagEntity';
 import { LocationPlace } from '@/models/Common/LocationPlace';
 import AddJobPostValidationModel from '@/validations/jobPosts/AddJobPostValidationModel';
 import { createJobPostBackendTags } from '@/lib/jobPosts/jobPostsHelpers';
+import constants from '@/utils/constants';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -114,7 +115,7 @@ const AddJobPost = () => {
     mode: 'all',
 
     defaultValues: {
-      color: '#0000ff',
+      color: constants.DEFAULT_COLOR_POST,
       title: 'Full Stack Developer',
       description: 'We are looking for a full stack developer to join our team',
       minSalary: 2000,
@@ -351,7 +352,7 @@ const AddJobPost = () => {
             name="description"
             id="description"
             label="Description"
-            styling="[&]:h-40 [&]:p-0 max-h-[400px]"
+            styling="[&]:h-40 [&]:p-0 max-h-[400px] min-h-[100px]"
             required
             errors={errors.description?.message}
             dirtyField={dirtyFields.description}
@@ -562,13 +563,14 @@ const AddJobPost = () => {
                 submitted={isSubmitted}
               />
 
-              <FormInput
+              <FormTextarea
                 register={register}
                 placeholder="Add a company description here..."
                 type="text"
                 name="newCompany.description"
                 id="newCompany.description"
                 label="Company Description"
+                styling=" [&]:p-0 max-h-[400px] min-h-[100px]"
                 required
                 errors={errors.newCompany?.description?.message}
                 dirtyField={dirtyFields.newCompany?.description}
@@ -659,6 +661,7 @@ const AddJobPost = () => {
               dirtyField={dirtyFields.color}
               watchField={watch('color')}
               submitted={isSubmitted}
+              setValue={setValue}
             ></FormInput>
           </div>
 

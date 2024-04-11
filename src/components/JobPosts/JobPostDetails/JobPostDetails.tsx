@@ -11,17 +11,17 @@ const JobPostDetails = ({ slug }: Props) => {
   const { data: jobPostData } = useGetJobPostByIDQuery(slug);
   // console.log(slug);
 
+  console.log('jobPostData', jobPostData);
+
+  if (!jobPostData) {
+    return <div>Loading...</div>;
+  }
   return (
     <div>
-      Job Post Details Page
-      {jobPostData ? (
-        <div>
-          <h1>{jobPostData?.jobPost.title}</h1>
-          <p>{jobPostData?.jobPost.description}</p>
-        </div>
-      ) : (
-        <div>Loading...</div>
-      )}
+      <div>
+        <h1>{jobPostData?.item.title}</h1>
+        <p>{jobPostData?.item.description}</p>
+      </div>
     </div>
   );
 };

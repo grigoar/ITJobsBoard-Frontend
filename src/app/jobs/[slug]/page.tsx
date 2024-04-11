@@ -4,7 +4,7 @@ import React from 'react';
 // import { BlogPostModel } from '@/models/BlogPosts/BlogPostModel';
 // import SEO from '@/components/common/SEO';
 // import PostContent from '@/components/Posts/PostDetails/PostContent';
-import JobPostDetails from '@/components/JobPosts/JobPostDetails';
+import JobPostDetails from '@/components/JobPosts/JobPostDetails/JobPostDetails';
 
 interface Props {
   params: {

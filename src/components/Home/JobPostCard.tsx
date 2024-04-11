@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import Image from 'next/image';
-import { JobPostOverviewEntity } from '@/models/JobPosts/GetJobPostsRes';
 import Color from 'color';
 import { TagListName } from '@/models/tags/TagList.type';
-import TagLabel from './TagLabel';
+import { JobPostOverviewEntity } from '@/models/JobPosts/JobPostOverviewEntity';
+import TagLabel from '../common/UI/TagLabel';
 
 interface Props {
   // children: React.ReactNode;
