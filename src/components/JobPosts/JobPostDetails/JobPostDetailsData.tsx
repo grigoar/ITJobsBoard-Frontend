@@ -1,7 +1,7 @@
 'use client';
 
-import { useGetJobPostByIDQuery } from '@/api/jobPostsApi';
 import React from 'react';
+import { useGetJobPostBySlugQuery } from '@/api/jobPostsApi';
 import JobPostDetailsView from './JobPostDetailsView';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const JobPostDetailsData = ({ slug }: Props) => {
-  const { data: jobPostData } = useGetJobPostByIDQuery(slug);
+  const { data: jobPostData } = useGetJobPostBySlugQuery(slug);
   // console.log(slug);
 
   console.log('jobPostData', jobPostData);

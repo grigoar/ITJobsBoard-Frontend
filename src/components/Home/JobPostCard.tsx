@@ -29,7 +29,7 @@ const JobPostCard = ({ jobPost }: Props) => {
   // console.log('backgroundColor', backgroundColor.isDark());
   // console.log('backgroundColor', backgroundColor.isLight());
 
-  const linkPath = `/jobs/${jobPost.id}`;
+  const linkPath = `/jobs/${jobPost.slug}`;
   // const imageLogoCompany = '/images/logos/logo1.png';
   // const imageLogoCompany = company.logoImage? company'/images/logos/logo1.png';
 

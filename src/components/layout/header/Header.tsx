@@ -101,7 +101,8 @@ const Header = () => {
   } else if (pathName === '/404') {
     pageTitle = '404';
   } else {
-    pageTitle = 'Page Not Found';
+    // pageTitle = 'Page Not Found';
+    pageTitle = '';
   }
 
   return (
@@ -141,13 +142,9 @@ const Header = () => {
           )}
         </div>
         <div className="absolute bottom-0 right-0 mt-4 flex translate-y-[125%] items-center justify-center">
-          {isUserLogged ? (
-            <Button style={`btn btn-ghost !mt-0 mr-2`} link={'/add-job'}>
+          {!pathName?.includes('/jobs/') && (
+            <Button style={`btn btn-ghost !mt-0 mr-2`} link={`${isUserLogged ? '/add-job' : '/login?add-job=true'}`}>
               Post a Job
-            </Button>
-          ) : (
-            <Button style={`btn btn-ghost !mt-0 mr-2`} link={'/login?add-job=true'}>
-              Login to Post a Job
             </Button>
           )}
           <Switch

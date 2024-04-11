@@ -35,7 +35,7 @@ const jobPostsApi = itJobsBoardApi.injectEndpoints({
       keepUnusedDataFor: 10,
       providesTags: [constants.COMPANIES_TAG, constants.JOB_POSTS_TAG],
     }),
-    getJobPostByID: builder.query<ApiGetOneGenericResponse<JobPostOverviewEntity>, string>({
+    getJobPostBySlug: builder.query<ApiGetOneGenericResponse<JobPostOverviewEntity>, string>({
       query: (jobPostId: string) => {
         return {
           url: `job-posts/${jobPostId}`,
@@ -47,4 +47,4 @@ const jobPostsApi = itJobsBoardApi.injectEndpoints({
   }),
 });
 
-export const { useAddNewJobPostMutation, useGetAllJobPostsQuery, useGetJobPostByIDQuery } = jobPostsApi;
+export const { useAddNewJobPostMutation, useGetAllJobPostsQuery, useGetJobPostBySlugQuery } = jobPostsApi;

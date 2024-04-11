@@ -65,15 +65,15 @@ const nextConfig = (phase) => {
       domains: ['it-jobs-board-images.s3.eu-central-1.amazonaws.com'],
     },
     // * not needed for now
-    // async redirects() {
-    //   return [
-    //     {
-    //       source: '/admin-panel',
-    //       destination: '/admin-panel/users',
-    //       permanent: true,
-    //     },
-    //   ];
-    // },
+    async redirects() {
+      return [
+        {
+          source: '/jobs',
+          destination: '/',
+          permanent: true,
+        },
+      ];
+    },
     async headers() {
       return [
         {

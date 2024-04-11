@@ -18,7 +18,7 @@ const JobPostsList = ({ jobPosts }: Props) => {
   return (
     <ul className="w-full">
       {jobPosts.map((jobPost) => (
-        <JobPostCard key={jobPost.id} jobPost={jobPost} />
+        <JobPostCard key={jobPost.slug} jobPost={jobPost} />
       ))}
     </ul>
   );

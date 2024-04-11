@@ -10,14 +10,10 @@ export type JobPostOverviewEntity = {
   isHighlighted: boolean;
   color: string;
   isPremium: boolean;
+  slug: string;
   created_at: string;
   updated_at: string;
-  // tags: {
-  //   id: string;
-  //   name: string;
-  //   type: string;
-  //   labelName: string;
-  // }[];
+
   tags: TagEntity[];
   company: {
     id: string;
