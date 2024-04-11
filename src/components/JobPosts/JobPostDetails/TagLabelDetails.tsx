@@ -15,11 +15,17 @@ const TagLabelDetails = ({ name, values, color }: Props) => {
       className={`mb-1 mr-1 flex h-[80px] w-[150px] flex-col items-center  justify-center rounded-xl border-2 p-1 text-sm font-semibold`}
     >
       <div className="text-center text-[var(--color-blue-light)]">{name}</div>
-      {values.map((value) => (
-        <div className="mt-2 text-center text-lg" key={value}>
+      <div className="mt-2 inline-block text-center text-lg"> {values.join(', ')}</div>
+      {/* {values.map((value) => (
+        <span className="text-center text-lg" key={value}>
+          {value}
+        </span>
+      ))} */}
+      {/* {values.map((value) => (
+        <div className="mt-2 inline-block text-center text-lg" key={value}>
           {value}
         </div>
-      ))}
+      ))} */}
     </div>
   );
 };

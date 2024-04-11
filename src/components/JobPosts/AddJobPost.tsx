@@ -263,6 +263,7 @@ const AddJobPost = () => {
       TagListName.DOMAIN,
       data.companyDomainTag != null ? [data.companyDomainTag] : []
     );
+    const jobBenefitsTags = createJobPostBackendTags(TagListName.BENEFITS, data.benefitsTags);
 
     const jobTags = [
       ...jobTechTags,
@@ -272,6 +273,7 @@ const AddJobPost = () => {
       ...jobCompanyTypeTag,
       ...jobWorkLocationTag,
       ...jobCompanyDomainTag,
+      ...jobBenefitsTags,
     ];
     const jobPost: AddJobPostModel = {
       description: data.description,
