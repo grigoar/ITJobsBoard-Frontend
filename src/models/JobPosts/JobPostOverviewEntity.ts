@@ -1,3 +1,5 @@
+import { TagEntity } from '../tags/TagEntity';
+
 export type JobPostOverviewEntity = {
   id: string;
   description: string;
@@ -10,12 +12,13 @@ export type JobPostOverviewEntity = {
   isPremium: boolean;
   created_at: string;
   updated_at: string;
-  tags: {
-    id: string;
-    name: string;
-    type: string;
-    labelName: string;
-  }[];
+  // tags: {
+  //   id: string;
+  //   name: string;
+  //   type: string;
+  //   labelName: string;
+  // }[];
+  tags: TagEntity[];
   company: {
     id: string;
     name: string;

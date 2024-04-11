@@ -17,11 +17,11 @@ import { useAppSelector } from '@/store/hooks';
 import { CompanyEntity } from '@/models/Companies/CompanyEntity';
 import { useGetAllTagsQuery } from '@/api/tagsApi';
 import { TagListName } from '@/models/tags/TagList.type';
-import { TagEntity } from '@/models/tags/TagEntity';
 import { LocationPlace } from '@/models/Common/LocationPlace';
 import AddJobPostValidationModel from '@/validations/jobPosts/AddJobPostValidationModel';
 import { createJobPostBackendTags } from '@/lib/jobPosts/jobPostsHelpers';
 import constants from '@/utils/constants';
+import useGetJobTagsByCategory from '@/hooks/jobPosts/useGetJobTagsByCategory';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -55,25 +55,26 @@ const AddJobPost = () => {
 
   const [profileCompanies, setProfileCompanies] = useState<CompanyEntity[]>([]);
   const [googlePlaces, setGooglePlaces] = useState<LocationPlace[]>([]);
-  const [tags, setTags] = useState<{
-    techTags: TagEntity[];
-    seniorityTags: TagEntity[];
-    employmentTypeTags: TagEntity[];
-    companySizeTags: TagEntity[];
-    companyTypeTags: TagEntity[];
-    workLocationTags: TagEntity[];
-    companyDomainTags: TagEntity[];
-    benefitsTags: TagEntity[];
-  }>({
-    techTags: [],
-    seniorityTags: [],
-    employmentTypeTags: [],
-    companySizeTags: [],
-    companyTypeTags: [],
-    workLocationTags: [],
-    companyDomainTags: [],
-    benefitsTags: [],
-  });
+  const { tags } = useGetJobTagsByCategory(allTagsRes?.items || []);
+  // const [tags, setTags] = useState<{
+  //   techTags: TagEntity[];
+  //   seniorityTags: TagEntity[];
+  //   employmentTypeTags: TagEntity[];
+  //   companySizeTags: TagEntity[];
+  //   companyTypeTags: TagEntity[];
+  //   workLocationTags: TagEntity[];
+  //   companyDomainTags: TagEntity[];
+  //   benefitsTags: TagEntity[];
+  // }>({
+  //   techTags: [],
+  //   seniorityTags: [],
+  //   employmentTypeTags: [],
+  //   companySizeTags: [],
+  //   companyTypeTags: [],
+  //   workLocationTags: [],
+  //   companyDomainTags: [],
+  //   benefitsTags: [],
+  // });
   const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
   const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);
   const [imgMultipartPreview, setImgMultipartPreview] = useState<any>(null);
@@ -168,31 +169,28 @@ const AddJobPost = () => {
     setIsUserAddingNewCompany(userCompaniesRes?.items?.length === 0 || !userCompaniesRes?.items);
   }, [userCompaniesRes, setValue]);
 
-  useEffect(() => {
-    const techTagsOnly = allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.TECH_SKILL) || [];
-    const seniorityTagsOnly =
-      allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.EXPERIENCE_LEVEL) || [];
-    const employmentTypeTagsOnly =
-      allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.EMPLOYMENT_TYPE) || [];
-    const companySizeTagsOnly =
-      allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.COMPANY_SIZE) || [];
-    const companyTypeTagsOnly =
-      allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.COMPANY_TYPE) || [];
-    const workLocationTagsOnly =
-      allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.WORK_PLACE) || [];
-    const companyDomainTagsOnly = allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.DOMAIN) || [];
-    const benefitsTagsOnly = allTagsRes?.items?.filter((tag: TagEntity) => tag.type === TagListName.BENEFITS) || [];
-    setTags({
-      techTags: techTagsOnly,
-      seniorityTags: seniorityTagsOnly,
-      employmentTypeTags: employmentTypeTagsOnly,
-      companySizeTags: companySizeTagsOnly,
-      companyTypeTags: companyTypeTagsOnly,
-      workLocationTags: workLocationTagsOnly,
-      companyDomainTags: companyDomainTagsOnly,
-      benefitsTags: benefitsTagsOnly,
-    });
-  }, [allTagsRes, setTags]);
+  // useEffect(() => {
+  //   const {
+  //     techTagsOnly,
+  //     seniorityTagsOnly,
+  //     employmentTypeTagsOnly,
+  //     companySizeTagsOnly,
+  //     companyTypeTagsOnly,
+  //     workLocationTagsOnly,
+  //     companyDomainTagsOnly,
+  //     benefitsTagsOnly,
+  //   } = getJobPostTagsByType(allTagsRes?.items || []);
+  //   setTags({
+  //     techTags: techTagsOnly,
+  //     seniorityTags: seniorityTagsOnly,
+  //     employmentTypeTags: employmentTypeTagsOnly,
+  //     companySizeTags: companySizeTagsOnly,
+  //     companyTypeTags: companyTypeTagsOnly,
+  //     workLocationTags: workLocationTagsOnly,
+  //     companyDomainTags: companyDomainTagsOnly,
+  //     benefitsTags: benefitsTagsOnly,
+  //   });
+  // }, [allTagsRes, setTags]);
 
   useEffect(() => {
     if (companySelectedOption) {
