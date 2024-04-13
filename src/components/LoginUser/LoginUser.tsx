@@ -153,21 +153,31 @@ const LoginUser = () => {
           />
           {/* <p>{errors.email ? errors.email : ''}</p> */}
 
-          <FormInput
-            register={register}
-            placeholder="***********"
-            type="password"
-            name="password"
-            id="password"
-            label="Password"
-            required
-            control={control}
-            errors={errors.password?.message}
-            // touchedField={touchedFields.password}
-            dirtyField={dirtyFields.password}
-            watchField={watch('password')}
-            submitted={isSubmitted}
-          />
+          <div className={'classesLogin.formControlEmail flex w-full flex-col'}>
+            <FormInput
+              register={register}
+              placeholder="***********"
+              type="password"
+              name="password"
+              id="password"
+              label="Password"
+              required
+              control={control}
+              errors={errors.password?.message}
+              // touchedField={touchedFields.password}
+              dirtyField={dirtyFields.password}
+              watchField={watch('password')}
+              submitted={isSubmitted}
+            />
+            <Button
+              link="/forgot-password"
+              style={
+                'classesLogin.forgotPasswordLink text-sm text-[var(--text-color-primary)]  hover:brightness-[80%] text-right '
+              }
+            >
+              Forgot Password?
+            </Button>
+          </div>
 
           {/* {errors.password && <ul>{errors.password?.types?.map((error, index) => <li key={index}>{error}</li>)}</ul>} */}
           {/* <button type="submit">Sign in</button> */}

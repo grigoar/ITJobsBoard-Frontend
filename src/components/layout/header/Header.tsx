@@ -98,6 +98,12 @@ const Header = () => {
     pageTitle = 'Add a New Job Post';
   } else if (pathName === '/profile') {
     pageTitle = 'Profile';
+  } else if (pathName?.includes('/email/confirm')) {
+    pageTitle = 'Confirm Email';
+  } else if (pathName?.includes('/reset-password')) {
+    pageTitle = 'Reset Password';
+  } else if (pathName?.includes('/forgot-password')) {
+    pageTitle = 'Forgot Password';
   } else if (pathName === '/404') {
     pageTitle = '404';
   } else {
