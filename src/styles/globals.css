@@ -1,5 +1,5 @@
 @import './themes.css';
-/* @import './utility-global.css'; */
+@import './utility-global.css';
 
 @tailwind base;
 @tailwind components;

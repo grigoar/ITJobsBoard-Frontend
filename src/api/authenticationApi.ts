@@ -70,6 +70,14 @@ const authenticationApi = itJobsBoardApi.injectEndpoints({
       }),
       invalidatesTags: [constants.USER_PROFILE_TAG],
     }),
+
+    validateEmail: builder.mutation<void, string>({
+      query: (validationToken) => ({
+        url: `profiles/validateEmail/${validationToken}`,
+        method: 'POST',
+      }),
+      invalidatesTags: [constants.USER_PROFILE_TAG],
+    }),
   }),
 });
 
@@ -83,4 +91,5 @@ export const {
   useCheckLoggedUserQuery,
   useLazyGoogleAuthHandlerQuery,
   useConfirmEmailMutation,
+  useValidateEmailMutation,
 } = authenticationApi;
