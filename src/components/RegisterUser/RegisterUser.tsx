@@ -23,6 +23,7 @@ import LoginSuggestion from '../common/LogInSuggestion/LoginSuggestion';
 
 // TODO: style the login and register on navbar
 // TODO: Sign in with google account and linke the accounts
+// TODO: Change the text for login with google to Register with google
 
 const RegisterUser = () => {
   const dispatchAppStore = useAppDispatch();
@@ -45,6 +46,7 @@ const RegisterUser = () => {
     formState: { errors, dirtyFields },
     reset,
     watch,
+    control,
   } = useForm({
     resolver: yupResolver(SignUpUserValidationBody, { abortEarly: false, recursive: true }),
     // mode: 'onTouched',
@@ -125,6 +127,7 @@ const RegisterUser = () => {
             id="email"
             label="Email"
             required
+            control={control}
             errors={errors.email?.message}
             // touchedField={touchedFields.email}
             dirtyField={dirtyFields.email}
@@ -140,6 +143,7 @@ const RegisterUser = () => {
             id="password"
             label="Password"
             required
+            control={control}
             errors={errors.password?.message}
             dirtyField={dirtyFields.password}
             watchField={watch('password')}
@@ -152,6 +156,7 @@ const RegisterUser = () => {
             id="passwordConfirm"
             label="Password Confirm"
             required
+            control={control}
             errors={errors.passwordConfirm?.message}
             dirtyField={dirtyFields.passwordConfirm}
             watchField={watch('passwordConfirm')}

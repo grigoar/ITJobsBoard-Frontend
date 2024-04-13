@@ -21,8 +21,12 @@ import Card from '../common/Card/Card';
 import FormWrapper from '../common/Form/FormWrapper';
 import MessageResult from '../common/MessageResult/MessageResult';
 import LoginSuggestion from '../common/LogInSuggestion/LoginSuggestion';
+import PasswordIconOverInputActive from '../common/Form/PasswordIconOverInput/PasswordIconOverInputActive';
+import PasswordIconOverInputInactive from '../common/Form/PasswordIconOverInput/PasswordIconOverInputInactive';
 
 // TODO: check the refresh page and the theme
+// TODO: Login problem when submitting the form using the enter key
+// TODO: Add show/hide password button
 const LoginUser = () => {
   const dispatchAppStore = useAppDispatch();
 
@@ -42,6 +46,7 @@ const LoginUser = () => {
     formState: { errors, dirtyFields, isSubmitted },
     reset,
     watch,
+    control,
   } = useForm({
     resolver: yupResolver(LoginUserValidationBody, { abortEarly: false, recursive: true }),
     // mode: 'onTouched',
@@ -107,6 +112,7 @@ const LoginUser = () => {
   };
 
   const onSubmitHandler = (data: LoginUserModel) => {
+    console.log('data', data);
     loginUserHandler(data);
   };
 
@@ -139,7 +145,8 @@ const LoginUser = () => {
             name="email"
             id="email"
             label="Email"
-            required
+            required={true}
+            control={control}
             errors={errors.email?.message}
             // touchedField={touchedFields.email}
             dirtyField={dirtyFields.email}
@@ -148,20 +155,34 @@ const LoginUser = () => {
           />
           {/* <p>{errors.email ? errors.email : ''}</p> */}
 
-          <FormInput
-            register={register}
-            placeholder="***********"
-            type="password"
-            name="password"
-            id="password"
-            label="Password"
-            required
-            errors={errors.password?.message}
-            // touchedField={touchedFields.password}
-            dirtyField={dirtyFields.password}
-            watchField={watch('password')}
-            submitted={isSubmitted}
-          />
+          <div className={'classesLogin.formControlEmail flex w-full flex-col'}>
+            <FormInput
+              register={register}
+              placeholder="***********"
+              type="password"
+              name="password"
+              id="password"
+              label="Password"
+              required
+              control={control}
+              errors={errors.password?.message}
+              // touchedField={touchedFields.password}
+              dirtyField={dirtyFields.password}
+              watchField={watch('password')}
+              submitted={isSubmitted}
+              hasInputIcon={true}
+              inputIconActive={<PasswordIconOverInputActive />}
+              inputIconInactive={<PasswordIconOverInputInactive />}
+            />
+            <Button
+              link="/forgot-password"
+              style={
+                'classesLogin.forgotPasswordLink text-sm text-[var(--text-color-primary)]  hover:brightness-[80%] text-right '
+              }
+            >
+              Forgot Password?
+            </Button>
+          </div>
 
           {/* {errors.password && <ul>{errors.password?.types?.map((error, index) => <li key={index}>{error}</li>)}</ul>} */}
           {/* <button type="submit">Sign in</button> */}

@@ -4,6 +4,8 @@ import { UserAuthResponse } from '@/models/Users/UserAuthResponse';
 import CheckUniqueEmailModel from '@/models/Users/CheckUniqueEmailModel';
 import { CheckLoggedInUserResponseModel } from '@/models/Users/CheckLoggedInUserResponseModel';
 import LoginUserModel from '@/models/Users/LoginUserModel';
+import ForgotPasswordBodyModel from '@/models/Users/ForgotPasswordModel';
+import ResetPasswordModel from '@/models/Users/ResetPasswordBodyModel';
 import itJobsBoardApi from './indexITJobsBoardApi';
 
 const authenticationApi = itJobsBoardApi.injectEndpoints({
@@ -62,6 +64,37 @@ const authenticationApi = itJobsBoardApi.injectEndpoints({
         credentials: 'same-origin',
       }),
     }),
+
+    confirmEmail: builder.mutation<void, void>({
+      query: () => ({
+        url: 'profiles/confirmEmail',
+        method: 'POST',
+      }),
+      invalidatesTags: [constants.USER_PROFILE_TAG],
+    }),
+
+    validateEmail: builder.mutation<void, string>({
+      query: (validationToken) => ({
+        url: `profiles/validateEmail/${validationToken}`,
+        method: 'POST',
+      }),
+      invalidatesTags: [constants.USER_PROFILE_TAG],
+    }),
+
+    forgotPassword: builder.mutation<void, ForgotPasswordBodyModel>({
+      query: (data: ForgotPasswordBodyModel) => ({
+        url: '/forgotPassword',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    resetEmailPassword: builder.mutation<void, ResetPasswordModel>({
+      query: (passwordResetData: ResetPasswordModel) => ({
+        url: `/resetPassword/${passwordResetData.resetPassToken}`,
+        method: 'PATCH',
+        body: passwordResetData.body,
+      }),
+    }),
   }),
 });
 
@@ -74,4 +107,8 @@ export const {
   useLogoutCurrentUserMutation,
   useCheckLoggedUserQuery,
   useLazyGoogleAuthHandlerQuery,
+  useConfirmEmailMutation,
+  useValidateEmailMutation,
+  useForgotPasswordMutation,
+  useResetEmailPasswordMutation,
 } = authenticationApi;

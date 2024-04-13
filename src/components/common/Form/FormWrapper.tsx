@@ -11,7 +11,7 @@ const FormWrapper = ({ children, onSubmitHandler, customStyle, addStyles }: Prop
   return (
     <form
       onSubmit={onSubmitHandler}
-      className={`${customStyle != null ? customStyle : `${addStyles} form mb-8 flex flex-row flex-wrap items-center`}`}
+      className={`${customStyle != null ? customStyle : `${addStyles} form  flex flex-row flex-wrap items-center`}`}
       autoComplete="off"
     >
       {children}
