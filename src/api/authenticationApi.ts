@@ -62,6 +62,14 @@ const authenticationApi = itJobsBoardApi.injectEndpoints({
         credentials: 'same-origin',
       }),
     }),
+
+    confirmEmail: builder.mutation<void, void>({
+      query: () => ({
+        url: 'profiles/confirmEmail',
+        method: 'POST',
+      }),
+      invalidatesTags: [constants.USER_PROFILE_TAG],
+    }),
   }),
 });
 
@@ -74,4 +82,5 @@ export const {
   useLogoutCurrentUserMutation,
   useCheckLoggedUserQuery,
   useLazyGoogleAuthHandlerQuery,
+  useConfirmEmailMutation,
 } = authenticationApi;

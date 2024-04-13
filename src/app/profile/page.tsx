@@ -1,4 +1,4 @@
-import Profile from '@/components/Profile/Profile';
+import ProfileOverview from '@/components/Profile/ProfileOverview';
 import { checkUserIsLoggedIn } from '@/utils/helpersServer';
 import { redirect } from 'next/navigation';
 import React, { Suspense } from 'react';
@@ -11,7 +11,7 @@ const ProfilePage = async () => {
 
   return (
     <Suspense>
-      <Profile />
+      <ProfileOverview />
     </Suspense>
   );
 };

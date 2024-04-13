@@ -23,6 +23,7 @@ import MessageResult from '../common/MessageResult/MessageResult';
 import LoginSuggestion from '../common/LogInSuggestion/LoginSuggestion';
 
 // TODO: check the refresh page and the theme
+// TODO: Login problem when submitting the form using the enter key
 const LoginUser = () => {
   const dispatchAppStore = useAppDispatch();
 

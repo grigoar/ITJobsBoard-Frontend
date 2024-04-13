@@ -23,6 +23,7 @@ import LoginSuggestion from '../common/LogInSuggestion/LoginSuggestion';
 
 // TODO: style the login and register on navbar
 // TODO: Sign in with google account and linke the accounts
+// TODO: Change the text for login with google to Register with google
 
 const RegisterUser = () => {
   const dispatchAppStore = useAppDispatch();
