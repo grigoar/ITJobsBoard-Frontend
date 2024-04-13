@@ -15,8 +15,13 @@ type Props = {
   styling?: string;
   setValue?: any;
   control: any;
-
-  [extra: string]: any;
+  required?: boolean;
+  hasInputIcon?: boolean;
+  type: string;
+  inputIconActive?: React.ReactNode;
+  inputIconInactive?: React.ReactNode;
+  register: any;
+  placeholder?: string;
 };
 
 const FormInput = ({
@@ -33,12 +38,19 @@ const FormInput = ({
   styling,
   setValue,
   control,
+  required,
+  type,
+  // hasInputIcon: inputIcon,
+  inputIconActive,
+  inputIconInactive,
+  hasInputIcon,
   ...inputProps
 }: Props) => {
   const [isTyping, setIsTyping] = useState(false);
   const [watchFieldPrev, setWatchFieldPrev] = useState<string | undefined>('');
   const [colorValue, setColorValue] = useState<string>(constants.DEFAULT_COLOR_POST);
   const [colorTimeout, setColorTimeout] = useState<any>(0);
+  const [showSensitive, setShowSensitive] = useState<boolean>(false);
 
   const [errorsArray, setErrorsArray] = useState<string[]>([]);
 
@@ -54,10 +66,10 @@ const FormInput = ({
   }, [errors, extraError]);
 
   useEffect(() => {
-    if (inputProps.type === 'color') {
+    if (type === 'color') {
       setValue(name, colorValue);
     }
-  }, [colorValue, inputProps.type, name, setValue]);
+  }, [colorValue, type, name, setValue]);
 
   const errorMessages =
     // ((isTyping || touchedField) &&
@@ -110,10 +122,16 @@ const FormInput = ({
   const isInputProcessingClass =
     (dirtyField === false || errorsArray.length === 0) && 'border-2 border-[var(--color-blue-light)]';
 
+  const activeInactiveIconHandler = () => {
+    setShowSensitive((prev) => !prev);
+  };
+  const inputIcon = hasInputIcon && showSensitive ? inputIconActive : inputIconInactive || null;
+
   return (
     <>
       <label className="" htmlFor={id}>
         {label}
+        {required && <span className="text-[var(--color-red-light)]">*</span>}
       </label>
       <Controller
         // name="companyID"
@@ -121,26 +139,37 @@ const FormInput = ({
         control={control}
         // render={({ field: { onChange, value, ref } }) => (
         render={({ field }) => (
-          <input
-            {...register(name)}
-            // {...field}
-            id={id}
-            name={name}
-            className={`w-full border-2 border-[var(--color-blue-light)] ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} rounded-md p-3  text-[var(--color-grey-dark-5)] focus:outline-none focus-visible:shadow-[0_0_10px_var(--color-green-light)] ${styling}`}
-            {...inputProps}
-            onChange={(e) => {
-              if (inputProps.type === 'color') {
-                e.preventDefault();
-                clearTimeout(colorTimeout);
-                // set the color with a delay
-                setColorTimeout(
-                  setTimeout(() => {
-                    setColorValue(e.target.value);
-                  }, 300)
-                );
-              } else return field.onChange(e);
-            }}
-          />
+          <div className="relative w-full">
+            <input
+              {...register(name)}
+              // {...field}
+              id={id}
+              name={name}
+              type={showSensitive && inputIcon ? 'text' : type}
+              className={`w-full border-2 border-[var(--color-blue-light)] ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} rounded-md p-3  text-[var(--color-grey-dark-5)] focus:outline-none focus-visible:shadow-[0_0_10px_var(--color-green-light)] ${styling}`}
+              {...inputProps}
+              onChange={(e) => {
+                if (type === 'color') {
+                  e.preventDefault();
+                  clearTimeout(colorTimeout);
+                  // set the color with a delay
+                  setColorTimeout(
+                    setTimeout(() => {
+                      setColorValue(e.target.value);
+                    }, 300)
+                  );
+                } else return field.onChange(e);
+              }}
+            />
+            {inputIcon && (
+              <div
+                className={`absolute right-3 top-[50%] ${errorMessages.length === 0 ? 'translate-y-[-100%]' : 'translate-y-[-50%]'} transform text-xl`}
+                onClick={activeInactiveIconHandler}
+              >
+                {inputIcon}
+              </div>
+            )}
+          </div>
         )}
       />
       {!isTyping && errorMessages.length > 0 && <ul className="mt-2 w-full">{errorMessages}</ul>}

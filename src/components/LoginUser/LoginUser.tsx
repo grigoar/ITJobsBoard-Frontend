@@ -21,6 +21,8 @@ import Card from '../common/Card/Card';
 import FormWrapper from '../common/Form/FormWrapper';
 import MessageResult from '../common/MessageResult/MessageResult';
 import LoginSuggestion from '../common/LogInSuggestion/LoginSuggestion';
+import PasswordIconOverInputActive from '../common/Form/PasswordIconOverInput/PasswordIconOverInputActive';
+import PasswordIconOverInputInactive from '../common/Form/PasswordIconOverInput/PasswordIconOverInputInactive';
 
 // TODO: check the refresh page and the theme
 // TODO: Login problem when submitting the form using the enter key
@@ -143,7 +145,7 @@ const LoginUser = () => {
             name="email"
             id="email"
             label="Email"
-            required
+            required={true}
             control={control}
             errors={errors.email?.message}
             // touchedField={touchedFields.email}
@@ -168,6 +170,9 @@ const LoginUser = () => {
               dirtyField={dirtyFields.password}
               watchField={watch('password')}
               submitted={isSubmitted}
+              hasInputIcon={true}
+              inputIconActive={<PasswordIconOverInputActive />}
+              inputIconInactive={<PasswordIconOverInputInactive />}
             />
             <Button
               link="/forgot-password"

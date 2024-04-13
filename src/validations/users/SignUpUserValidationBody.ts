@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 
 const SignUpUserValidationBody = yup.object().shape({
-  email: yup.string().email('Email must be valid.').required(),
+  email: yup.string().email('Email must be valid.').required('Email is required'),
   password: yup
     .string()
     .test('password', 'Password must contain at least one number', (value) => {

@@ -19,7 +19,7 @@ import MessageResult from '../common/MessageResult/MessageResult';
 
 // TODO: Add required on FormInput
 // TODO: Add hide/show password on FormInput
-// ! TODO: Need to investigate more about Suspense and how to use it
+// ! TODO: Need to investigate more about Suspense and how to use it - https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
 const ResetPassword = () => {
   const [resetPassword, { isLoading }] = useResetEmailPasswordMutation();
 

@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 
 const LoginUserValidationBody = yup.object().shape({
-  email: yup.string().email('Email must be valid.').required(),
+  email: yup.string().email('Email must be valid.').required('Email is required'),
   password: yup
     .string()
     // .min(12)
