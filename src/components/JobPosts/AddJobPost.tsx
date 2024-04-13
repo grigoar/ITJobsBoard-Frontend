@@ -368,6 +368,7 @@ const AddJobPost = () => {
             id="title"
             label="Title"
             required
+            control={control}
             errors={errors.title?.message}
             dirtyField={dirtyFields.title}
             watchField={watch('title')}
@@ -385,6 +386,7 @@ const AddJobPost = () => {
                 label="Min Salary"
                 styling="flex flex-col"
                 required
+                control={control}
                 errors={errors.minSalary?.message}
                 dirtyField={dirtyFields.minSalary}
                 watchField={watch('minSalary')}
@@ -400,6 +402,7 @@ const AddJobPost = () => {
                 id="maxSalary"
                 label="Max Salary"
                 required
+                control={control}
                 errors={errors.maxSalary?.message}
                 dirtyField={dirtyFields.maxSalary}
                 watchField={watch('maxSalary')}
@@ -557,6 +560,7 @@ const AddJobPost = () => {
                 id="newCompany.name"
                 label="Company Name"
                 required
+                control={control}
                 errors={errors.newCompany?.name?.message}
                 dirtyField={dirtyFields.newCompany?.name}
                 watchField={watch('newCompany.name')}
@@ -586,6 +590,7 @@ const AddJobPost = () => {
                 id="newCompany.email"
                 label="Company Email"
                 required
+                control={control}
                 errors={errors.newCompany?.email?.message}
                 dirtyField={dirtyFields.newCompany?.email}
                 watchField={watch('newCompany.email')}
@@ -600,6 +605,7 @@ const AddJobPost = () => {
                 id="newCompany.logoImage"
                 label="Company Logo Image"
                 required
+                control={control}
                 errors={errors.newCompany?.logoImage?.message}
                 dirtyField={dirtyFields.newCompany?.logoImage}
                 watchField={watch('newCompany.logoImage')}
@@ -620,6 +626,7 @@ const AddJobPost = () => {
                 id="newCompany.websiteURL"
                 label="Company Website URL"
                 required
+                control={control}
                 errors={errors.newCompany?.websiteURL?.message}
                 dirtyField={dirtyFields.newCompany?.websiteURL}
                 watchField={watch('newCompany.websiteURL')}
@@ -638,6 +645,7 @@ const AddJobPost = () => {
               label=""
               styling="[&]:w-6 [&]:p-0 !mb-0 h-6 ml-1  cursor-pointer accent-[var(--color-green-light)] "
               required
+              control={control}
               errors={errors.isHighlighted?.message}
               dirtyField={dirtyFields.isHighlighted}
               watchField={watch('isHighlighted')}
@@ -656,6 +664,7 @@ const AddJobPost = () => {
               label="Color: "
               styling="[&]:w-20 [&]:p-0 !mb-0 "
               required
+              control={control}
               errors={errors.color?.message}
               // touchedField={touchedFields.email}
               dirtyField={dirtyFields.color}

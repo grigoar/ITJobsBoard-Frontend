@@ -13,6 +13,9 @@ type EmailValidationProps = {
   userEmail: string;
 };
 
+// TODO: Improve styling
+// TODO: Style better the button
+// TODO: Investigate why the form submit with enter key is not working
 const EmailValidation = ({ emailValidated, userEmail }: EmailValidationProps) => {
   const [emailInput, setEmailInput] = useState(userEmail);
   const [isButtonValidationDisabled, setIsButtonValidationDisabled] = useState(false);
@@ -104,10 +107,14 @@ const EmailValidation = ({ emailValidated, userEmail }: EmailValidationProps) =>
           type="button"
           onClick={confirmMailHandler}
           disabled={emailValidated || isButtonValidationDisabled}
-          className={'buttonValidateEmailClasses btn btn-ghost'}
+          className={`buttonValidateEmailClasses  relative mb-4 ${countdown > 0 ? 'btnDisabled' : 'btn btn-ghost'}`}
         >
           Validate Email
-          <div className={'classes.validateTimerText'}>{validateDisabledTimerText}</div>
+          <div
+            className={`classes.validateTimerText absolute bottom-0 right-[50%] translate-x-[50%] translate-y-[130%] transform `}
+          >
+            {validateDisabledTimerText}
+          </div>
         </button>
       )}
       <MessageResult isLoadingAction={isConfirmingEmail} isError={isMessageError} message={resultMessageDisplay} />

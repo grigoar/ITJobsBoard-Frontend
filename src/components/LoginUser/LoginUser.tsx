@@ -24,6 +24,7 @@ import LoginSuggestion from '../common/LogInSuggestion/LoginSuggestion';
 
 // TODO: check the refresh page and the theme
 // TODO: Login problem when submitting the form using the enter key
+// TODO: Add show/hide password button
 const LoginUser = () => {
   const dispatchAppStore = useAppDispatch();
 
@@ -43,6 +44,7 @@ const LoginUser = () => {
     formState: { errors, dirtyFields, isSubmitted },
     reset,
     watch,
+    control,
   } = useForm({
     resolver: yupResolver(LoginUserValidationBody, { abortEarly: false, recursive: true }),
     // mode: 'onTouched',
@@ -108,6 +110,7 @@ const LoginUser = () => {
   };
 
   const onSubmitHandler = (data: LoginUserModel) => {
+    console.log('data', data);
     loginUserHandler(data);
   };
 
@@ -141,6 +144,7 @@ const LoginUser = () => {
             id="email"
             label="Email"
             required
+            control={control}
             errors={errors.email?.message}
             // touchedField={touchedFields.email}
             dirtyField={dirtyFields.email}
@@ -157,6 +161,7 @@ const LoginUser = () => {
             id="password"
             label="Password"
             required
+            control={control}
             errors={errors.password?.message}
             // touchedField={touchedFields.password}
             dirtyField={dirtyFields.password}
