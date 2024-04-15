@@ -11,7 +11,7 @@ import EmailValidation from './Account/EmailValidation';
 const ProfileOverview = () => {
   const { loggedInUser } = useAppSelector((state) => state.userData);
   return (
-    <div>
+    <div className="flex flex-col items-start justify-start">
       <h1>Profile Overview</h1>
       <EmailValidation emailValidated={loggedInUser.emailValidated} userEmail={loggedInUser.email} />
     </div>
