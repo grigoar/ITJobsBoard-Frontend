@@ -12,7 +12,7 @@ interface Props {
 const JobPostsList = ({ jobPosts }: Props) => {
   if (!jobPosts) {
     // ! TODO: This needs a little more work
-    return <div>No job posts found</div>;
+    return <div className="text-center">No job posts found at this moment!</div>;
   }
 
   return (
