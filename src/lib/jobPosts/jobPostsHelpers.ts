@@ -1,6 +1,6 @@
 import { AddTagModel } from '@/models/JobPosts/AddJobPostModel';
-import { TagEntity } from '@/models/tags/TagEntity';
-import { TagListName, TagListNameType } from '@/models/tags/TagList.type';
+import { TagEntity } from '@/models/Tags/TagEntity';
+import { TagListName, TagListNameType } from '@/models/Tags/TagList.type';
 import { TagsValidationType } from '@/validations/jobPosts/AddJobPostValidationModel';
 
 export const createJobPostBackendTags = (

@@ -12,9 +12,8 @@ const ProfileOverview = () => {
   const { loggedInUser } = useAppSelector((state) => state.userData);
   return (
     <div className="flex flex-col items-start justify-start">
-      <h2>Profile Overview</h2>
-      <EmailValidation emailValidated={loggedInUser.emailValidated} userEmail={loggedInUser.email} />
       <div>Avatar</div>
+      <EmailValidation emailValidated={loggedInUser.emailValidated} userEmail={loggedInUser.email} />
       <div>FirstName</div>
       <div>LastName</div>
       <div>Location</div>

@@ -40,7 +40,7 @@ const ProfileHeader = () => {
 
   return (
     <header className="relative  w-full font-semibold">
-      <nav className="relative flex justify-center  gap-6 p-2">
+      <nav className="relative flex justify-center  gap-6 pt-2">
         <div className="text-txtPrimary [&>a]:border-1 flex min-w-[150px] flex-grow justify-start gap-1 sm:gap-6">
           <Button style={`${profileOverviewPageLinkClassActive} colorRed relative`} link="/profile">
             Overview

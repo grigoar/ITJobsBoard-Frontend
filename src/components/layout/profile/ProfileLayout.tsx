@@ -19,7 +19,7 @@ const ProfileLayout = ({ children }: Props) => {
       {/* <div className="mt-6 flex h-full w-full flex-grow flex-col border-2 border-slate-200 bg-primary font-primary"> */}
       <ProfileHeader />
       {/* <div className="mx-auto flex w-full max-w-[1220px] flex-auto flex-grow items-center justify-center"> */}
-      <div className="h-full w-full px-2 pb-2">{children}</div>
+      <div className="h-full w-full px-2 ">{children}</div>
       {/* </div> */}
     </Card>
   );

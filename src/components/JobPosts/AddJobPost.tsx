@@ -16,7 +16,7 @@ import { useGetAllProfileCompaniesQuery } from '@/api/profilesApi';
 import { useAppSelector } from '@/store/hooks';
 import { CompanyEntity } from '@/models/Companies/CompanyEntity';
 import { useGetAllTagsQuery } from '@/api/tagsApi';
-import { TagListName } from '@/models/tags/TagList.type';
+import { TagListName } from '@/models/Tags/TagList.type';
 import { LocationPlace } from '@/models/Common/LocationPlace';
 import AddJobPostValidationModel from '@/validations/jobPosts/AddJobPostValidationModel';
 import { createJobPostBackendTags } from '@/lib/jobPosts/jobPostsHelpers';

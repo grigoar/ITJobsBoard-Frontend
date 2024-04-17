@@ -19,7 +19,6 @@ type AddJobPostModel = {
   companyID?: string;
   newCompany?: Partial<AddCompanyModel> | null;
   tags?: AddTagModel[];
-  customTags?: string[];
 };
 
 export default AddJobPostModel;

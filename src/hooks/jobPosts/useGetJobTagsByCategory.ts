@@ -1,5 +1,5 @@
 import { getJobPostTagsByType } from '@/lib/jobPosts/jobPostsHelpers';
-import { TagEntity } from '@/models/tags/TagEntity';
+import { TagEntity } from '@/models/Tags/TagEntity';
 import { useEffect, useState } from 'react';
 
 const useGetJobTagsByCategory = (allTags: TagEntity[]) => {

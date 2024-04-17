@@ -6,6 +6,7 @@ import { CheckLoggedInUserResponseModel } from '@/models/Users/CheckLoggedInUser
 import LoginUserModel from '@/models/Users/LoginUserModel';
 import ForgotPasswordBodyModel from '@/models/Users/ForgotPasswordModel';
 import ResetPasswordModel from '@/models/Users/ResetPasswordBodyModel';
+import { EditMyProfileModel } from '@/models/Profiles/EditProfileModel';
 import itJobsBoardApi from './indexITJobsBoardApi';
 
 const authenticationApi = itJobsBoardApi.injectEndpoints({
@@ -51,6 +52,15 @@ const authenticationApi = itJobsBoardApi.injectEndpoints({
       query: () => ({
         url: 'users/logout',
         method: 'POST',
+      }),
+      invalidatesTags: [constants.USER_PROFILE_TAG],
+    }),
+
+    updateMyProfile: builder.mutation<{ status: string; message: string }, EditMyProfileModel>({
+      query: (userProfileData: EditMyProfileModel) => ({
+        url: 'profiles/updateMe',
+        method: 'PATCH',
+        body: userProfileData,
       }),
       invalidatesTags: [constants.USER_PROFILE_TAG],
     }),
@@ -111,4 +121,5 @@ export const {
   useValidateEmailMutation,
   useForgotPasswordMutation,
   useResetEmailPasswordMutation,
+  useUpdateMyProfileMutation,
 } = authenticationApi;

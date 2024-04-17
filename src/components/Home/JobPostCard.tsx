@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Color from 'color';
-import { TagListName } from '@/models/tags/TagList.type';
+import { TagListName } from '@/models/Tags/TagList.type';
 import { JobPostOverviewEntity } from '@/models/JobPosts/JobPostOverviewEntity';
 import TagLabel from '../common/UI/TagLabel';
 
