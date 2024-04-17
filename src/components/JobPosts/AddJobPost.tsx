@@ -56,25 +56,7 @@ const AddJobPost = () => {
   const [profileCompanies, setProfileCompanies] = useState<CompanyEntity[]>([]);
   const [googlePlaces, setGooglePlaces] = useState<LocationPlace[]>([]);
   const { tags } = useGetJobTagsByCategory(allTagsRes?.items || []);
-  // const [tags, setTags] = useState<{
-  //   techTags: TagEntity[];
-  //   seniorityTags: TagEntity[];
-  //   employmentTypeTags: TagEntity[];
-  //   companySizeTags: TagEntity[];
-  //   companyTypeTags: TagEntity[];
-  //   workLocationTags: TagEntity[];
-  //   companyDomainTags: TagEntity[];
-  //   benefitsTags: TagEntity[];
-  // }>({
-  //   techTags: [],
-  //   seniorityTags: [],
-  //   employmentTypeTags: [],
-  //   companySizeTags: [],
-  //   companyTypeTags: [],
-  //   workLocationTags: [],
-  //   companyDomainTags: [],
-  //   benefitsTags: [],
-  // });
+
   const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
   const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);
   const [imgMultipartPreview, setImgMultipartPreview] = useState<any>(null);

@@ -12,6 +12,7 @@ const useGetJobTagsByCategory = (allTags: TagEntity[]) => {
     workLocationTags: TagEntity[];
     companyDomainTags: TagEntity[];
     benefitsTags: TagEntity[];
+    languagesTags: TagEntity[];
   }>({
     techTags: [],
     seniorityTags: [],
@@ -21,6 +22,7 @@ const useGetJobTagsByCategory = (allTags: TagEntity[]) => {
     workLocationTags: [],
     companyDomainTags: [],
     benefitsTags: [],
+    languagesTags: [],
   });
 
   useEffect(() => {
@@ -33,6 +35,7 @@ const useGetJobTagsByCategory = (allTags: TagEntity[]) => {
       workLocationTagsOnly,
       companyDomainTagsOnly,
       benefitsTagsOnly,
+      languagesTagsOnly,
     } = getJobPostTagsByType(allTags || []);
     setTags({
       techTags: techTagsOnly,
@@ -43,6 +46,7 @@ const useGetJobTagsByCategory = (allTags: TagEntity[]) => {
       workLocationTags: workLocationTagsOnly,
       companyDomainTags: companyDomainTagsOnly,
       benefitsTags: benefitsTagsOnly,
+      languagesTags: languagesTagsOnly,
     });
   }, [allTags, setTags]);
 

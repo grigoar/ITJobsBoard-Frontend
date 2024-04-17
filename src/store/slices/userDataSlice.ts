@@ -58,6 +58,7 @@ const userDataSlice = createSlice({
       state.loggedInUser.profileImage = action.payload.profileImage;
       state.loggedInUser.country = action.payload.country;
       state.loggedInUser.location = action.payload.location;
+      state.loggedInUser.nationality = action.payload.nationality;
       state.loggedInUser.CV = action.payload.CV;
       state.loggedInUser.linkedin = action.payload.linkedin;
       state.loggedInUser.github = action.payload.github;

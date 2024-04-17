@@ -7,6 +7,7 @@ export const TagListName = {
   WORK_PLACE: 'WORK_PLACE', // office, remote, hybrid etc.
   DOMAIN: 'DOMAIN', // finance, health, assurance etc.
   BENEFITS: 'BENEFITS', // health insurance, gym, remote work etc.
+  LANGUAGE: 'LANGUAGE', // english, spanish, french, german etc.
 } as const;
 
 export type TagListNameType = (typeof TagListName)[keyof typeof TagListName];

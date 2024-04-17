@@ -1,7 +1,7 @@
-import { AddTagModel } from '@/models/JobPosts/AddJobPostModel';
+import { AddTagModel } from '@/models/Tags/AddTagModel';
 import { TagEntity } from '@/models/Tags/TagEntity';
 import { TagListName, TagListNameType } from '@/models/Tags/TagList.type';
-import { TagsValidationType } from '@/validations/jobPosts/AddJobPostValidationModel';
+import { TagsValidationType } from '@/validations/utils/TagValidationType';
 
 export const createJobPostBackendTags = (
   tagType: TagListNameType,
@@ -28,6 +28,7 @@ export const getJobPostTagsByType = (allTagsRes: TagEntity[]) => {
   const workLocationTagsOnly = allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.WORK_PLACE) || [];
   const companyDomainTagsOnly = allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.DOMAIN) || [];
   const benefitsTagsOnly = allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.BENEFITS) || [];
+  const languagesTagsOnly = allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.LANGUAGE) || [];
 
   return {
     techTagsOnly,
@@ -38,5 +39,6 @@ export const getJobPostTagsByType = (allTagsRes: TagEntity[]) => {
     workLocationTagsOnly,
     companyDomainTagsOnly,
     benefitsTagsOnly,
+    languagesTagsOnly,
   };
 };

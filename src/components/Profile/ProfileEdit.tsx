@@ -14,6 +14,10 @@ import { toastifyError, toastifySuccess } from '@/utils/helpers';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { LocationPlace } from '@/models/Common/LocationPlace';
 import { EditMyProfileValidationModel } from '@/validations/profiles/EditProfileValidationModel';
+import useGetJobTagsByCategory from '@/hooks/jobPosts/useGetJobTagsByCategory';
+import { useGetAllTagsQuery } from '@/api/tagsApi';
+import { createJobPostBackendTags } from '@/lib/jobPosts/jobPostsHelpers';
+import { TagListName } from '@/models/Tags/TagList.type';
 import EmailValidation from './Account/EmailValidation';
 import FormInput from '../common/Form/FormInput';
 import FormWrapper from '../common/Form/FormWrapper';
@@ -22,13 +26,19 @@ import MessageResult from '../common/MessageResult/MessageResult';
 import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
 
 // TODO: Need to check the disabled buttons
+
+// TODO: Set the languages from the backend ( it should take the tags when getting the profile)
 const ProfileEdit = () => {
   const { loggedInUser } = useAppSelector((state) => state.userData);
+  console.log('loggedInUser', loggedInUser);
+  const { data: allTagsRes } = useGetAllTagsQuery(null);
 
   const { showResultErrorMessage, showResultSuccessMessage, isMessageError, resultMessageDisplay } =
     useDisplayResultMessage(10);
 
   const [updateMyProfile, { isLoading: isLoadingUpdateData }] = useUpdateMyProfileMutation();
+
+  const { tags } = useGetJobTagsByCategory(allTagsRes?.items || []);
 
   const [googlePlacesLocation, setGooglePlacesLocation] = useState<LocationPlace[]>([]);
   const [googlePlacesNationality, setGooglePlacesNationality] = useState<LocationPlace[]>([]);
@@ -100,6 +110,11 @@ const ProfileEdit = () => {
     setValue('firstName', loggedInUser.firstName);
     setValue('lastName', loggedInUser.lastName);
     setValue('location', { label: loggedInUser.location, value: loggedInUser.location });
+    setValue('nationality', { label: loggedInUser.nationality, value: loggedInUser.nationality });
+    setValue(
+      'languagesTags',
+      loggedInUser.languages?.map((lang) => ({ labelName: lang, value: lang }))
+    );
   }, [loggedInUser, setValue]);
 
   const updateUserProfileData = async (userProfileData: EditMyProfile) => {
@@ -121,11 +136,16 @@ const ProfileEdit = () => {
 
   const onSubmitHandler = (data: EditMyProfileValidationModel) => {
     console.log('data', data);
+    const profileTechTags = createJobPostBackendTags(TagListName.TECH_SKILL, data.techTags);
+    const profileLanguagesTags = createJobPostBackendTags(TagListName.LANGUAGE, data.languagesTags);
+
+    const profileTags = [...profileTechTags, ...profileLanguagesTags];
 
     const updatedUserProfileData: EditMyProfile = {
       ...data,
       location: data.location?.label,
       nationality: data.nationality?.label,
+      tags: profileTags,
     };
     // reset();
     updateUserProfileData(updatedUserProfileData);
@@ -205,8 +225,18 @@ const ProfileEdit = () => {
           onInputChange={onNationalityInputChange}
           selectPlaceholder="Germany"
         />
-
-        <div>Languages</div>
+        <FormSelectAsyncCreate
+          control={control}
+          options={tags.languagesTags}
+          inputValueField="languagesTags"
+          selectOptionField="id"
+          selectOptionLabel="labelName"
+          label="Languages"
+          watchField={watch('languagesTags')}
+          submitted={isSubmitted}
+          isSearchable={true}
+          isMulti={true}
+        />
         <div>Socials:</div>
         <div>Website</div>
         <div>LinkedIn</div>

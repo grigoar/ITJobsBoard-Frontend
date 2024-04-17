@@ -17,7 +17,7 @@ const EditMyProfileValidationBody = yup.object({
   twitter: yup.string(),
   bio: yup.string(),
   phoneNumber: yup.string(),
-  languages: yup.array().of(yup.string().required()),
+  // languages: yup.array().of(yup.string().required()),
   preferredMinHourRate: yup.number(),
   employments: yup.array().of(
     yup.object({
@@ -46,6 +46,20 @@ const EditMyProfileValidationBody = yup.object({
       url: yup.string(),
       startYear: yup.number(),
       endYear: yup.number(),
+    })
+  ),
+  techTags: yup.array().of(
+    yup.object().shape({
+      label: yup.string(),
+      value: yup.string(),
+      __isNew__: yup.boolean(),
+    })
+  ),
+  languagesTags: yup.array().of(
+    yup.object().shape({
+      label: yup.string(),
+      value: yup.string(),
+      __isNew__: yup.boolean(),
     })
   ),
 });

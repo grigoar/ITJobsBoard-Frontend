@@ -1,11 +1,5 @@
 import { AddCompanyModel } from '../Companies/AddCompanyModel';
-
-export type AddTagModel = {
-  id?: string;
-  name?: string;
-  isCustom?: boolean;
-  type?: string;
-};
+import { AddTagModel } from '../Tags/AddTagModel';
 
 type AddJobPostModel = {
   description: string;

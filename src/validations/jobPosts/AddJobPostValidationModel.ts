@@ -1,11 +1,5 @@
 import { AddCompanyModel } from '@/models/Companies/AddCompanyModel';
-
-export type TagsValidationType = {
-  label?: string;
-  value?: string;
-  __isNew__?: boolean;
-  type?: string;
-};
+import { TagsValidationType } from '../utils/TagValidationType';
 
 type AddJobPostValidationModel = {
   description: string;

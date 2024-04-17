@@ -1,3 +1,4 @@
+import { AddTagModel } from '../Tags/AddTagModel';
 import { EducationEntryModel } from './EducationEntryModel';
 import { EmploymentEntryModel } from './EmploymentEntryModel';
 import { SideProjectEntryModel } from './SideProjectEntryModel';
@@ -13,9 +14,9 @@ export type EditMyProfile = {
   twitter?: string;
   bio?: string;
   phoneNumber?: string;
-  languages?: string[];
   preferredMinHourRate?: number;
   employments?: EmploymentEntryModel[];
   educations?: EducationEntryModel[];
   sideProjects?: SideProjectEntryModel[];
+  tags?: AddTagModel[];
 };
