@@ -74,7 +74,7 @@ const EmailValidation = ({ emailValidated, userEmail }: EmailValidationProps) =>
 
   return (
     <div>
-      <h1>Email Validation</h1>
+      {/* <h1>Email Validation</h1> */}
       {/* <Button style={`btn btn-ghost `} action={confirmMailHandler}>
         Confirm Email
       </Button> */}

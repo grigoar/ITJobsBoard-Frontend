@@ -96,7 +96,7 @@ const Header = () => {
     pageTitle = 'Register';
   } else if (pathName === '/add-job') {
     pageTitle = 'Add a New Job Post';
-  } else if (pathName === '/profile') {
+  } else if (pathName?.includes('/profile')) {
     pageTitle = 'Profile';
   } else if (pathName?.includes('/email/confirm')) {
     pageTitle = 'Confirm Email';

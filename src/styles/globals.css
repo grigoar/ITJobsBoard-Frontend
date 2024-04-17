@@ -21,6 +21,13 @@
     @apply border-2 border-transparent p-2  text-[var(--text-color-calm-strong)] hover:text-[color:var(--text-color-primary)];
   }
 
+  .nestedActiveTab {
+    @apply border-2  border-transparent p-2 text-[var(--text-color-calm-strong)] after:block after:border-b-2 after:border-[color:var(--color-accent)] after:p-[2px] after:content-[''] hover:text-[color:var(--text-color-primary)];
+  }
+  /* .nestedActiveTab {
+    @apply border-[color:var(--color-accent)] p-2 text-[var(--text-color-calm-strong)] after:absolute after:bottom-[5px] after:left-0 after:block after:h-1 after:w-full after:border-b-2 after:border-[color:var(--color-accent)] after:content-[''] hover:text-[color:var(--text-color-primary)];
+  } */
+
   .form {
     @apply max-w-[450px];
   }
