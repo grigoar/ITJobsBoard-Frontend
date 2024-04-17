@@ -1,15 +1,35 @@
+import { EducationEntryModel } from '../Profiles/EducationEntryModel';
+import { EmploymentEntryModel } from '../Profiles/EmploymentEntryModel';
+import { SideProjectEntryModel } from '../Profiles/SideProjectEntryModel';
+
 export interface UserEntity {
   id: string;
-  profileImage: string;
-  countryCode: string;
+  // userIDs: string[];
   email: string;
-  username: string;
   emailValidated: boolean;
-  emailConfirmationExpires?: string;
-  roles: string[];
   firstName?: string;
   lastName?: string;
-  practicePowerUser?: boolean;
+  profileImage?: string;
+  country?: string;
+  location?: string;
+  nationality?: string;
+  website?: string;
+  linkedin?: string;
+  github?: string;
+  twitter?: string;
+  bio?: string;
+  phoneNumber?: string;
+  CV?: string;
+  languages?: string[];
+  preferredMinHourRate?: number;
+  employments?: EmploymentEntryModel[];
+  educations?: EducationEntryModel[];
+  sideProjects?: SideProjectEntryModel[];
+
+  roles: string[];
+  // companies?: ICompany[];
+  // created_at: Date;
+  // updated_at: Date;
 }
 
 export const typeGuardUserEntity = (object: any): object is UserEntity => {
@@ -19,13 +39,26 @@ export const typeGuardUserEntity = (object: any): object is UserEntity => {
 
 export const loggedInUserInitialStateEmpty = {
   id: '',
-  profileImage: '',
-  countryCode: '',
   email: '',
-  username: '',
+  emailValidated: false,
   firstName: '',
   lastName: '',
+  profileImage: '',
+  country: '',
+  location: '',
+  nationality: '',
+  website: '',
+  linkedin: '',
+  github: '',
+  twitter: '',
+  bio: '',
+  phoneNumber: '',
+  CV: '',
+  languages: [],
+  preferredMinHourRate: 0,
+  employments: [],
+  educations: [],
+  sideProjects: [],
+
   roles: [],
-  emailValidated: false,
-  practicePowerUser: false,
 };

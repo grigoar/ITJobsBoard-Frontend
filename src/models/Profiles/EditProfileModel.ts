@@ -1,28 +1,8 @@
-type EmploymentEntry = {
-  title: string;
-  company: string;
-  startYear: number;
-  endYear: number;
-  url?: string;
-};
+import { EducationEntryModel } from './EducationEntryModel';
+import { EmploymentEntryModel } from './EmploymentEntryModel';
+import { SideProjectEntryModel } from './SideProjectEntryModel';
 
-type EducationEntry = {
-  title: string;
-  institution: string;
-  url?: string;
-  startYear?: number;
-  endYear?: number;
-};
-
-type SideProjectEntry = {
-  title: string;
-  description: string;
-  url?: string;
-  startYear?: number;
-  endYear?: number;
-};
-
-export type EditMyProfileModel = {
+export type EditMyProfile = {
   firstName?: string;
   lastName?: string;
   location?: string;
@@ -35,7 +15,7 @@ export type EditMyProfileModel = {
   phoneNumber?: string;
   languages?: string[];
   preferredMinHourRate?: number;
-  employments?: EmploymentEntry[];
-  educations?: EducationEntry[];
-  sideProjects?: SideProjectEntry[];
+  employments?: EmploymentEntryModel[];
+  educations?: EducationEntryModel[];
+  sideProjects?: SideProjectEntryModel[];
 };

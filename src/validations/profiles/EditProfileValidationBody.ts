@@ -3,8 +3,14 @@ import * as yup from 'yup';
 const EditMyProfileValidationBody = yup.object({
   firstName: yup.string(),
   lastName: yup.string(),
-  location: yup.string(),
-  nationality: yup.string(),
+  location: yup.object().shape({
+    label: yup.string(),
+    value: yup.string(),
+  }),
+  nationality: yup.object().shape({
+    label: yup.string(),
+    value: yup.string(),
+  }),
   website: yup.string(),
   linkedin: yup.string(),
   github: yup.string(),

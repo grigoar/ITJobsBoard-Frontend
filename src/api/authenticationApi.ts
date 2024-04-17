@@ -6,7 +6,7 @@ import { CheckLoggedInUserResponseModel } from '@/models/Users/CheckLoggedInUser
 import LoginUserModel from '@/models/Users/LoginUserModel';
 import ForgotPasswordBodyModel from '@/models/Users/ForgotPasswordModel';
 import ResetPasswordModel from '@/models/Users/ResetPasswordBodyModel';
-import { EditMyProfileModel } from '@/models/Profiles/EditProfileModel';
+import { EditMyProfile } from '@/models/Profiles/EditProfileModel';
 import itJobsBoardApi from './indexITJobsBoardApi';
 
 const authenticationApi = itJobsBoardApi.injectEndpoints({
@@ -56,8 +56,8 @@ const authenticationApi = itJobsBoardApi.injectEndpoints({
       invalidatesTags: [constants.USER_PROFILE_TAG],
     }),
 
-    updateMyProfile: builder.mutation<{ status: string; message: string }, EditMyProfileModel>({
-      query: (userProfileData: EditMyProfileModel) => ({
+    updateMyProfile: builder.mutation<{ status: string; message: string }, EditMyProfile>({
+      query: (userProfileData: EditMyProfile) => ({
         url: 'profiles/updateMe',
         method: 'PATCH',
         body: userProfileData,
