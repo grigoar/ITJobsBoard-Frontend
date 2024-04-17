@@ -1,4 +1,4 @@
-import { AddTagModel } from '../Tags/AddTagModel';
+import { AddTagModel } from '../Tagssss/AddTagModel';
 import { EducationEntryModel } from './EducationEntryModel';
 import { EmploymentEntryModel } from './EmploymentEntryModel';
 import { SideProjectEntryModel } from './SideProjectEntryModel';

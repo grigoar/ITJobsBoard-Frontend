@@ -1,4 +1,4 @@
-import { TagEntity } from '../Tags/TagEntity';
+import { TagEntity } from '../Tagssss/TagEntity';
 
 export type JobPostOverviewEntity = {
   id: string;
