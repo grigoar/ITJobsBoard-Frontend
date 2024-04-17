@@ -1,5 +1,5 @@
 import { AddCompanyModel } from '../Companies/AddCompanyModel';
-import { AddTagModel } from '../Tagssss/AddTagModel';
+import { AddTagModel } from '../Tags/AddTagModel';
 
 type AddJobPostModel = {
   description: string;

@@ -1,5 +1,5 @@
 import constants from '@/utils/constants';
-import { TagEntity } from '@/models/Tagssss/TagEntity';
+import { TagEntity } from '@/models/Tags/TagEntity';
 import { ApiGetAllGenericResponse } from '@/models/Common/ApiGetAllGenericResponse';
 import itJobsBoardApi from './indexITJobsBoardApi';
 

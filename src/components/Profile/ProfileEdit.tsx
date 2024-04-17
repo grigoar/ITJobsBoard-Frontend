@@ -17,7 +17,7 @@ import { EditMyProfileValidationModel } from '@/validations/profiles/EditProfile
 import useGetJobTagsByCategory from '@/hooks/jobPosts/useGetJobTagsByCategory';
 import { useGetAllTagsQuery } from '@/api/tagsApi';
 import { createJobPostBackendTags } from '@/lib/jobPosts/jobPostsHelpers';
-import { TagListName } from '@/models/Tagssss/TagList.type';
+import { TagListName } from '@/models/Tags/TagList.type';
 import EmailValidation from './Account/EmailValidation';
 import FormInput from '../common/Form/FormInput';
 import FormWrapper from '../common/Form/FormWrapper';
