@@ -1,6 +1,7 @@
 import { EducationEntryModel } from '../Profiles/EducationEntryModel';
 import { EmploymentEntryModel } from '../Profiles/EmploymentEntryModel';
 import { SideProjectEntryModel } from '../Profiles/SideProjectEntryModel';
+import { TagEntity } from '../Tags/TagEntity';
 
 export interface UserEntity {
   id: string;
@@ -25,6 +26,7 @@ export interface UserEntity {
   employments?: EmploymentEntryModel[];
   educations?: EducationEntryModel[];
   sideProjects?: SideProjectEntryModel[];
+  tags?: TagEntity[];
 
   roles: string[];
   // companies?: ICompany[];
@@ -59,6 +61,6 @@ export const loggedInUserInitialStateEmpty = {
   employments: [],
   educations: [],
   sideProjects: [],
-
+  tags: [],
   roles: [],
 };

@@ -14,10 +14,11 @@ import { toastifyError, toastifySuccess } from '@/utils/helpers';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { LocationPlace } from '@/models/Common/LocationPlace';
 import { EditMyProfileValidationModel } from '@/validations/profiles/EditProfileValidationModel';
-import useGetJobTagsByCategory from '@/hooks/jobPosts/useGetJobTagsByCategory';
 import { useGetAllTagsQuery } from '@/api/tagsApi';
 import { createJobPostBackendTags } from '@/lib/jobPosts/jobPostsHelpers';
 import { TagListName } from '@/models/Tags/TagList.type';
+import { getJobTagsByCategory } from '@/lib/tags/tagsHelper';
+import { TagEntity } from '@/models/Tags/TagEntity';
 import EmailValidation from './Account/EmailValidation';
 import FormInput from '../common/Form/FormInput';
 import FormWrapper from '../common/Form/FormWrapper';
@@ -26,11 +27,23 @@ import MessageResult from '../common/MessageResult/MessageResult';
 import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
 
 // TODO: Need to check the disabled buttons
+// TODO: Add Sortable MultiSelect example ( drag and drop options) - https://react-select.com/advanced
 
 // TODO: Set the languages from the backend ( it should take the tags when getting the profile)
 const ProfileEdit = () => {
   const { loggedInUser } = useAppSelector((state) => state.userData);
   console.log('loggedInUser', loggedInUser);
+  const [profileTags, setProfileTags] = useState<{
+    techTags: TagEntity[];
+    languagesTags: TagEntity[];
+  }>();
+
+  // const { tags: profileTags } = getJobTagsByCategory(loggedInUser.tags || []);
+
+  // const profileLanguagesTags = profileTags.languagesTags?.map((tag) => {
+  //   return { labelName: tag.labelName, value: tag.id };
+  // });
+
   const { data: allTagsRes } = useGetAllTagsQuery(null);
 
   const { showResultErrorMessage, showResultSuccessMessage, isMessageError, resultMessageDisplay } =
@@ -38,7 +51,7 @@ const ProfileEdit = () => {
 
   const [updateMyProfile, { isLoading: isLoadingUpdateData }] = useUpdateMyProfileMutation();
 
-  const { tags } = useGetJobTagsByCategory(allTagsRes?.items || []);
+  const { tags: allTags } = getJobTagsByCategory(allTagsRes?.items || []);
 
   const [googlePlacesLocation, setGooglePlacesLocation] = useState<LocationPlace[]>([]);
   const [googlePlacesNationality, setGooglePlacesNationality] = useState<LocationPlace[]>([]);
@@ -79,6 +92,11 @@ const ProfileEdit = () => {
   });
 
   useEffect(() => {
+    const { tags: profileTagsWithCategory } = getJobTagsByCategory(loggedInUser.tags || []);
+    setProfileTags(profileTagsWithCategory);
+  }, [loggedInUser]);
+
+  useEffect(() => {
     if (placePredictionsLocation.length === 0) return;
 
     const placesStrings = placePredictionsLocation.map((place) => {
@@ -113,9 +131,9 @@ const ProfileEdit = () => {
     setValue('nationality', { label: loggedInUser.nationality, value: loggedInUser.nationality });
     setValue(
       'languagesTags',
-      loggedInUser.languages?.map((lang) => ({ labelName: lang, value: lang }))
+      profileTags?.languagesTags.map((lang: TagEntity) => ({ label: lang.labelName, value: lang.id }))
     );
-  }, [loggedInUser, setValue]);
+  }, [loggedInUser, setValue, profileTags]);
 
   const updateUserProfileData = async (userProfileData: EditMyProfile) => {
     try {
@@ -137,15 +155,15 @@ const ProfileEdit = () => {
   const onSubmitHandler = (data: EditMyProfileValidationModel) => {
     console.log('data', data);
     const profileTechTags = createJobPostBackendTags(TagListName.TECH_SKILL, data.techTags);
-    const profileLanguagesTags = createJobPostBackendTags(TagListName.LANGUAGE, data.languagesTags);
+    const updatedProfileLanguagesTags = createJobPostBackendTags(TagListName.LANGUAGE, data.languagesTags);
 
-    const profileTags = [...profileTechTags, ...profileLanguagesTags];
+    const updatedProfileTags = [...profileTechTags, ...updatedProfileLanguagesTags];
 
     const updatedUserProfileData: EditMyProfile = {
       ...data,
       location: data.location?.label,
       nationality: data.nationality?.label,
-      tags: profileTags,
+      tags: updatedProfileTags,
     };
     // reset();
     updateUserProfileData(updatedUserProfileData);
@@ -227,7 +245,7 @@ const ProfileEdit = () => {
         />
         <FormSelectAsyncCreate
           control={control}
-          options={tags.languagesTags}
+          options={allTags.languagesTags}
           inputValueField="languagesTags"
           selectOptionField="id"
           selectOptionLabel="labelName"

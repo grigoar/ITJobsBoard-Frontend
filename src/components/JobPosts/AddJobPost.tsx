@@ -21,7 +21,7 @@ import { LocationPlace } from '@/models/Common/LocationPlace';
 import AddJobPostValidationModel from '@/validations/jobPosts/AddJobPostValidationModel';
 import { createJobPostBackendTags } from '@/lib/jobPosts/jobPostsHelpers';
 import constants from '@/utils/constants';
-import useGetJobTagsByCategory from '@/hooks/jobPosts/useGetJobTagsByCategory';
+import { getJobTagsByCategory } from '@/lib/tags/tagsHelper';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -55,7 +55,7 @@ const AddJobPost = () => {
 
   const [profileCompanies, setProfileCompanies] = useState<CompanyEntity[]>([]);
   const [googlePlaces, setGooglePlaces] = useState<LocationPlace[]>([]);
-  const { tags } = useGetJobTagsByCategory(allTagsRes?.items || []);
+  const { tags } = getJobTagsByCategory(allTagsRes?.items || []);
 
   const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
   const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);

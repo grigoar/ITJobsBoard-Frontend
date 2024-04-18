@@ -22,6 +22,7 @@ type Props = {
   inputIconInactive?: React.ReactNode;
   register: any;
   placeholder?: string;
+  defaultValue?: any[]; // this can be an options array
 };
 
 const FormInput = ({

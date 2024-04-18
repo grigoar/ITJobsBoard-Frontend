@@ -72,6 +72,7 @@ const userDataSlice = createSlice({
       state.loggedInUser.employments = action.payload.employments;
       state.loggedInUser.educations = action.payload.educations;
       state.loggedInUser.sideProjects = action.payload.sideProjects;
+      state.loggedInUser.tags = action.payload.tags;
       state.isUserLogged = true;
       state.isUserAdmin = action.payload.roles.includes(constants.USER_ROLE_ADMIN);
     },
