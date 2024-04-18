@@ -59,7 +59,7 @@ const JobPostCard = ({ jobPost }: Props) => {
         backgroundColor: isHighlighted ? color : 'var(--bg-color-secondary)',
         color: colorTextCard,
       }}
-      className={`postContainer mb-4 w-full rounded-xl  shadow-[0px_10px_15px_5px_rgba(0,0,0,0.25),0px_3px_10px_0px_rgba(0,0,0,0.25)] transition-all duration-200 ease-in-out hover:translate-y-[-0.5px]  hover:shadow-[0px_10px_15px_5px_rgba(0,0,0,0.35),0px_3px_10px_0px_rgba(0,0,0,0.35)]`}
+      className={`postContainer mb-4 w-full rounded-xl  shadow-[0px_10px_15px_5px_rgba(0,0,0,0.25),0px_3px_10px_0px_rgba(0,0,0,0.25)] transition-all duration-200 ease-in-out hover:translate-y-[-0.5px] hover:scale-105  hover:shadow-[0px_10px_15px_5px_rgba(0,0,0,0.35),0px_3px_10px_0px_rgba(0,0,0,0.35)]`}
     >
       <Link href={linkPath} className={' flex h-full w-full items-center hover:brightness-110 '}>
         <div

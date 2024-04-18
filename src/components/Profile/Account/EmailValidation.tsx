@@ -92,7 +92,7 @@ const EmailValidation = ({ emailValidated, userEmail }: EmailValidationProps) =>
             id="email"
             disabled={true}
             value={emailInput}
-            className={`${'classes.emailInput'} ${'classes.formControlInput'} w-[calc(100%-30px)] rounded-md border-2 ${!emailValidated ? 'border-red-300' : 'border-[var(--color-green-light)]'} bg-slate-300 p-2`}
+            className={`${'classes.emailInput'} ${'classes.formControlInput'} w-[calc(100%-30px)] rounded-md border-2 ${!emailValidated ? 'border-red-300' : 'border-[var(--color-green-light)]'} bg-slate-300 p-2 text-[var(--color-grey-dark-4)]`}
           />
           <div className={'classes.emailValidatedIcon absolute right-0 top-[50%] translate-y-[-50%] transform'}>
             {emailValidated ? (

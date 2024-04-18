@@ -41,6 +41,7 @@ import UploadCompanyLogo from './UploadCompanyLogo';
 // TODO: Maybe give a scale for the experience level tags(1-100)
 // TODO: Add capability for moving the multiple select options (https://react-select.netlify.app/advanced)
 
+// TODO: Add years of experience tags
 const AddJobPost = () => {
   const [addNewJobPost, { isLoading }] = useAddNewJobPostMutation();
   const { data: allTagsRes } = useGetAllTagsQuery(null);

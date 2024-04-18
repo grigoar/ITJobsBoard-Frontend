@@ -1,7 +1,9 @@
+import { CompanyEntity } from '../Companies/CompanyEntity';
 import { EducationEntryModel } from '../Profiles/EducationEntryModel';
 import { EmploymentEntryModel } from '../Profiles/EmploymentEntryModel';
 import { SideProjectEntryModel } from '../Profiles/SideProjectEntryModel';
 import { TagEntity } from '../Tags/TagEntity';
+import { TagListName } from '../Tags/TagList.type';
 
 export interface UserEntity {
   id: string;
@@ -27,6 +29,10 @@ export interface UserEntity {
   educations?: EducationEntryModel[];
   sideProjects?: SideProjectEntryModel[];
   tags?: TagEntity[];
+  companies?: CompanyEntity[];
+  // ! TODO: Check if this is correct. The companies should have jobPosts, but maybe the user should have also have them
+  jobPosts?: any[];
+  desiredRole?: TagEntity;
 
   roles: string[];
   // companies?: ICompany[];
@@ -63,4 +69,13 @@ export const loggedInUserInitialStateEmpty = {
   sideProjects: [],
   tags: [],
   roles: [],
+  companies: [],
+  jobPosts: [],
+  desiredRole: {
+    id: '',
+    name: '',
+    type: TagListName.TECH_SKILL,
+    isCustom: false,
+    labelName: '',
+  },
 };

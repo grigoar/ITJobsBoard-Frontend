@@ -29,6 +29,9 @@ export const getJobPostTagsByType = (allTagsRes: TagEntity[]) => {
   const companyDomainTagsOnly = allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.DOMAIN) || [];
   const benefitsTagsOnly = allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.BENEFITS) || [];
   const languagesTagsOnly = allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.LANGUAGE) || [];
+  const yearsOfExperienceTagsOnly =
+    allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.YEARS_EXPERIENCE) || [];
+  const jobRolesTagsOnly = allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.JOB_ROLE) || [];
 
   return {
     techTagsOnly,
@@ -40,5 +43,7 @@ export const getJobPostTagsByType = (allTagsRes: TagEntity[]) => {
     companyDomainTagsOnly,
     benefitsTagsOnly,
     languagesTagsOnly,
+    yearsOfExperienceTagsOnly,
+    jobRolesTagsOnly,
   };
 };

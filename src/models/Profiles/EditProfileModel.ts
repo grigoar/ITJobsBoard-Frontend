@@ -19,4 +19,5 @@ export type EditMyProfile = {
   educations?: EducationEntryModel[];
   sideProjects?: SideProjectEntryModel[];
   tags?: AddTagModel[];
+  desiredRole?: AddTagModel;
 };

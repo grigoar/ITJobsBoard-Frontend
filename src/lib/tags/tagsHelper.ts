@@ -12,6 +12,8 @@ export const getJobTagsByCategory = (allTags: TagEntity[]) => {
     companyDomainTagsOnly,
     benefitsTagsOnly,
     languagesTagsOnly,
+    jobRolesTagsOnly,
+    yearsOfExperienceTagsOnly,
   } = getJobPostTagsByType(allTags || []);
 
   const tags = {
@@ -24,6 +26,8 @@ export const getJobTagsByCategory = (allTags: TagEntity[]) => {
     companyDomainTags: companyDomainTagsOnly,
     benefitsTags: benefitsTagsOnly,
     languagesTags: languagesTagsOnly,
+    jobRolesTags: jobRolesTagsOnly,
+    yearsOfExperienceTags: yearsOfExperienceTagsOnly,
   };
   return {
     tags,

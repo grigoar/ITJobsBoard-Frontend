@@ -133,6 +133,16 @@ const ProfileEdit = () => {
       'languagesTags',
       profileTags?.languagesTags.map((lang: TagEntity) => ({ label: lang.labelName, value: lang.id }))
     );
+    setValue(
+      'techTags',
+      profileTags?.techTags.map((tech: TagEntity) => ({ label: tech.labelName, value: tech.id }))
+    );
+
+    setValue('website', loggedInUser.website);
+    setValue('linkedin', loggedInUser.linkedin);
+    setValue('github', loggedInUser.github);
+    setValue('twitter', loggedInUser.twitter);
+    setValue('desiredRoleTag', { label: loggedInUser.desiredRole?.labelName, value: loggedInUser.desiredRole?.id });
   }, [loggedInUser, setValue, profileTags]);
 
   const updateUserProfileData = async (userProfileData: EditMyProfile) => {
@@ -156,6 +166,7 @@ const ProfileEdit = () => {
     console.log('data', data);
     const profileTechTags = createJobPostBackendTags(TagListName.TECH_SKILL, data.techTags);
     const updatedProfileLanguagesTags = createJobPostBackendTags(TagListName.LANGUAGE, data.languagesTags);
+    const updatedProfileDesiredRoleTag = createJobPostBackendTags(TagListName.JOB_ROLE, [data.desiredRoleTag]);
 
     const updatedProfileTags = [...profileTechTags, ...updatedProfileLanguagesTags];
 
@@ -164,6 +175,7 @@ const ProfileEdit = () => {
       location: data.location?.label,
       nationality: data.nationality?.label,
       tags: updatedProfileTags,
+      desiredRole: updatedProfileDesiredRoleTag[0],
     };
     // reset();
     updateUserProfileData(updatedUserProfileData);
@@ -179,6 +191,7 @@ const ProfileEdit = () => {
   return (
     <div className="flex flex-col items-start justify-start">
       <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)} addStyles="max-w-[800px]">
+        <h4 className="w-full text-[var(--color-blue-light)]">General</h4>
         <div>Avatar</div>
         <div className="w-full">
           <EmailValidation emailValidated={loggedInUser.emailValidated} userEmail={loggedInUser.email} />
@@ -255,15 +268,118 @@ const ProfileEdit = () => {
           isSearchable={true}
           isMulti={true}
         />
-        <div>Socials:</div>
-        <div>Website</div>
-        <div>LinkedIn</div>
-        <div>GitHub</div>
-        <div>Twitter</div>
-        <div>Experience</div>
+        <FormSelectAsyncCreate
+          control={control}
+          options={allTags.techTags}
+          inputValueField="techTags"
+          selectOptionField="id"
+          selectOptionLabel="labelName"
+          label="Skills"
+          watchField={watch('techTags')}
+          submitted={isSubmitted}
+          isSearchable={true}
+          isMulti={true}
+        />
+        <h4 className="w-full text-[var(--color-blue-light)]">Socials</h4>
+        <FormInput
+          register={register}
+          placeholder="www.typingmucle.com"
+          type="text"
+          name="website"
+          id="website"
+          label="Website"
+          control={control}
+          errors={errors.website?.message}
+          dirtyField={dirtyFields.website}
+          watchField={watch('website')}
+          submitted={isSubmitted}
+          hasInputIcon={true}
+          inputIconActive={<AiOutlineEdit />}
+          inputIconInactive={<AiOutlineEdit />}
+        />
+        <FormInput
+          register={register}
+          placeholder="www.linkedin.com/in/username"
+          type="text"
+          name="linkedin"
+          id="linkedin"
+          label="LinkedIn"
+          control={control}
+          errors={errors.linkedin?.message}
+          dirtyField={dirtyFields.linkedin}
+          watchField={watch('linkedin')}
+          submitted={isSubmitted}
+          hasInputIcon={true}
+          inputIconActive={<AiOutlineEdit />}
+          inputIconInactive={<AiOutlineEdit />}
+        />
+        <FormInput
+          register={register}
+          placeholder="www.github.com/username"
+          type="text"
+          name="github"
+          id="github"
+          label="GitHub"
+          control={control}
+          errors={errors.github?.message}
+          dirtyField={dirtyFields.github}
+          watchField={watch('github')}
+          submitted={isSubmitted}
+          hasInputIcon={true}
+          inputIconActive={<AiOutlineEdit />}
+          inputIconInactive={<AiOutlineEdit />}
+        />
+        <FormInput
+          register={register}
+          placeholder="www.twitter.com/username"
+          type="text"
+          name="twitter"
+          id="twitter"
+          label="Twitter"
+          control={control}
+          errors={errors.twitter?.message}
+          dirtyField={dirtyFields.twitter}
+          watchField={watch('twitter')}
+          submitted={isSubmitted}
+          hasInputIcon={true}
+          inputIconActive={<AiOutlineEdit />}
+          inputIconInactive={<AiOutlineEdit />}
+        />
+
+        {/* <FormInput
+          register={register}
+          placeholder="4"
+          type="number"
+          name="experience"
+          id="experience"
+          label="Years of Experience"
+          control={control}
+          errors={errors.experience?.message}
+          dirtyField={dirtyFields.experience}
+          watchField={watch('experience')}
+          submitted={isSubmitted}
+          hasInputIcon={true}
+          inputIconActive={<AiOutlineEdit />}
+          inputIconInactive={<AiOutlineEdit />}
+        /> */}
+        <h4 className="w-full text-[var(--color-blue-light)]">Experience</h4>
+        <FormSelectAsyncCreate
+          control={control}
+          options={allTags.jobRolesTags}
+          inputValueField="desiredRoleTag"
+          selectOptionField="id"
+          selectOptionLabel="labelName"
+          label="Desired Main Role"
+          watchField={watch('desiredRoleTag')}
+          submitted={isSubmitted}
+          isSearchable={false}
+          isMulti={false}
+        />
+        <div>Principal desired Role</div>
+        <div>Desired positions</div>
+        <div>Number years of Experience</div>
         <div>Bio about your experience</div>
         <div>Employments</div>
-        <div>Skills</div>
         <div>Education</div>
         <div>Side Projects</div>
         <div>Min hour Rate desired</div>

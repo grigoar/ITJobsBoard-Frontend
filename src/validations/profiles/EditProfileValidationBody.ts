@@ -11,10 +11,54 @@ const EditMyProfileValidationBody = yup.object({
     label: yup.string(),
     value: yup.string(),
   }),
-  website: yup.string(),
-  linkedin: yup.string(),
-  github: yup.string(),
-  twitter: yup.string(),
+  website: yup
+    .string()
+    .url()
+    .transform((currentValue) => {
+      const doesNotStartWithHttp =
+        currentValue && !(currentValue.startsWith('http://') || currentValue.startsWith('https://'));
+
+      if (doesNotStartWithHttp) {
+        return `https://${currentValue}`;
+      }
+      return currentValue;
+    }),
+  linkedin: yup
+    .string()
+    .url()
+    .transform((currentValue) => {
+      const doesNotStartWithHttp =
+        currentValue && !(currentValue.startsWith('http://') || currentValue.startsWith('https://'));
+
+      if (doesNotStartWithHttp) {
+        return `https://${currentValue}`;
+      }
+      return currentValue;
+    }),
+  github: yup
+    .string()
+    .url()
+    .transform((currentValue) => {
+      const doesNotStartWithHttp =
+        currentValue && !(currentValue.startsWith('http://') || currentValue.startsWith('https://'));
+
+      if (doesNotStartWithHttp) {
+        return `https://${currentValue}`;
+      }
+      return currentValue;
+    }),
+  twitter: yup
+    .string()
+    .url()
+    .transform((currentValue) => {
+      const doesNotStartWithHttp =
+        currentValue && !(currentValue.startsWith('http://') || currentValue.startsWith('https://'));
+
+      if (doesNotStartWithHttp) {
+        return `https://${currentValue}`;
+      }
+      return currentValue;
+    }),
   bio: yup.string(),
   phoneNumber: yup.string(),
   // languages: yup.array().of(yup.string().required()),
@@ -62,6 +106,25 @@ const EditMyProfileValidationBody = yup.object({
       __isNew__: yup.boolean(),
     })
   ),
+  yearsOfExperienceTags: yup.array().of(
+    yup.object().shape({
+      label: yup.string(),
+      value: yup.string(),
+      __isNew__: yup.boolean(),
+    })
+  ),
+
+  jobRolesTags: yup.array().of(
+    yup.object().shape({
+      label: yup.string(),
+      value: yup.string(),
+      __isNew__: yup.boolean(),
+    })
+  ),
+  desiredRoleTag: yup.object().shape({
+    label: yup.string(),
+    value: yup.string(),
+  }),
 });
 
 export default EditMyProfileValidationBody;

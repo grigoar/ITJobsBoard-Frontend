@@ -27,4 +27,7 @@ export type EditMyProfileValidationModel = {
   sideProjects?: SideProjectEntryModel[];
   techTags?: TagsValidationType[];
   languagesTags?: TagsValidationType[];
+  yearsOfExperienceTags?: TagsValidationType[];
+  jobRoleTags?: TagsValidationType[];
+  desiredRoleTag: TagsValidationType;
 };
