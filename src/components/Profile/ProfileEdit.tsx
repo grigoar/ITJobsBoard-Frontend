@@ -26,9 +26,6 @@ import Button from '../common/Button/Button';
 import MessageResult from '../common/MessageResult/MessageResult';
 import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
 import FormTextarea from '../common/Form/FormTextarea';
-// import ProfileEditEmployments from './ProfileEditEmployment';
-// import ProfileEditEducation from './ProfileEditEducation';
-// import ProfileEditSideProjects from './ProfileEditSideProjects';
 import ProfileEditEducationController from './ProfileEditEducationController';
 import ProfileEditEmploymentController from './ProfileEditEmploymentController';
 import ProfileEditSideProjectsController from './ProfileEditSideProjectsController';
@@ -47,12 +44,6 @@ const ProfileEdit = () => {
     jobRolesTags: TagEntity[];
     yearsOfExperienceTags: TagEntity[];
   }>();
-
-  // const { tags: profileTags } = getJobTagsByCategory(loggedInUser.tags || []);
-
-  // const profileLanguagesTags = profileTags.languagesTags?.map((tag) => {
-  //   return { labelName: tag.labelName, value: tag.id };
-  // });
 
   const { data: allTagsRes } = useGetAllTagsQuery(null);
 
