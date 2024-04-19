@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const EditMyProfileValidationBody = yup.object().shape({
+const EditMyProfileEmploymentValidationBody = yup.object().shape({
   employments: yup.array().of(
     yup.object({
       title: yup.string().required('Title is required'),
@@ -36,4 +36,4 @@ const EditMyProfileValidationBody = yup.object().shape({
   ),
 });
 
-export default EditMyProfileValidationBody;
+export default EditMyProfileEmploymentValidationBody;

@@ -15,7 +15,7 @@ import Button from '../common/Button/Button';
 import MessageResult from '../common/MessageResult/MessageResult';
 import FormWrapper from '../common/Form/FormWrapper';
 
-function FieldArray() {
+function ProfileEditEmployment() {
   // const { control, register, handleSubmit } = useForm();
   const { loggedInUser } = useAppSelector((state) => state.userData);
   const { showResultErrorMessage, showResultSuccessMessage, isMessageError, resultMessageDisplay } =
@@ -68,8 +68,9 @@ function FieldArray() {
   };
 
   useEffect(() => {
+    console.log('employments', loggedInUser.employments);
     if (loggedInUser.employments) {
-      remove();
+      // remove();
       loggedInUser.employments.forEach((employment) => {
         append({
           indexOrder: employment.indexOrder,
@@ -217,4 +218,4 @@ function FieldArray() {
   );
 }
 
-export default FieldArray;
+export default ProfileEditEmployment;

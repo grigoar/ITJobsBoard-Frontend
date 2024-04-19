@@ -26,7 +26,8 @@ import Button from '../common/Button/Button';
 import MessageResult from '../common/MessageResult/MessageResult';
 import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
 import FormTextarea from '../common/Form/FormTextarea';
-import ProfileEditEmployments from './ProfileEditEmployments';
+import ProfileEditEmployments from './ProfileEditEmployment';
+import ProfileEditEducation from './ProfileEditEducation';
 
 // TODO: Need to check the disabled buttons
 // TODO: Add Sortable MultiSelect example ( drag and drop options) - https://react-select.com/advanced
@@ -493,6 +494,8 @@ const ProfileEdit = () => {
 
       <h4 className="mt-8 w-full text-[var(--color-blue-light)]">Previous Experience</h4>
       <ProfileEditEmployments />
+      <h4 className="mt-8 w-full text-[var(--color-blue-light)]">Education</h4>
+      <ProfileEditEducation />
     </div>
   );
 };
