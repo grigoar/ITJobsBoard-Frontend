@@ -50,17 +50,30 @@ const userDataSlice = createSlice({
     },
 
     saveLoggedInUser(state, action: PayloadAction<UserEntity>) {
-      state.loggedInUser.countryCode = action.payload.countryCode;
+      state.loggedInUser.id = action.payload.id;
       state.loggedInUser.email = action.payload.email;
+      state.loggedInUser.emailValidated = action.payload.emailValidated;
       state.loggedInUser.firstName = action.payload.firstName;
       state.loggedInUser.lastName = action.payload.lastName;
-      state.loggedInUser.id = action.payload.id;
       state.loggedInUser.profileImage = action.payload.profileImage;
-      state.loggedInUser.username = action.payload.username;
-      state.loggedInUser.emailValidated = action.payload.emailValidated;
-      state.loggedInUser.emailConfirmationExpires = action.payload.emailConfirmationExpires;
+      state.loggedInUser.country = action.payload.country;
+      state.loggedInUser.location = action.payload.location;
+      state.loggedInUser.nationality = action.payload.nationality;
+      state.loggedInUser.CV = action.payload.CV;
+      state.loggedInUser.linkedin = action.payload.linkedin;
+      state.loggedInUser.github = action.payload.github;
+      state.loggedInUser.twitter = action.payload.twitter;
+      state.loggedInUser.bio = action.payload.bio;
+      state.loggedInUser.phoneNumber = action.payload.phoneNumber;
+      state.loggedInUser.website = action.payload.website;
       state.loggedInUser.roles = action.payload.roles;
-      state.loggedInUser.practicePowerUser = action.payload.practicePowerUser;
+      state.loggedInUser.languages = action.payload.languages;
+      state.loggedInUser.preferredMinHourRate = action.payload.preferredMinHourRate;
+      state.loggedInUser.employments = action.payload.employments;
+      state.loggedInUser.educations = action.payload.educations;
+      state.loggedInUser.sideProjects = action.payload.sideProjects;
+      state.loggedInUser.tags = action.payload.tags;
+      state.loggedInUser.desiredRole = action.payload.desiredRole;
       state.isUserLogged = true;
       state.isUserAdmin = action.payload.roles.includes(constants.USER_ROLE_ADMIN);
     },

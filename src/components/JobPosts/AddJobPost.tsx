@@ -16,12 +16,12 @@ import { useGetAllProfileCompaniesQuery } from '@/api/profilesApi';
 import { useAppSelector } from '@/store/hooks';
 import { CompanyEntity } from '@/models/Companies/CompanyEntity';
 import { useGetAllTagsQuery } from '@/api/tagsApi';
-import { TagListName } from '@/models/tags/TagList.type';
+import { TagListName } from '@/models/Tags/TagList.type';
 import { LocationPlace } from '@/models/Common/LocationPlace';
 import AddJobPostValidationModel from '@/validations/jobPosts/AddJobPostValidationModel';
 import { createJobPostBackendTags } from '@/lib/jobPosts/jobPostsHelpers';
 import constants from '@/utils/constants';
-import useGetJobTagsByCategory from '@/hooks/jobPosts/useGetJobTagsByCategory';
+import { getJobTagsByCategory } from '@/lib/tags/tagsHelper';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -41,6 +41,7 @@ import UploadCompanyLogo from './UploadCompanyLogo';
 // TODO: Maybe give a scale for the experience level tags(1-100)
 // TODO: Add capability for moving the multiple select options (https://react-select.netlify.app/advanced)
 
+// TODO: Add years of experience tags
 const AddJobPost = () => {
   const [addNewJobPost, { isLoading }] = useAddNewJobPostMutation();
   const { data: allTagsRes } = useGetAllTagsQuery(null);
@@ -55,26 +56,8 @@ const AddJobPost = () => {
 
   const [profileCompanies, setProfileCompanies] = useState<CompanyEntity[]>([]);
   const [googlePlaces, setGooglePlaces] = useState<LocationPlace[]>([]);
-  const { tags } = useGetJobTagsByCategory(allTagsRes?.items || []);
-  // const [tags, setTags] = useState<{
-  //   techTags: TagEntity[];
-  //   seniorityTags: TagEntity[];
-  //   employmentTypeTags: TagEntity[];
-  //   companySizeTags: TagEntity[];
-  //   companyTypeTags: TagEntity[];
-  //   workLocationTags: TagEntity[];
-  //   companyDomainTags: TagEntity[];
-  //   benefitsTags: TagEntity[];
-  // }>({
-  //   techTags: [],
-  //   seniorityTags: [],
-  //   employmentTypeTags: [],
-  //   companySizeTags: [],
-  //   companyTypeTags: [],
-  //   workLocationTags: [],
-  //   companyDomainTags: [],
-  //   benefitsTags: [],
-  // });
+  const { tags } = getJobTagsByCategory(allTagsRes?.items || []);
+
   const [isNewCompanyNeeded, setIsNewCompanyNeeded] = useState(true);
   const [isUserAddingNewCompany, setIsUserAddingNewCompany] = useState(false);
   const [imgMultipartPreview, setImgMultipartPreview] = useState<any>(null);
@@ -352,7 +335,7 @@ const AddJobPost = () => {
             name="description"
             id="description"
             label="Description"
-            styling="[&]:h-40 [&]:p-0 max-h-[400px] min-h-[100px]"
+            styling="[&]:h-40 [&]:p-2 max-h-[400px] min-h-[100px]"
             required
             errors={errors.description?.message}
             dirtyField={dirtyFields.description}

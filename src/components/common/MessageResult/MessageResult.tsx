@@ -9,11 +9,13 @@ interface Props {
   loadingMessage?: string;
   maxWidth?: string;
 }
-const MessageResult = ({ message, isError, isLoadingAction, loadingMessage, maxWidth = '450px' }: Props) => {
+
+// ! TODO: Need to check 450px but it shouldn't be a default value
+const MessageResult = ({ message, isError, isLoadingAction, loadingMessage, maxWidth }: Props) => {
   if (isLoadingAction) {
     return (
       <div
-        className={`mt-3 flex flex-row items-center justify-center text-center ${isError ? 'text-[var(--color-red-light)]' : 'text-[var(--color-green-light)]'}`}
+        className={`mt-3 flex w-full  flex-row items-center justify-center text-center ${isError ? 'text-[var(--color-red-light)]' : 'text-[var(--color-green-light)]'}`}
       >
         <LoadingSpinner height="element" />
         {loadingMessage && (
@@ -30,7 +32,7 @@ const MessageResult = ({ message, isError, isLoadingAction, loadingMessage, maxW
   return (
     <div
       style={{ maxWidth }}
-      className={`mt-3 flex flex-col items-center justify-center ${isError ? 'text-[var(--color-red-light)]' : 'text-[var(--color-green-light)]'}`}
+      className={`mt-3 flex w-full  flex-col items-center justify-center ${isError ? 'text-[var(--color-red-light)]' : 'text-[var(--color-green-light)]'}`}
     >
       {!isLoadingAction && <p>{message}</p>}
     </div>

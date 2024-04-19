@@ -21,6 +21,7 @@ type FormSelectProps = {
   isMulti?: boolean;
   onInputChange?: any;
   selectPlaceholder?: string;
+  defaultValue?: any[];
 };
 
 const FormSelectAsyncCreate = ({
@@ -40,6 +41,7 @@ const FormSelectAsyncCreate = ({
   isMulti = false,
   onInputChange,
   selectPlaceholder,
+  defaultValue,
 }: FormSelectProps) => {
   const [isTyping, setIsTyping] = useState(false);
 
@@ -135,7 +137,7 @@ const FormSelectAsyncCreate = ({
   });
 
   return (
-    <div className="cursor-pointe4 ![&>input:focus-visible]:outline-none  w-full [&>div:focus]:border-4">
+    <div className="![&>input:focus-visible]:outline-none w-full  cursor-pointer [&>div:focus]:border-4">
       <label className="block  ">{label}</label>
       <Controller
         name={inputValueField}
@@ -143,6 +145,7 @@ const FormSelectAsyncCreate = ({
         render={({ field }) => (
           <CreatableSelect
             {...field}
+            defaultValue={defaultValue}
             options={optionsArrayWithLabelAndValue}
             className={`w-full cursor-pointer border-2 border-[var(--color-blue-light)]  ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} ![&>input:focus-visible]:outline-none rounded-md text-[var(--color-grey-dark-5)] focus:outline-none ${styling}    [&_input:focus-within]:!shadow-none [&_input]:!min-w-[60px]`}
             isSearchable={isSearchable}
@@ -153,6 +156,7 @@ const FormSelectAsyncCreate = ({
               onInputChange?.(inputValueSelect);
             }}
             placeholder={selectPlaceholder}
+            isClearable={true}
           />
         )}
         rules={{ required: true }}

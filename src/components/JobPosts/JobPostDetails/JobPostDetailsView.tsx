@@ -1,12 +1,12 @@
 'use client';
 
 import TagLabel from '@/components/common/UI/TagLabel';
-import useGetJobTagsByCategory from '@/hooks/jobPosts/useGetJobTagsByCategory';
 import { JobPostOverviewEntity } from '@/models/JobPosts/JobPostOverviewEntity';
 import React from 'react';
 import Card from '@/components/common/Card/Card';
 import Button from '@/components/common/Button/Button';
 import { useAppSelector } from '@/store/hooks';
+import { getJobTagsByCategory } from '@/lib/tags/tagsHelper';
 import TagLabelDetails from './TagLabelDetails';
 import JobPostBenefits from './JobPostBenefits';
 
@@ -16,7 +16,7 @@ type Props = {
 
 const JobPostDetailsView = ({ jobPostData }: Props) => {
   const { isUserLogged } = useAppSelector((state) => state.userData);
-  const { tags } = useGetJobTagsByCategory(jobPostData.tags || []);
+  const { tags } = getJobTagsByCategory(jobPostData.tags || []);
 
   const jobPostDomain = tags.companyDomainTags?.map((tag) => tag.labelName);
   const jobPostSize = tags.companySizeTags?.map((tag) => tag.labelName);

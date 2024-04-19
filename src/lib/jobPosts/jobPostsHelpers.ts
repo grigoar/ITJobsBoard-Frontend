@@ -1,7 +1,7 @@
-import { AddTagModel } from '@/models/JobPosts/AddJobPostModel';
-import { TagEntity } from '@/models/tags/TagEntity';
-import { TagListName, TagListNameType } from '@/models/tags/TagList.type';
-import { TagsValidationType } from '@/validations/jobPosts/AddJobPostValidationModel';
+import { AddTagModel } from '@/models/Tags/AddTagModel';
+import { TagEntity } from '@/models/Tags/TagEntity';
+import { TagListName, TagListNameType } from '@/models/Tags/TagList.type';
+import { TagsValidationType } from '@/validations/utils/TagValidationType';
 
 export const createJobPostBackendTags = (
   tagType: TagListNameType,
@@ -28,6 +28,10 @@ export const getJobPostTagsByType = (allTagsRes: TagEntity[]) => {
   const workLocationTagsOnly = allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.WORK_PLACE) || [];
   const companyDomainTagsOnly = allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.DOMAIN) || [];
   const benefitsTagsOnly = allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.BENEFITS) || [];
+  const languagesTagsOnly = allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.LANGUAGE) || [];
+  const yearsOfExperienceTagsOnly =
+    allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.YEARS_EXPERIENCE) || [];
+  const jobRolesTagsOnly = allTagsRes.filter((tag: TagEntity) => tag.type === TagListName.JOB_ROLE) || [];
 
   return {
     techTagsOnly,
@@ -38,5 +42,8 @@ export const getJobPostTagsByType = (allTagsRes: TagEntity[]) => {
     workLocationTagsOnly,
     companyDomainTagsOnly,
     benefitsTagsOnly,
+    languagesTagsOnly,
+    yearsOfExperienceTagsOnly,
+    jobRolesTagsOnly,
   };
 };

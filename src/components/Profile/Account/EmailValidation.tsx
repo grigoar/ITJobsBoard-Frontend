@@ -16,6 +16,7 @@ type EmailValidationProps = {
 // TODO: Improve styling
 // TODO: Style better the button
 // TODO: Investigate why the form submit with enter key is not working
+// TODO: Add an option to change the email if it is wrong - link to change email settings
 const EmailValidation = ({ emailValidated, userEmail }: EmailValidationProps) => {
   const [emailInput, setEmailInput] = useState(userEmail);
   const [isButtonValidationDisabled, setIsButtonValidationDisabled] = useState(false);
@@ -74,7 +75,7 @@ const EmailValidation = ({ emailValidated, userEmail }: EmailValidationProps) =>
 
   return (
     <div>
-      <h1>Email Validation</h1>
+      {/* <h1>Email Validation</h1> */}
       {/* <Button style={`btn btn-ghost `} action={confirmMailHandler}>
         Confirm Email
       </Button> */}
@@ -91,7 +92,7 @@ const EmailValidation = ({ emailValidated, userEmail }: EmailValidationProps) =>
             id="email"
             disabled={true}
             value={emailInput}
-            className={`${'classes.emailInput'} ${'classes.formControlInput'} w-[90%] rounded-md border-2 ${!emailValidated ? 'border-red-300' : 'border-green-300'} bg-slate-300 p-2`}
+            className={`${'classes.emailInput'} ${'classes.formControlInput'} w-[calc(100%-30px)] rounded-md border-2 ${!emailValidated ? 'border-red-300' : 'border-[var(--color-green-light)]'} bg-slate-300 p-2 text-[var(--color-grey-dark-4)]`}
           />
           <div className={'classes.emailValidatedIcon absolute right-0 top-[50%] translate-y-[-50%] transform'}>
             {emailValidated ? (

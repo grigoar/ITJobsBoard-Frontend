@@ -22,6 +22,7 @@ type Props = {
   inputIconInactive?: React.ReactNode;
   register: any;
   placeholder?: string;
+  defaultValue?: any[]; // this can be an options array
 };
 
 const FormInput = ({
@@ -32,7 +33,7 @@ const FormInput = ({
   errors,
   dirtyField,
   watchField,
-  // touchedField,
+  touchedField,
   extraError,
   submitted,
   styling,
@@ -73,7 +74,7 @@ const FormInput = ({
 
   const errorMessages =
     // ((isTyping || touchedField) &&
-    (((!isTyping && dirtyField) || submitted) &&
+    (((!isTyping && dirtyField && touchedField) || submitted) &&
       errorsArray.map((error: string, index) => {
         return (
           <li
@@ -143,10 +144,11 @@ const FormInput = ({
             <input
               {...register(name)}
               // {...field}
+
               id={id}
               name={name}
               type={showSensitive && inputIcon ? 'text' : type}
-              className={`w-full border-2 border-[var(--color-blue-light)] ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} rounded-md p-3  text-[var(--color-grey-dark-5)] focus:outline-none focus-visible:shadow-[0_0_10px_var(--color-green-light)] ${styling}`}
+              className={`w-full border-2 border-[var(--color-blue-light)] ${isInputProcessingClass} ${isInputInvalidClass} ${isFocusedAndValid} ${errorMessages.length === 0 ? 'mb-4' : 'mb-0'} rounded-md p-[10px]  text-[var(--color-grey-dark-5)] focus:outline-none focus-visible:shadow-[0_0_10px_var(--color-green-light)] ${styling}`}
               {...inputProps}
               onChange={(e) => {
                 if (type === 'color') {
@@ -172,7 +174,10 @@ const FormInput = ({
           </div>
         )}
       />
-      {!isTyping && errorMessages.length > 0 && <ul className="mt-2 w-full">{errorMessages}</ul>}
+      {!isTyping && errorMessages.length > 0 && (
+        // {((!isTyping && errorMessages.length > 0 && touchedField) || (errorMessages.length > 0 && submitted)) && (
+        <ul className="mt-2 w-full">{errorMessages}</ul>
+      )}
     </>
   );
 };

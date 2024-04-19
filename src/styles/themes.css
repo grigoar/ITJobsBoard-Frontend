@@ -27,13 +27,13 @@
   --color-accent-2: #541728;
   --color-accent-3: #251754;
   --color-accent-4: #465417;
-  --color-accent-5: #173754;
+  --color-accent-5: #0093a6;
   --color-accent-6: #96be25;
   --color-accent-6: #7cc0d8;
   --bg-color-primary: 256deg 100% 9%;
   /* --color-secondary: hsl(226,57%, 21%); */
-  --bg-color-secondary: 226deg 57% 21%;
-  /* --bg-color-secondary: hsl(256, 100%, 9%); */
+  /* --bg-color-secondary: 226deg 57% 21%; */
+  --bg-color-secondary: hsl(226, 57%, 21%);
   /* --bg-color-secondary: 256deg 100% 9%; */
   /* --color-text: hsl(210, 40%, 96%); */
 

@@ -151,6 +151,7 @@ const FormSelect = ({
           // <Select
           <CreatableSelect
             {...field}
+            isClearable
             // value={profileCompanies.find((company) => company.id === value)}
             value={options.find((option: any) => option[selectOptionField] === field.value)}
             // ref={ref}
