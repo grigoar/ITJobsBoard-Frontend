@@ -14,6 +14,7 @@ import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import MessageResult from '../common/MessageResult/MessageResult';
 import FormWrapper from '../common/Form/FormWrapper';
+import FormTextarea from '../common/Form/FormTextarea';
 
 function ProfileEditEmployment() {
   // const { control, register, handleSubmit } = useForm();
@@ -68,9 +69,8 @@ function ProfileEditEmployment() {
   };
 
   useEffect(() => {
-    console.log('employments', loggedInUser.employments);
     if (loggedInUser.employments) {
-      // remove();
+      remove();
       loggedInUser.employments.forEach((employment) => {
         append({
           indexOrder: employment.indexOrder,
@@ -79,6 +79,7 @@ function ProfileEditEmployment() {
           startYear: employment.startYear,
           endYear: employment.endYear,
           url: employment.url,
+          description: employment.description,
         });
       });
     }
@@ -93,6 +94,7 @@ function ProfileEditEmployment() {
       startYear: '',
       endYear: '',
       url: '',
+      description: '',
     });
   };
 
@@ -104,8 +106,8 @@ function ProfileEditEmployment() {
     <div>
       <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)} addStyles="max-w-[800px] ">
         {fields.map((field, index) => (
-          <div className="relative flex w-full flex-row flex-wrap sm:flex-nowrap" key={field.id}>
-            <div className="mr-[10px] flex min-w-[90px]  flex-col">
+          <div className="relative flex w-full flex-row flex-wrap " key={field.id}>
+            <div className="mr-[10px] flex min-w-[90px] flex-grow flex-col">
               <FormInput
                 register={register}
                 placeholder="2015"
@@ -123,7 +125,7 @@ function ProfileEditEmployment() {
                 styling="flex flex-col  "
               />
             </div>
-            <div className="mr-[10px] flex min-w-[80px] flex-col">
+            <div className="mr-[10px] flex min-w-[80px] flex-grow flex-col">
               <FormInput
                 register={register}
                 placeholder="2020"
@@ -178,6 +180,25 @@ function ProfileEditEmployment() {
                 required
               />
             </div>
+            <div className="mr-[10px] flex w-full min-w-[200px] flex-grow flex-col">
+              {/* Description */}
+              <FormTextarea
+                register={register}
+                placeholder="Add a description of your role and responsibilities..."
+                type="text"
+                name={`employments.${index}.description`}
+                id={`employments.${index}.description`}
+                label="Role Description"
+                control={control}
+                errors={errors.employments?.[index]?.description?.message}
+                dirtyField={dirtyFields.employments?.[index]?.description}
+                touchedField={touchedFields.employments?.[index]?.description}
+                watchField={watch(`employments.${index}.description`)}
+                submitted={isSubmitted}
+                styling="[&]:h-40 [&]:p-2 max-h-[400px] min-h-[100px] flex-grow"
+                required
+              />
+            </div>
             <input
               key={index + 1} // important to include key with field's id
               {...register(`employments.${index}.indexOrder`)}
@@ -206,7 +227,7 @@ function ProfileEditEmployment() {
           </div>
           <div className=" ">
             <Button style={`btn btn-ghost `} type="submit" action={handleSubmit(onSubmitHandler)}>
-              Save Changes
+              Save Experience
             </Button>
           </div>
         </div>

@@ -335,7 +335,7 @@ const AddJobPost = () => {
             name="description"
             id="description"
             label="Description"
-            styling="[&]:h-40 [&]:p-0 max-h-[400px] min-h-[100px]"
+            styling="[&]:h-40 [&]:p-2 max-h-[400px] min-h-[100px]"
             required
             errors={errors.description?.message}
             dirtyField={dirtyFields.description}

@@ -5,6 +5,7 @@ const EditMyProfileEmploymentValidationBody = yup.object().shape({
     yup.object({
       title: yup.string().required('Title is required'),
       company: yup.string().required('Company is required'),
+      description: yup.string(),
       url: yup.string(),
       // startYear: yup.number().required(),
       // endYear: yup.number().required(),

@@ -90,6 +90,7 @@ const EditMyProfileValidationBody = yup.object({
           return parseInt(value, 10) >= 1950;
         })
         .required(),
+      indexOrder: yup.number(),
     })
   ),
 
@@ -98,18 +99,13 @@ const EditMyProfileValidationBody = yup.object({
       title: yup.string().required(),
       institution: yup.string().required(),
       url: yup.string(),
-      startYear: yup
-        .string()
-        .test('is-interval', 'Start Year min - 1950', (value: any) => {
-          return parseInt(value, 10) >= 1950;
-        })
-        .required(),
-      endYear: yup
-        .string()
-        .test('is-interval', 'End Year max - 2024', (value: any) => {
-          return parseInt(value, 10) >= 1950;
-        })
-        .required(),
+      startYear: yup.string().test('is-interval', 'Start Year min - 1950', (value: any) => {
+        return parseInt(value, 10) >= 1950;
+      }),
+      endYear: yup.string().test('is-interval', 'End Year max - 2024', (value: any) => {
+        return parseInt(value, 10) >= 1950;
+      }),
+      indexOrder: yup.number(),
     })
   ),
 
@@ -119,18 +115,12 @@ const EditMyProfileValidationBody = yup.object({
       description: yup.string().required(),
       url: yup.string(),
       // startYear: yup.number(),
-      startYear: yup
-        .string()
-        .test('is-interval', 'Start Year min - 1950', (value: any) => {
-          return parseInt(value, 10) >= 1950;
-        })
-        .required(),
-      endYear: yup
-        .string()
-        .test('is-interval', 'End Year max - 2024', (value: any) => {
-          return parseInt(value, 10) >= 1950;
-        })
-        .required(),
+      startYear: yup.string().test('is-interval', 'Start Year min - 1950', (value: any) => {
+        return parseInt(value, 10) >= 1950;
+      }),
+      endYear: yup.string().test('is-interval', 'End Year max - 2024', (value: any) => {
+        return parseInt(value, 10) >= 1950;
+      }),
       // startYear: yup.lazy(
       //   (value) => (value === '' ? yup.string() : yup.number())
       //   // if (value) {
@@ -139,6 +129,7 @@ const EditMyProfileValidationBody = yup.object({
       //   // return yup.number();
       // ),
       // endYear: yup.number(),
+      indexOrder: yup.number(),
     })
   ),
   techTags: yup.array().of(

@@ -3,6 +3,7 @@ export type EmploymentEntryModel = {
   company: string;
   startYear: string;
   endYear: string;
+  description?: string;
   // startYear: number;
   // endYear: number;
   url?: string;

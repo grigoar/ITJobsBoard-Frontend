@@ -7,7 +7,7 @@ import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocomplet
 import { yupResolver } from '@hookform/resolvers/yup';
 import { EditMyProfile } from '@/models/Profiles/EditProfileModel';
 import EditMyProfileValidationBody from '@/validations/profiles/EditProfileValidationBody';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
 import { useUpdateMyProfileMutation } from '@/api/authenticationApi';
 import { toastifyError, toastifySuccess } from '@/utils/helpers';
@@ -26,8 +26,12 @@ import Button from '../common/Button/Button';
 import MessageResult from '../common/MessageResult/MessageResult';
 import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
 import FormTextarea from '../common/Form/FormTextarea';
-import ProfileEditEmployments from './ProfileEditEmployment';
-import ProfileEditEducation from './ProfileEditEducation';
+// import ProfileEditEmployments from './ProfileEditEmployment';
+// import ProfileEditEducation from './ProfileEditEducation';
+// import ProfileEditSideProjects from './ProfileEditSideProjects';
+import ProfileEditEducationController from './ProfileEditEducationController';
+import ProfileEditEmploymentController from './ProfileEditEmploymentController';
+import ProfileEditSideProjectsController from './ProfileEditSideProjectsController';
 
 // TODO: Need to check the disabled buttons
 // TODO: Add Sortable MultiSelect example ( drag and drop options) - https://react-select.com/advanced
@@ -85,7 +89,7 @@ const ProfileEdit = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, dirtyFields, isSubmitted },
+    formState: { errors, dirtyFields, isSubmitted, touchedFields },
     // reset,
     watch,
     setValue,
@@ -96,6 +100,35 @@ const ProfileEdit = () => {
 
     defaultValues: {},
   });
+
+  const {
+    fields: fieldsEducation,
+    append: appendEducation,
+    remove: removeEducation,
+  } = useFieldArray({
+    control,
+    name: 'educations',
+    keyName: 'id',
+  });
+  const {
+    fields: fieldsEmployment,
+    append: appendEmployment,
+    remove: removeEmployment,
+  } = useFieldArray({
+    control,
+    name: 'employments',
+    keyName: 'id',
+  });
+  const {
+    fields: fieldsSideProject,
+    append: appendSideProject,
+    remove: removeSideProject,
+  } = useFieldArray({
+    control,
+    name: 'sideProjects',
+    keyName: 'id',
+  });
+  // console.log("fields", fields.map(field=>field.))
 
   useEffect(() => {
     const { tags: profileTagsWithCategory } = getJobTagsByCategory(loggedInUser.tags || []);
@@ -221,6 +254,11 @@ const ProfileEdit = () => {
     getPlacePredictionsNationality({ input: inputValue });
   };
 
+  // const handleRemoveField = (index: number) => {
+  //   remove(index);
+  // };
+
+  // errors, dirtyFields, isSubmitted, touchedFields
   return (
     <div className="flex flex-col items-start justify-start">
       <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)} addStyles="max-w-[800px]">
@@ -463,7 +501,7 @@ const ProfileEdit = () => {
           name="bio"
           id="bio"
           label="About Me"
-          styling="[&]:h-40 [&]:p-0 max-h-[400px] min-h-[100px]"
+          styling="[&]:h-40 [&]:p-2 max-h-[400px] min-h-[100px]"
           required
           errors={errors.bio?.message}
           dirtyField={dirtyFields.bio}
@@ -492,10 +530,57 @@ const ProfileEdit = () => {
       </FormWrapper>
       <MessageResult isLoadingAction={isLoadingUpdateData} isError={isMessageError} message={resultMessageDisplay} />
 
-      <h4 className="mt-8 w-full text-[var(--color-blue-light)]">Previous Experience</h4>
-      <ProfileEditEmployments />
+      <h4 className="mt-8 w-full text-[var(--color-blue-light)]">Previous Experiences</h4>
+      <ProfileEditEmploymentController
+        fields={fieldsEmployment}
+        append={appendEmployment}
+        remove={removeEmployment}
+        register={register}
+        control={control}
+        errors={errors}
+        dirtyFields={dirtyFields}
+        isSubmitted={isSubmitted}
+        watch={watch}
+        touchedFields={touchedFields}
+        onSubmitHandler={handleSubmit(onSubmitHandler)}
+      />
+      {/* <ProfileEditEmployments /> */}
+
+      {/* ProfileEditEmploymentController */}
+
       <h4 className="mt-8 w-full text-[var(--color-blue-light)]">Education</h4>
-      <ProfileEditEducation />
+      <ProfileEditEducationController
+        fields={fieldsEducation}
+        append={appendEducation}
+        remove={removeEducation}
+        register={register}
+        control={control}
+        errors={errors}
+        dirtyFields={dirtyFields}
+        isSubmitted={isSubmitted}
+        watch={watch}
+        touchedFields={touchedFields}
+        onSubmitHandler={handleSubmit(onSubmitHandler)}
+      />
+
+      {/* <h4 className="mt-8 w-full text-[var(--color-blue-light)]">Education</h4>
+      <ProfileEditEducation /> */}
+
+      <h4 className="mt-8 w-full text-[var(--color-blue-light)]">Side Projects</h4>
+      {/* <ProfileEditSideProjects /> */}
+      <ProfileEditSideProjectsController
+        fields={fieldsSideProject}
+        append={appendSideProject}
+        remove={removeSideProject}
+        register={register}
+        control={control}
+        errors={errors}
+        dirtyFields={dirtyFields}
+        isSubmitted={isSubmitted}
+        watch={watch}
+        touchedFields={touchedFields}
+        onSubmitHandler={handleSubmit(onSubmitHandler)}
+      />
     </div>
   );
 };

@@ -1,71 +1,38 @@
 import React, { useEffect } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useAppSelector } from '@/store/hooks';
-import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
-import { useUpdateMyProfileMutation } from '@/api/authenticationApi';
-import { toastifyError, toastifySuccess } from '@/utils/helpers';
-import * as Sentry from '@sentry/nextjs';
-import { EditMyProfile } from '@/models/Profiles/EditProfileModel';
-import { EditMyProfileEducationsValidationModel } from '@/validations/profiles/EditProfileEducationModel';
-import EditMyProfileEducationValidationBody from '@/validations/profiles/EditProfileEducationBody';
+import { EducationEntryModel } from '@/models/Profiles/EducationEntryModel';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
-import MessageResult from '../common/MessageResult/MessageResult';
-import FormWrapper from '../common/Form/FormWrapper';
 
-function ProfileEditEducation() {
-  // const { control, register, handleSubmit } = useForm();
+type Props = {
+  fields: EducationEntryModel[];
+  append: (_education: EducationEntryModel) => void;
+  remove: (_index?: number) => void;
+  register: any;
+  control: any;
+  errors: any;
+  dirtyFields: any;
+  touchedFields: any;
+  watch: any;
+  isSubmitted: boolean;
+  onSubmitHandler: () => void;
+};
+
+function ProfileEditEducationController({
+  fields,
+  append,
+  remove,
+  register,
+  control,
+  errors,
+  dirtyFields,
+  touchedFields,
+  watch,
+  isSubmitted,
+  onSubmitHandler,
+}: Props) {
   const { loggedInUser } = useAppSelector((state) => state.userData);
-  const { showResultErrorMessage, showResultSuccessMessage, isMessageError, resultMessageDisplay } =
-    useDisplayResultMessage(10);
-  const [updateMyProfile, { isLoading: isLoadingUpdateData }] = useUpdateMyProfileMutation();
-  const {
-    control,
-    // errors,
-    handleSubmit,
-    formState: { errors, dirtyFields, isSubmitted, touchedFields },
-    watch,
-    register,
-  } = useForm({
-    mode: 'onSubmit',
-    shouldFocusError: true,
-    reValidateMode: 'onChange',
-    resolver: yupResolver(EditMyProfileEducationValidationBody, { abortEarly: false, recursive: true }),
-  });
-  // const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
-  //   control, // control props comes from useForm (optional: if you are using FormProvider)
-  //   name: 'test', // unique name for your Field Array
-  // });
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'educations',
-    keyName: 'id',
-  });
-
-  const updateUserProfileData = async (userProfileData: EditMyProfile) => {
-    try {
-      await updateMyProfile(userProfileData).unwrap();
-      showResultSuccessMessage('Experience updated successfully!');
-      toastifySuccess('Experience updated successfully!');
-    } catch (err: any) {
-      Sentry.captureMessage(JSON.stringify(err, null, 2), 'error');
-      if ('data' in err) {
-        showResultErrorMessage(err.data.message);
-        // toastifyError(err.data.message);
-        toastifyError('Something Went Wrong! Please try again!');
-      } else {
-        showResultErrorMessage('Something Went Wrong! Please try again!');
-        toastifyError('Something Went Wrong! Please try again!');
-      }
-    }
-  };
-
-  const onSubmitHandler = (data: EditMyProfileEducationsValidationModel) => {
-    console.log(data);
-    updateUserProfileData(data);
-  };
 
   useEffect(() => {
     if (loggedInUser.educations) {
@@ -84,7 +51,6 @@ function ProfileEditEducation() {
   }, [loggedInUser.educations, append, remove]);
 
   const handleAddField = () => {
-    // e.preventDefault();
     append({
       indexOrder: fields.length + 1,
       title: '',
@@ -101,9 +67,12 @@ function ProfileEditEducation() {
 
   return (
     <div>
-      <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)} addStyles="max-w-[800px] ">
-        {fields.map((field, index) => (
-          <div className="relative flex w-full flex-row flex-wrap sm:flex-nowrap" key={field.id}>
+      {fields.map((field, index) => (
+        <>
+          <h4 className="block w-full text-lg text-[var(--color-accent-blog)]">
+            &#x2022; Education {field?.indexOrder ?? 0 + 1}
+          </h4>
+          <div className="relative flex w-full flex-row flex-wrap sm:flex-nowrap" key={field.indexOrder}>
             <div className="mr-[10px] flex min-w-[90px] flex-grow flex-col">
               <FormInput
                 register={register}
@@ -150,7 +119,6 @@ function ProfileEditEducation() {
                 label="Specialization"
                 control={control}
                 errors={errors.educations?.[index]?.title?.message}
-                // dirtyField={false}
                 touchedField={touchedFields.educations?.[index]?.title}
                 dirtyField={dirtyFields.educations?.[index]?.title}
                 watchField={watch(`educations.${index}.title`)}
@@ -194,27 +162,22 @@ function ProfileEditEducation() {
               </Button>
             </div>
           </div>
-        ))}
-        {/* <button onClick={handleAddField}>Add field</button>
-      <input type="submit" /> */}
-        <div className="flex">
-          <div className=" mr-4">
-            <Button style={`btn btn-ghost `} type="button" action={handleAddField}>
-              Add Education
-            </Button>
-          </div>
-          <div className=" ">
-            <Button style={`btn btn-ghost `} type="submit" action={handleSubmit(onSubmitHandler)}>
-              Save Education
-            </Button>
-          </div>
+        </>
+      ))}
+      <div className="flex">
+        <div className=" mr-4">
+          <Button style={`btn btn-ghost `} type="button" action={handleAddField}>
+            Add Education
+          </Button>
         </div>
-      </FormWrapper>
-      <div className="mt-4">
-        <MessageResult isLoadingAction={isLoadingUpdateData} isError={isMessageError} message={resultMessageDisplay} />
+        <div className=" ">
+          <Button style={`btn btn-ghost `} type="submit" action={onSubmitHandler}>
+            Save Changes
+          </Button>
+        </div>
       </div>
     </div>
   );
 }
 
-export default ProfileEditEducation;
+export default ProfileEditEducationController;

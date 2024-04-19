@@ -8,14 +8,15 @@ import { useUpdateMyProfileMutation } from '@/api/authenticationApi';
 import { toastifyError, toastifySuccess } from '@/utils/helpers';
 import * as Sentry from '@sentry/nextjs';
 import { EditMyProfile } from '@/models/Profiles/EditProfileModel';
-import { EditMyProfileEducationsValidationModel } from '@/validations/profiles/EditProfileEducationModel';
-import EditMyProfileEducationValidationBody from '@/validations/profiles/EditProfileEducationBody';
+import EditMyProfileSideProjectsValidationBody from '@/validations/profiles/EditProfileSideProjectsBody';
+import { EditMyProfileSideProjectsValidationModel } from '@/validations/profiles/EditProfileSideProjectsModel';
 import FormInput from '../common/Form/FormInput';
 import Button from '../common/Button/Button';
 import MessageResult from '../common/MessageResult/MessageResult';
 import FormWrapper from '../common/Form/FormWrapper';
+import FormTextarea from '../common/Form/FormTextarea';
 
-function ProfileEditEducation() {
+function ProfileEditSideProjects() {
   // const { control, register, handleSubmit } = useForm();
   const { loggedInUser } = useAppSelector((state) => state.userData);
   const { showResultErrorMessage, showResultSuccessMessage, isMessageError, resultMessageDisplay } =
@@ -32,7 +33,7 @@ function ProfileEditEducation() {
     mode: 'onSubmit',
     shouldFocusError: true,
     reValidateMode: 'onChange',
-    resolver: yupResolver(EditMyProfileEducationValidationBody, { abortEarly: false, recursive: true }),
+    resolver: yupResolver(EditMyProfileSideProjectsValidationBody, { abortEarly: false, recursive: true }),
   });
   // const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
   //   control, // control props comes from useForm (optional: if you are using FormProvider)
@@ -40,7 +41,7 @@ function ProfileEditEducation() {
   // });
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'educations',
+    name: 'sideProjects',
     keyName: 'id',
   });
 
@@ -62,33 +63,33 @@ function ProfileEditEducation() {
     }
   };
 
-  const onSubmitHandler = (data: EditMyProfileEducationsValidationModel) => {
+  const onSubmitHandler = (data: EditMyProfileSideProjectsValidationModel) => {
     console.log(data);
     updateUserProfileData(data);
   };
 
   useEffect(() => {
-    if (loggedInUser.educations) {
+    if (loggedInUser.sideProjects) {
       remove();
-      loggedInUser.educations.forEach((education) => {
+      loggedInUser.sideProjects.forEach((sideProject) => {
         append({
-          indexOrder: education.indexOrder,
-          title: education.title,
-          institution: education.institution,
-          startYear: education.startYear,
-          endYear: education.endYear,
-          url: education.url,
+          indexOrder: sideProject.indexOrder,
+          title: sideProject.title,
+          description: sideProject.description,
+          startYear: sideProject.startYear,
+          endYear: sideProject.endYear,
+          url: sideProject.url,
         });
       });
     }
-  }, [loggedInUser.educations, append, remove]);
+  }, [loggedInUser.sideProjects, append, remove]);
 
   const handleAddField = () => {
     // e.preventDefault();
     append({
       indexOrder: fields.length + 1,
       title: '',
-      institution: '',
+      description: '',
       startYear: '',
       endYear: '',
       url: '',
@@ -103,38 +104,38 @@ function ProfileEditEducation() {
     <div>
       <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)} addStyles="max-w-[800px] ">
         {fields.map((field, index) => (
-          <div className="relative flex w-full flex-row flex-wrap sm:flex-nowrap" key={field.id}>
-            <div className="mr-[10px] flex min-w-[90px] flex-grow flex-col">
+          <div className="relative flex w-full flex-row flex-wrap" key={field.id}>
+            <div className="mr-[10px] flex min-w-[90px] flex-grow  flex-col">
               <FormInput
                 register={register}
                 placeholder="2015"
                 type="text"
-                name={`educations.${index}.startYear`}
-                id={`educations.${index}.startYear`}
+                name={`sideProjects.${index}.startYear`}
+                id={`sideProjects.${index}.startYear`}
                 label="Start Year"
                 control={control}
-                errors={errors.educations?.[index]?.startYear?.message}
-                dirtyField={dirtyFields.educations?.[index]?.startYear}
-                touchedField={touchedFields.educations?.[index]?.startYear}
-                watchField={watch(`educations.${index}.startYear`)}
+                errors={errors.sideProjects?.[index]?.startYear?.message}
+                dirtyField={dirtyFields.sideProjects?.[index]?.startYear}
+                touchedField={touchedFields.sideProjects?.[index]?.startYear}
+                watchField={watch(`sideProjects.${index}.startYear`)}
                 submitted={isSubmitted}
                 required
                 styling="flex flex-col  "
               />
             </div>
-            <div className="mr-[10px] flex min-w-[80px] flex-grow flex-col">
+            <div className="mr-[10px] flex min-w-[80px]  flex-grow  flex-col">
               <FormInput
                 register={register}
                 placeholder="2020"
                 type="text"
-                name={`educations.${index}.endYear`}
-                id={`educations.${index}.endYear`}
+                name={`sideProjects.${index}.endYear`}
+                id={`sideProjects.${index}.endYear`}
                 label="End Year"
                 control={control}
-                errors={errors.educations?.[index]?.endYear?.message}
-                dirtyField={dirtyFields.educations?.[index]?.endYear}
-                touchedField={touchedFields.educations?.[index]?.endYear}
-                watchField={watch(`educations.${index}.endYear`)}
+                errors={errors.sideProjects?.[index]?.endYear?.message}
+                dirtyField={dirtyFields.sideProjects?.[index]?.endYear}
+                touchedField={touchedFields.sideProjects?.[index]?.endYear}
+                watchField={watch(`sideProjects.${index}.endYear`)}
                 submitted={isSubmitted}
                 required
                 styling="flex flex-col  "
@@ -143,17 +144,17 @@ function ProfileEditEducation() {
             <div className="mr-[10px] flex min-w-[200px] flex-grow  flex-col">
               <FormInput
                 register={register}
-                placeholder="Computer Science"
+                placeholder="Project Name"
                 type="text"
-                name={`educations.${index}.title`}
-                id={`educations.${index}.title`}
-                label="Specialization"
+                name={`sideProjects.${index}.title`}
+                id={`sideProjects.${index}.title`}
+                label="Name"
                 control={control}
-                errors={errors.educations?.[index]?.title?.message}
+                errors={errors.sideProjects?.[index]?.title?.message}
                 // dirtyField={false}
-                touchedField={touchedFields.educations?.[index]?.title}
-                dirtyField={dirtyFields.educations?.[index]?.title}
-                watchField={watch(`educations.${index}.title`)}
+                touchedField={touchedFields.sideProjects?.[index]?.title}
+                dirtyField={dirtyFields.sideProjects?.[index]?.title}
+                watchField={watch(`sideProjects.${index}.title`)}
                 submitted={isSubmitted}
                 required
                 styling="flex flex-col  flex-grow"
@@ -162,24 +163,43 @@ function ProfileEditEducation() {
             <div className="mr-[10px] flex min-w-[200px] flex-grow flex-col">
               <FormInput
                 register={register}
-                placeholder="University of California"
+                placeholder="https://www.example.com"
                 type="text"
-                name={`educations.${index}.institution`}
-                id={`educations.${index}.institution`}
-                label="Institution"
+                name={`sideProjects.${index}.url`}
+                id={`sideProjects.${index}.url`}
+                label="URL"
                 control={control}
-                errors={errors.educations?.[index]?.institution?.message}
-                dirtyField={dirtyFields.educations?.[index]?.institution}
-                touchedField={touchedFields.educations?.[index]?.institution}
-                watchField={watch(`educations.${index}.institution`)}
+                errors={errors.sideProjects?.[index]?.url?.message}
+                dirtyField={dirtyFields.sideProjects?.[index]?.url}
+                touchedField={touchedFields.sideProjects?.[index]?.url}
+                watchField={watch(`sideProjects.${index}.url`)}
                 submitted={isSubmitted}
                 styling="flex flex-col  flex-grow"
                 required
               />
             </div>
+            <div className="mr-[10px] flex w-full min-w-[200px] flex-grow flex-col">
+              <FormTextarea
+                register={register}
+                placeholder="More details about the project..."
+                type="text"
+                name={`sideProjects.${index}.description`}
+                id={`sideProjects.${index}.description`}
+                label="Description"
+                control={control}
+                errors={errors.sideProjects?.[index]?.description?.message}
+                dirtyField={dirtyFields.sideProjects?.[index]?.description}
+                touchedField={touchedFields.sideProjects?.[index]?.description}
+                watchField={watch(`sideProjects.${index}.description`)}
+                submitted={isSubmitted}
+                styling="[&]:h-40 [&]:p-2 max-h-[400px] min-h-[100px] flex-grow"
+                required
+              />
+            </div>
+
             <input
               key={index + 1} // important to include key with field's id
-              {...register(`educations.${index}.indexOrder`)}
+              {...register(`sideProjects.${index}.indexOrder`)}
               value={index + 1}
               type="hidden"
             />
@@ -200,12 +220,12 @@ function ProfileEditEducation() {
         <div className="flex">
           <div className=" mr-4">
             <Button style={`btn btn-ghost `} type="button" action={handleAddField}>
-              Add Education
+              Add Side Project
             </Button>
           </div>
           <div className=" ">
             <Button style={`btn btn-ghost `} type="submit" action={handleSubmit(onSubmitHandler)}>
-              Save Education
+              Save Projects
             </Button>
           </div>
         </div>
@@ -217,4 +237,4 @@ function ProfileEditEducation() {
   );
 }
 
-export default ProfileEditEducation;
+export default ProfileEditSideProjects;
