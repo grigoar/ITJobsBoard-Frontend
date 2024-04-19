@@ -137,7 +137,7 @@ const FormSelectAsyncCreate = ({
   });
 
   return (
-    <div className="cursor-pointe4 ![&>input:focus-visible]:outline-none  w-full [&>div:focus]:border-4">
+    <div className="![&>input:focus-visible]:outline-none w-full  cursor-pointer [&>div:focus]:border-4">
       <label className="block  ">{label}</label>
       <Controller
         name={inputValueField}

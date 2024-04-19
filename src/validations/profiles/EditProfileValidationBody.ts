@@ -68,8 +68,28 @@ const EditMyProfileValidationBody = yup.object({
       title: yup.string().required(),
       company: yup.string().required(),
       url: yup.string(),
-      startYear: yup.number().required(),
-      endYear: yup.number().required(),
+      // startYear: yup.number().required(),
+      // endYear: yup.number().required(),
+      startYear: yup
+        .string()
+        .test('is-interval', 'Start Year min - 1950', (value: any) => {
+          if (Number.isNaN(value)) {
+            return false;
+          }
+          return parseInt(value, 10) >= 1950;
+        })
+        .required(),
+      endYear: yup
+        .string()
+        .test('is-interval', 'End Year max - 2024', (value: any) => {
+          // check if the year is a number
+          if (Number.isNaN(value)) {
+            return false;
+          }
+
+          return parseInt(value, 10) >= 1950;
+        })
+        .required(),
     })
   ),
 
@@ -78,8 +98,18 @@ const EditMyProfileValidationBody = yup.object({
       title: yup.string().required(),
       institution: yup.string().required(),
       url: yup.string(),
-      startYear: yup.number(),
-      endYear: yup.number(),
+      startYear: yup
+        .string()
+        .test('is-interval', 'Start Year min - 1950', (value: any) => {
+          return parseInt(value, 10) >= 1950;
+        })
+        .required(),
+      endYear: yup
+        .string()
+        .test('is-interval', 'End Year max - 2024', (value: any) => {
+          return parseInt(value, 10) >= 1950;
+        })
+        .required(),
     })
   ),
 
@@ -88,8 +118,27 @@ const EditMyProfileValidationBody = yup.object({
       title: yup.string().required(),
       description: yup.string().required(),
       url: yup.string(),
-      startYear: yup.number(),
-      endYear: yup.number(),
+      // startYear: yup.number(),
+      startYear: yup
+        .string()
+        .test('is-interval', 'Start Year min - 1950', (value: any) => {
+          return parseInt(value, 10) >= 1950;
+        })
+        .required(),
+      endYear: yup
+        .string()
+        .test('is-interval', 'End Year max - 2024', (value: any) => {
+          return parseInt(value, 10) >= 1950;
+        })
+        .required(),
+      // startYear: yup.lazy(
+      //   (value) => (value === '' ? yup.string() : yup.number())
+      //   // if (value) {
+      //   //   return yup.number();
+      //   // }
+      //   // return yup.number();
+      // ),
+      // endYear: yup.number(),
     })
   ),
   techTags: yup.array().of(

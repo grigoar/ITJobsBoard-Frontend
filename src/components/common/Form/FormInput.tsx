@@ -33,7 +33,7 @@ const FormInput = ({
   errors,
   dirtyField,
   watchField,
-  // touchedField,
+  touchedField,
   extraError,
   submitted,
   styling,
@@ -55,6 +55,12 @@ const FormInput = ({
 
   const [errorsArray, setErrorsArray] = useState<string[]>([]);
 
+  console.log('name', name);
+  console.log('dirtyField', dirtyField);
+  console.log('watchField', watchField);
+  console.log('submitted', submitted);
+  console.log('touchedField', touchedField);
+
   useEffect(() => {
     let errorsForm = [];
     if (extraError !== undefined && extraError !== '') {
@@ -74,7 +80,7 @@ const FormInput = ({
 
   const errorMessages =
     // ((isTyping || touchedField) &&
-    (((!isTyping && dirtyField) || submitted) &&
+    (((!isTyping && dirtyField && touchedField) || submitted) &&
       errorsArray.map((error: string, index) => {
         return (
           <li
@@ -114,6 +120,7 @@ const FormInput = ({
     errorsArray.length === 0 &&
     !isTyping &&
     'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:ring-1 focus:ring-[var(--color-green-light)]';
+  console.log('errorsArray.length', errorsArray);
   const isInputInvalidClass =
     // errors != null &&
     errorsArray.length > 0 &&
@@ -174,7 +181,10 @@ const FormInput = ({
           </div>
         )}
       />
-      {!isTyping && errorMessages.length > 0 && <ul className="mt-2 w-full">{errorMessages}</ul>}
+      {!isTyping && errorMessages.length > 0 && (
+        // {((!isTyping && errorMessages.length > 0 && touchedField) || (errorMessages.length > 0 && submitted)) && (
+        <ul className="mt-2 w-full">{errorMessages}</ul>
+      )}
     </>
   );
 };

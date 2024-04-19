@@ -26,6 +26,7 @@ import Button from '../common/Button/Button';
 import MessageResult from '../common/MessageResult/MessageResult';
 import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
 import FormTextarea from '../common/Form/FormTextarea';
+import ProfileEditEmployments from './ProfileEditEmployments';
 
 // TODO: Need to check the disabled buttons
 // TODO: Add Sortable MultiSelect example ( drag and drop options) - https://react-select.com/advanced
@@ -418,27 +419,30 @@ const ProfileEdit = () => {
           isSearchable={true}
           isMulti={true}
         />
-        <div className="flex w-full flex-row">
-          <FormSelectAsyncCreate
-            control={control}
-            options={allTags.yearsOfExperienceTags}
-            inputValueField="yearsOfExperienceTag"
-            selectOptionField="id"
-            selectOptionLabel="labelName"
-            label="Years Of Experience"
-            watchField={watch('yearsOfExperienceTag')}
-            submitted={isSubmitted}
-            isSearchable={false}
-            isMulti={false}
-          />
-          <div className="ml-4 flex w-full flex-col">
+        <div className="flex w-full flex-row flex-wrap">
+          <div className="flex-grow sm:mr-4">
+            <FormSelectAsyncCreate
+              control={control}
+              options={allTags.yearsOfExperienceTags}
+              inputValueField="yearsOfExperienceTag"
+              selectOptionField="id"
+              selectOptionLabel="labelName"
+              label="Years Of Experience"
+              watchField={watch('yearsOfExperienceTag')}
+              submitted={isSubmitted}
+              isSearchable={false}
+              isMulti={false}
+              styling="min-w-[200px]"
+            />
+          </div>
+          <div className="flex min-w-[200px] flex-grow  flex-col">
             <FormInput
               register={register}
               placeholder="33"
               type="number"
               name="preferredMinHourRate"
               id="preferredMinHourRate"
-              label="Min Hour Rate in $"
+              label="Min Rate per Hour in $"
               control={control}
               errors={errors.preferredMinHourRate?.message}
               dirtyField={dirtyFields.preferredMinHourRate}
@@ -447,7 +451,7 @@ const ProfileEdit = () => {
               hasInputIcon={true}
               inputIconActive={<AiOutlineEdit />}
               inputIconInactive={<AiOutlineEdit />}
-              styling="flex flex-col "
+              styling="flex flex-col  flex-grow"
             />
           </div>
         </div>
@@ -465,9 +469,20 @@ const ProfileEdit = () => {
           watchField={watch('bio')}
           submitted={isSubmitted}
         />
-        <div>Employments</div>
+
+        {/* <button onClick={handleAddField}>Add field</button> */}
+        {/* <ul className="List">
+          <li>
+            <div>Title</div>
+            <div>Company</div>
+            <div>Start Year</div>
+            <div>End Year</div>
+            <div>URL</div>
+          </li>
+        </ul>
+        <div>Previous Experience</div>
         <div>Education</div>
-        <div>Side Projects</div>
+        <div>Side Projects</div> */}
         <div className="block w-full">
           <Button style={`btn btn-ghost `} type="submit" action={handleSubmit(onSubmitHandler)}>
             Update Profile
@@ -475,6 +490,9 @@ const ProfileEdit = () => {
         </div>
       </FormWrapper>
       <MessageResult isLoadingAction={isLoadingUpdateData} isError={isMessageError} message={resultMessageDisplay} />
+
+      <h4 className="mt-8 w-full text-[var(--color-blue-light)]">Previous Experience</h4>
+      <ProfileEditEmployments />
     </div>
   );
 };
