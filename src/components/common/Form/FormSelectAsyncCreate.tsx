@@ -156,6 +156,7 @@ const FormSelectAsyncCreate = ({
               onInputChange?.(inputValueSelect);
             }}
             placeholder={selectPlaceholder}
+            isClearable={true}
           />
         )}
         rules={{ required: true }}

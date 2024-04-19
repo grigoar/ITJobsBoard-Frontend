@@ -106,13 +106,10 @@ const EditMyProfileValidationBody = yup.object({
       __isNew__: yup.boolean(),
     })
   ),
-  yearsOfExperienceTags: yup.array().of(
-    yup.object().shape({
-      label: yup.string(),
-      value: yup.string(),
-      __isNew__: yup.boolean(),
-    })
-  ),
+  yearsOfExperienceTag: yup.object().shape({
+    label: yup.string(),
+    value: yup.string(),
+  }),
 
   jobRolesTags: yup.array().of(
     yup.object().shape({

@@ -25,17 +25,21 @@ import FormWrapper from '../common/Form/FormWrapper';
 import Button from '../common/Button/Button';
 import MessageResult from '../common/MessageResult/MessageResult';
 import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
+import FormTextarea from '../common/Form/FormTextarea';
 
 // TODO: Need to check the disabled buttons
 // TODO: Add Sortable MultiSelect example ( drag and drop options) - https://react-select.com/advanced
 
 // TODO: Set the languages from the backend ( it should take the tags when getting the profile)
+// ! TODO: Check the md editor for the textareas ( https://uiwjs.github.io/react-md-editor/ )
 const ProfileEdit = () => {
   const { loggedInUser } = useAppSelector((state) => state.userData);
-  console.log('loggedInUser', loggedInUser);
+  // console.log('loggedInUser', loggedInUser);
   const [profileTags, setProfileTags] = useState<{
     techTags: TagEntity[];
     languagesTags: TagEntity[];
+    jobRolesTags: TagEntity[];
+    yearsOfExperienceTags: TagEntity[];
   }>();
 
   // const { tags: profileTags } = getJobTagsByCategory(loggedInUser.tags || []);
@@ -143,6 +147,19 @@ const ProfileEdit = () => {
     setValue('github', loggedInUser.github);
     setValue('twitter', loggedInUser.twitter);
     setValue('desiredRoleTag', { label: loggedInUser.desiredRole?.labelName, value: loggedInUser.desiredRole?.id });
+    setValue(
+      'jobRolesTags',
+      profileTags?.jobRolesTags?.map((role) => ({ label: role.labelName, value: role.id }))
+    );
+    const profileYearsExperience = profileTags?.yearsOfExperienceTags?.map((tag) => ({
+      label: tag.labelName,
+      value: tag.id,
+    }));
+    if (profileYearsExperience?.[0]) {
+      setValue('yearsOfExperienceTag', profileYearsExperience[0]);
+    }
+    setValue('bio', loggedInUser.bio);
+    setValue('preferredMinHourRate', loggedInUser.preferredMinHourRate);
   }, [loggedInUser, setValue, profileTags]);
 
   const updateUserProfileData = async (userProfileData: EditMyProfile) => {
@@ -154,7 +171,8 @@ const ProfileEdit = () => {
       Sentry.captureMessage(JSON.stringify(err, null, 2), 'error');
       if ('data' in err) {
         showResultErrorMessage(err.data.message);
-        toastifyError(err.data.message);
+        // toastifyError(err.data.message);
+        toastifyError('Something Went Wrong! Please try again!');
       } else {
         showResultErrorMessage('Something Went Wrong! Please try again!');
         toastifyError('Something Went Wrong! Please try again!');
@@ -166,9 +184,22 @@ const ProfileEdit = () => {
     console.log('data', data);
     const profileTechTags = createJobPostBackendTags(TagListName.TECH_SKILL, data.techTags);
     const updatedProfileLanguagesTags = createJobPostBackendTags(TagListName.LANGUAGE, data.languagesTags);
-    const updatedProfileDesiredRoleTag = createJobPostBackendTags(TagListName.JOB_ROLE, [data.desiredRoleTag]);
+    const updatedProfileDesiredRoleTag = createJobPostBackendTags(
+      TagListName.JOB_ROLE,
+      data.desiredRoleTag ? [data.desiredRoleTag] : []
+    );
+    const updatedProfileJobRolesTags = createJobPostBackendTags(TagListName.JOB_ROLE, data.jobRolesTags);
+    const updatedProfileYearsOfExperienceTags = createJobPostBackendTags(
+      TagListName.YEARS_EXPERIENCE,
+      data.yearsOfExperienceTag ? [data.yearsOfExperienceTag] : []
+    );
 
-    const updatedProfileTags = [...profileTechTags, ...updatedProfileLanguagesTags];
+    const updatedProfileTags = [
+      ...profileTechTags,
+      ...updatedProfileLanguagesTags,
+      ...updatedProfileJobRolesTags,
+      ...updatedProfileYearsOfExperienceTags,
+    ];
 
     const updatedUserProfileData: EditMyProfile = {
       ...data,
@@ -375,14 +406,68 @@ const ProfileEdit = () => {
           isSearchable={false}
           isMulti={false}
         />
-        <div>Principal desired Role</div>
-        <div>Desired positions</div>
-        <div>Number years of Experience</div>
-        <div>Bio about your experience</div>
+        <FormSelectAsyncCreate
+          control={control}
+          options={allTags.jobRolesTags}
+          inputValueField="jobRolesTags"
+          selectOptionField="id"
+          selectOptionLabel="labelName"
+          label="Open to other roles"
+          watchField={watch('jobRolesTags')}
+          submitted={isSubmitted}
+          isSearchable={true}
+          isMulti={true}
+        />
+        <div className="flex w-full flex-row">
+          <FormSelectAsyncCreate
+            control={control}
+            options={allTags.yearsOfExperienceTags}
+            inputValueField="yearsOfExperienceTag"
+            selectOptionField="id"
+            selectOptionLabel="labelName"
+            label="Years Of Experience"
+            watchField={watch('yearsOfExperienceTag')}
+            submitted={isSubmitted}
+            isSearchable={false}
+            isMulti={false}
+          />
+          <div className="ml-4 flex w-full flex-col">
+            <FormInput
+              register={register}
+              placeholder="33"
+              type="number"
+              name="preferredMinHourRate"
+              id="preferredMinHourRate"
+              label="Min Hour Rate in $"
+              control={control}
+              errors={errors.preferredMinHourRate?.message}
+              dirtyField={dirtyFields.preferredMinHourRate}
+              watchField={watch('preferredMinHourRate')}
+              submitted={isSubmitted}
+              hasInputIcon={true}
+              inputIconActive={<AiOutlineEdit />}
+              inputIconInactive={<AiOutlineEdit />}
+              styling="flex flex-col "
+            />
+          </div>
+        </div>
+        <FormTextarea
+          register={register}
+          placeholder="Bio about your experience..."
+          type="text"
+          name="bio"
+          id="bio"
+          label="About Me"
+          styling="[&]:h-40 [&]:p-0 max-h-[400px] min-h-[100px]"
+          required
+          errors={errors.bio?.message}
+          dirtyField={dirtyFields.bio}
+          watchField={watch('bio')}
+          submitted={isSubmitted}
+        />
         <div>Employments</div>
         <div>Education</div>
         <div>Side Projects</div>
-        <div>Min hour Rate desired</div>
         <div className="block w-full">
           <Button style={`btn btn-ghost `} type="submit" action={handleSubmit(onSubmitHandler)}>
             Update Profile
