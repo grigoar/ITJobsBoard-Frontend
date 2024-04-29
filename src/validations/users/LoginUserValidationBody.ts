@@ -4,10 +4,6 @@ const LoginUserValidationBody = yup.object().shape({
   email: yup.string().email('Email must be valid.').required('Email is required'),
   password: yup
     .string()
-    // .min(12)
-    // .max(32)
-    // .matches(/(.*[A-Z].*)/, 'The password must contain at least one uppercase letter')
-    // .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Special')
     .test('password', 'Password must contain at least one number', (value) => {
       const errors = [];
       if (!value) {

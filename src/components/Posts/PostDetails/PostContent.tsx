@@ -1,19 +1,18 @@
 /* eslint-disable react/no-children-prop */
-import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+import { BsArrowLeft } from 'react-icons/bs';
 import ReactMarkdown from 'react-markdown';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
-import atomDark from 'react-syntax-highlighter/dist/cjs/styles/prism/atom-dark';
-import js from 'react-syntax-highlighter/dist/cjs/languages/prism/javascript';
 import css from 'react-syntax-highlighter/dist/cjs/languages/prism/css';
-import { BsArrowLeft } from 'react-icons/bs';
+import js from 'react-syntax-highlighter/dist/cjs/languages/prism/javascript';
+import atomDark from 'react-syntax-highlighter/dist/cjs/styles/prism/atom-dark';
 
-import Card from '../../common/Card/Card';
 import { BlogPostModel } from '../../../models/BlogPosts/BlogPostModel';
-import PostHeader from './PostHeader';
-import FeaturedPosts from '../HomePosts/FeaturedPostsGrid';
 import Button from '../../common/Button/Button';
+import Card from '../../common/Card/Card';
+import FeaturedPosts from '../HomePosts/FeaturedPostsGrid';
+import PostHeader from './PostHeader';
 
 SyntaxHighlighter.registerLanguage('js', js);
 SyntaxHighlighter.registerLanguage('css', css);
@@ -30,7 +29,6 @@ const PostContent = ({ post, relatedPosts }: Props) => {
     // @ts-ignore
     p(paragraph) {
       const { node } = paragraph;
-      // console.log(node);
 
       if (node.children[0].tagName === 'img') {
         const image = node.children[0];
@@ -58,12 +56,7 @@ const PostContent = ({ post, relatedPosts }: Props) => {
 
       return (
         <div className={'codeWrapper'}>
-          <SyntaxHighlighter
-            style={atomDark}
-            // customStyle={{ width: '275px' } as React.CSSProperties}
-            language={language}
-            children={children}
-          />
+          <SyntaxHighlighter style={atomDark} language={language} children={children} />
         </div>
       );
     },

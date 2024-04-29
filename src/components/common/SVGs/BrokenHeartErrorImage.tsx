@@ -1,9 +1,5 @@
-import React from 'react';
-
 const BrokenHeartErrorImage = () => {
   return (
-    // <svg xmlns="http://www.w3.org/2000/svg" width="166" height="136" viewBox="-1 -1 130.27142 106.72695">
-
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="332"

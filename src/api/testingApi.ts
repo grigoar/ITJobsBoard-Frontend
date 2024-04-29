@@ -13,7 +13,6 @@ const testingApi = itJobsBoardApi.injectEndpoints({
         };
       },
       keepUnusedDataFor: 10,
-      // transformResponse: (response: string) => JSON.stringify(response),
     }),
     testingCountryIP: builder.query<string, string>({
       query: (ipLookup: string) => {

@@ -1,24 +1,14 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { loggedInUserInitialStateEmpty, UserEntity } from '@/models/Users/UserEntity';
-import type { RootState } from '../index';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import constants from '../../utils/constants';
-import { saveThemeLS, loadThemeLS } from '../localStorage/appTheme';
-
-// import { changeBodyTheme } from '../../utils/helpers';
-// import { addCookie, removeScriptById, searchCookie } from '../cookies/cookiesStorage';
+import type { RootState } from '../index';
+import { loadThemeLS, saveThemeLS } from '../localStorage/appTheme';
 
 interface UserDataState {
   theme: string;
   loggedInUser: UserEntity;
   isUserLogged: boolean;
   isUserAdmin: boolean;
-  // userSettings: UserSettingsModel;
-  // userBeginnerRaces: Partial<NormalRaceModel>[];
-  // currentUserBeginnerRace?: Partial<NormalRaceModel>;
-  // userSpeedImprovementRaces: Partial<NormalRaceModel>[];
-  // currentUserSpeedRace?: Partial<NormalRaceModel>;
-  // userBeginnerBestRacesStats: UserRaceResponseModel[];
-  // userSpeedImprovementBestRacesStats: UserRaceResponseModel[];
   photoImageChangedTime?: number;
 }
 
@@ -27,15 +17,6 @@ const initialState: UserDataState = {
   loggedInUser: loggedInUserInitialStateEmpty,
   isUserLogged: false,
   isUserAdmin: false,
-  // userGeneralStats: userGeneralStatsInitialStateEmpty,
-  // userImproveStats: userImproveStatsInitialStateEmpty,
-  // userSettings: loggedInUserSettingsStateEmpty,
-  // userBeginnerRaces: [],
-  // currentUserBeginnerRace: undefined,
-  // userSpeedImprovementRaces: [],
-  // currentUserSpeedRace: undefined,
-  // userBeginnerBestRacesStats: [],
-  // userSpeedImprovementBestRacesStats: [],
   photoImageChangedTime: Date.now(),
 };
 

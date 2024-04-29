@@ -36,7 +36,6 @@ const Button = (props: Props) => {
         className={`cursor-pointer  ${props.style ? props.style : ''} `}
         aria-label={`${props.areaLabelCustom || ''}`}
       >
-        {/* <a className={`${classes.buttonGen} ${props.style ? props.style : ''}`}>{props.children}</a> */}
         {props.children}
       </Link>
     );

@@ -10,10 +10,8 @@ Sentry.init({
   dsn: SENTRY_DSN || 'https://959af188006f45c92241065772.ingest.us.sentry.io/45069',
 
   // Adjust this value in production, or use tracesSampler for greater control
-  // ! TODO: Change this in production
   tracesSampleRate: 0.0001,
   environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT || process.env.NODE_ENV,
-  // tracesSampleRate: 0.0001,
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,

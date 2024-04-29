@@ -4,10 +4,6 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   overflow-x: auto;
   overflow-y: hidden;
-  /* @include respond(phone) {
-    // overflow-x: auto;
-    // overflow-y: hidden;
-  } */
 }
 
 .tableHeadDate {
@@ -42,13 +38,6 @@
   &:hover {
     color: var(--donate-link-color-hover);
   }
-
-  /* @include respond(tablet) {
-    min-width: 65px;
-  } */
-  /* // @include respond(phone) {
-  //   min-width: 85px;
-  // } */
 }
 
 .logo {
@@ -150,9 +139,6 @@
 }
 
 .btnDisabled {
-  /* background-color: var(--color-button-disabled);
-  color: var(--color-text-disabled);
-  box-shadow: var(--shadow-lg); */
   background-color: var(--color-button-disabled);
   color: inherit;
   padding: 0;
@@ -174,14 +160,12 @@
     border 0.3s,
     color 0.3s,
     border-radius 0.1s;
-  /* border: 1px solid transparent; */
   color: var(--text-color-calm-strong);
 
   &:hover {
     cursor: default;
     background-color: var(--color-button-disabled);
     border-radius: 5px;
-    /* border: 1px solid var(--color-button-primary); */
     border: 1px solid var(--color-accent);
   }
 }

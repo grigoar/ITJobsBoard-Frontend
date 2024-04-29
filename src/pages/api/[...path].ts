@@ -1,6 +1,5 @@
 import httpProxy from 'http-proxy';
 import { NextApiRequest, NextApiResponse } from 'next';
-// import { withSentry } from '@sentry/nextjs';
 
 const API_SERVER_URL = `${process.env.SERVER_API_URL}`;
 const proxy = httpProxy.createProxyServer();
@@ -21,5 +20,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 };
 
-// export default withSentry(handler);
 export default handler;

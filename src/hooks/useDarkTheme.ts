@@ -5,11 +5,6 @@ import constants from '../utils/constants';
 import { changeRootTheme } from '../utils/themeHelper';
 
 export default function useThemeToggle() {
-  // ? It works with direct localstorage value, but it doesn't work with loading function - problems with react Switch
-  // const [theme, setTheme] = useState(localStorage.theme || constants.THEME_DEFAULT);
-  // const [theme, setTheme] = useState(
-  //   typeof window !== 'undefined' ? window.localStorage.theme ?? constants.THEME_DEFAULT : constants.THEME_DEFAULT
-  // );
   const [theme, setTheme] = useState(constants.THEME_DEFAULT);
   const [initialRender, setInitialRender] = useState(true);
 

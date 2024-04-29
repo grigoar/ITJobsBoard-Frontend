@@ -1,5 +1,3 @@
-import React from 'react';
-
 type Props = {
   name: string;
   values: string[];
@@ -16,16 +14,6 @@ const TagLabelDetails = ({ name, values, color }: Props) => {
     >
       <div className="text-center text-[var(--color-blue-light)]">{name}</div>
       <div className="mt-2 inline-block text-center text-lg"> {values.join(', ')}</div>
-      {/* {values.map((value) => (
-        <span className="text-center text-lg" key={value}>
-          {value}
-        </span>
-      ))} */}
-      {/* {values.map((value) => (
-        <div className="mt-2 inline-block text-center text-lg" key={value}>
-          {value}
-        </div>
-      ))} */}
     </div>
   );
 };

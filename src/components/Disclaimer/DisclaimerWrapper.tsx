@@ -1,4 +1,3 @@
-import React from 'react';
 import { BsArrowRight } from 'react-icons/bs';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
@@ -64,9 +63,6 @@ const DisclaimerWrapper = () => {
           </li>
         </ul>
         <div className="flex justify-center">
-          {/* <Button link="/articles" style="btn btn-ghost">
-            Read Articles
-          </Button> */}
           <Button style={`btn btn-ghost `} link={'/posts'}>
             <div className="flex items-center justify-center">
               <span className="mr-2"> Read Articles</span>

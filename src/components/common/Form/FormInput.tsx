@@ -41,7 +41,6 @@ const FormInput = ({
   control,
   required,
   type,
-  // hasInputIcon: inputIcon,
   inputIconActive,
   inputIconInactive,
   hasInputIcon,
@@ -73,7 +72,6 @@ const FormInput = ({
   }, [colorValue, type, name, setValue]);
 
   const errorMessages =
-    // ((isTyping || touchedField) &&
     (((!isTyping && dirtyField && touchedField) || submitted) &&
       errorsArray.map((error: string, index) => {
         return (
@@ -87,13 +85,7 @@ const FormInput = ({
       })) ||
     [];
 
-  // ${dirtyField && errors == null && 'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:outline-none focus:ring-1 focus:ring-[var(--color-green-light)]'}`}
-
-  // console.log('errorMessages', errorMessages);
-  // console.log('errorsMessages.length', errorMessages.length);
   useEffect(() => {
-    // implement a debounce to check if the user is typing
-
     if (watchField === undefined) return;
 
     if (watchFieldPrev !== watchField) {
@@ -110,12 +102,10 @@ const FormInput = ({
 
   const isFocusedAndValid =
     dirtyField &&
-    // errors == null &&
     errorsArray.length === 0 &&
     !isTyping &&
     'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:ring-1 focus:ring-[var(--color-green-light)]';
   const isInputInvalidClass =
-    // errors != null &&
     errorsArray.length > 0 &&
     (dirtyField || submitted) &&
     !isTyping &&
@@ -135,16 +125,12 @@ const FormInput = ({
         {required && <span className="text-[var(--color-red-light)]">*</span>}
       </label>
       <Controller
-        // name="companyID"
         name={name}
         control={control}
-        // render={({ field: { onChange, value, ref } }) => (
         render={({ field }) => (
           <div className="relative w-full">
             <input
               {...register(name)}
-              // {...field}
-
               id={id}
               name={name}
               type={showSensitive && inputIcon ? 'text' : type}
@@ -154,7 +140,7 @@ const FormInput = ({
                 if (type === 'color') {
                   e.preventDefault();
                   clearTimeout(colorTimeout);
-                  // set the color with a delay
+                  // ? set the color with a delay
                   setColorTimeout(
                     setTimeout(() => {
                       setColorValue(e.target.value);
@@ -174,10 +160,7 @@ const FormInput = ({
           </div>
         )}
       />
-      {!isTyping && errorMessages.length > 0 && (
-        // {((!isTyping && errorMessages.length > 0 && touchedField) || (errorMessages.length > 0 && submitted)) && (
-        <ul className="mt-2 w-full">{errorMessages}</ul>
-      )}
+      {!isTyping && errorMessages.length > 0 && <ul className="mt-2 w-full">{errorMessages}</ul>}
     </>
   );
 };

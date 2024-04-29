@@ -1,38 +1,16 @@
-import Link from 'next/link';
 import Image from 'next/image';
-import React from 'react';
+import Link from 'next/link';
 import { MdTimer } from 'react-icons/md';
 import { BlogPostModel } from '../../../models/BlogPosts/BlogPostModel';
-
-// import { useAppSelector } from '../../../store/hooks';
-// import { formattedDateFullDetailsCustom } from '../../../lib/FormatDisplayElements';
 
 interface Props {
   post: BlogPostModel;
 }
 const PostItem = ({ post }: Props) => {
-  // const { userSettings } = useAppSelector((state) => state.userData);
-  // const { title, image, excerpt, date, slug } = post;
   const { title, image, excerpt, slug, readTime } = post;
   const linkPath = `/posts/${post.slug}`;
   const imagePath = `/images/posts/${slug}/${image}`;
 
-  // .content {
-
-  //   time {
-  //     font-style: italic;
-  //     color: var(--text-color-blogs-date);
-  //     margin-top: 0rem;
-  //     margin-bottom: 0.5rem;
-
-  //     font-size: calc(var(--text-font-size-blogs) * 0.7);
-  //   }
-  // }
-  // .blogCardHeaderContainer {
-  //   display: flex;
-  //   flex-direction: column;
-  //   justify-content: center;
-  // }
   return (
     <li
       className={
@@ -57,15 +35,6 @@ const PostItem = ({ post }: Props) => {
             >
               {title}
             </h3>
-            {/* <time>
-              {formattedDateFullDetailsCustom(
-                new Date(date).toString(),
-                userSettings.dateFormat,
-                'numeric',
-                'long',
-                'numeric'
-                )}
-              </time> */}
             <div className={'readTime flex items-center pb-1 pt-3'}>
               <div className={'iconWrapper  flex h-full justify-center'}>
                 <MdTimer className={'timerIcon text-[color:var(--color-blogs-date)]'} />

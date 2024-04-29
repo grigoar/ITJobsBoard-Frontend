@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { useAppSelector } from '@/store/hooks';
 import { SideProjectEntryModel } from '@/models/Profiles/SideProjectEntryModel';
-import FormInput from '../common/Form/FormInput';
+import { useAppSelector } from '@/store/hooks';
+import { useEffect } from 'react';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 import Button from '../common/Button/Button';
+import FormInput from '../common/Form/FormInput';
 import FormTextarea from '../common/Form/FormTextarea';
 
 type Props = {
@@ -33,7 +33,6 @@ function ProfileEditSideProjectsController({
   isSubmitted,
   onSubmitHandler,
 }: Props) {
-  // const { control, register, handleSubmit } = useForm();
   const { loggedInUser } = useAppSelector((state) => state.userData);
 
   useEffect(() => {
@@ -53,7 +52,6 @@ function ProfileEditSideProjectsController({
   }, [loggedInUser.sideProjects, append, remove]);
 
   const handleAddField = () => {
-    // e.preventDefault();
     append({
       indexOrder: fields.length + 1,
       title: '',
@@ -121,7 +119,6 @@ function ProfileEditSideProjectsController({
               label="Name"
               control={control}
               errors={errors.sideProjects?.[index]?.title?.message}
-              // dirtyField={false}
               touchedField={touchedFields.sideProjects?.[index]?.title}
               dirtyField={dirtyFields.sideProjects?.[index]?.title}
               watchField={watch(`sideProjects.${index}.title`)}
@@ -185,8 +182,6 @@ function ProfileEditSideProjectsController({
           </div>
         </div>
       ))}
-      {/* <button onClick={handleAddField}>Add field</button>
-      <input type="submit" /> */}
       <div className="flex">
         <div className=" mr-4">
           <Button style={`btn btn-ghost `} type="button" action={handleAddField}>

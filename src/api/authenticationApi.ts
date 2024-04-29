@@ -1,12 +1,12 @@
-import { RegisterUserModel } from '@/models/Users/RegisterUserModel';
-import constants from '@/utils/constants';
-import { UserAuthResponse } from '@/models/Users/UserAuthResponse';
-import CheckUniqueEmailModel from '@/models/Users/CheckUniqueEmailModel';
-import { CheckLoggedInUserResponseModel } from '@/models/Users/CheckLoggedInUserResponseModel';
-import LoginUserModel from '@/models/Users/LoginUserModel';
-import ForgotPasswordBodyModel from '@/models/Users/ForgotPasswordModel';
-import ResetPasswordModel from '@/models/Users/ResetPasswordBodyModel';
 import { EditMyProfile } from '@/models/Profiles/EditProfileModel';
+import { CheckLoggedInUserResponseModel } from '@/models/Users/CheckLoggedInUserResponseModel';
+import CheckUniqueEmailModel from '@/models/Users/CheckUniqueEmailModel';
+import ForgotPasswordBodyModel from '@/models/Users/ForgotPasswordModel';
+import LoginUserModel from '@/models/Users/LoginUserModel';
+import { RegisterUserModel } from '@/models/Users/RegisterUserModel';
+import ResetPasswordModel from '@/models/Users/ResetPasswordBodyModel';
+import { UserAuthResponse } from '@/models/Users/UserAuthResponse';
+import constants from '@/utils/constants';
 import itJobsBoardApi from './indexITJobsBoardApi';
 
 const authenticationApi = itJobsBoardApi.injectEndpoints({
@@ -19,7 +19,6 @@ const authenticationApi = itJobsBoardApi.injectEndpoints({
         body: newUser,
       }),
 
-      // invalidatesTags: [constants.USER_PROFILE_TAG, constants.USER_SETTING_TAG],
       invalidatesTags: [constants.USER_PROFILE_TAG],
     }),
     loginUser: builder.mutation<UserAuthResponse, LoginUserModel>({
@@ -44,7 +43,6 @@ const authenticationApi = itJobsBoardApi.injectEndpoints({
           return response.json();
         },
       }),
-      // keepUnusedDataFor: 30,
       providesTags: [constants.USER_PROFILE_TAG],
     }),
 
@@ -65,7 +63,6 @@ const authenticationApi = itJobsBoardApi.injectEndpoints({
       invalidatesTags: [constants.USER_PROFILE_TAG],
     }),
 
-    // ! This is not working
     googleAuthHandler: builder.query<CheckLoggedInUserResponseModel, void>({
       query: () => ({
         url: 'google',
@@ -107,8 +104,6 @@ const authenticationApi = itJobsBoardApi.injectEndpoints({
     }),
   }),
 });
-
-// window.open(`http://localhost:3000/api/v1/google`, '_self');
 
 export const {
   useRegisterUserMutation,

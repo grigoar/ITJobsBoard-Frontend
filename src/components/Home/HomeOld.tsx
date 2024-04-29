@@ -1,41 +1,32 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { BsArrowRight } from 'react-icons/bs';
-import Link from 'next/link';
-import constants from '@/utils/constants';
+import { useLazyGetServerHealthQuery, useLazyTestingServerFailureQuery } from '@/api/testingApi';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { decrement, increment } from '@/store/slices/counterSlice';
-import { useLazyGetServerHealthQuery, useLazyTestingServerFailureQuery } from '@/api/testingApi';
-import { useGetAllJobPostsQuery } from '@/api/jobPostsApi';
-import Card from '../common/Card/Card';
+import constants from '@/utils/constants';
+import Link from 'next/link';
+import { useEffect } from 'react';
+import { BsArrowRight } from 'react-icons/bs';
 import Button from '../common/Button/Button';
+import Card from '../common/Card/Card';
 
 const HomeWrapper = () => {
   const count = useAppSelector((state) => state.counter.value);
   const dispatch = useAppDispatch();
   const [getServerHealth, { data: serverHealth }] = useLazyGetServerHealthQuery();
   const [testingServerFailure, { data: serverFailure }] = useLazyTestingServerFailureQuery();
-  const { data: jobPostsData } = useGetAllJobPostsQuery(null);
 
-  console.log('jobPostsData', jobPostsData);
   const checkServerHealth = () => {
     getServerHealth();
-
-    // throw new Error('This is a test error');
   };
 
   const checkServerError = () => {
     testingServerFailure();
   };
 
-  useEffect(() => {
-    // console.log('serverHealth', serverHealth);
-  }, [serverHealth]);
+  useEffect(() => {}, [serverHealth]);
 
-  useEffect(() => {
-    // console.log('serverFailure', serverFailure);
-  }, [serverFailure]);
+  useEffect(() => {}, [serverFailure]);
 
   return (
     <section className=" flex max-w-[800px] flex-col  items-center justify-between self-center pb-0  text-xl font-semibold">
@@ -97,9 +88,6 @@ const HomeWrapper = () => {
           </li>
         </ul>
         <div className="flex justify-center">
-          {/* <Button link="/articles" style="btn btn-ghost">
-            Read Articles
-          </Button> */}
           <Button style={`btn btn-ghost `} link={'/posts'}>
             <div className="flex items-center justify-center">
               <span className="mr-2"> Steal Ideas</span>

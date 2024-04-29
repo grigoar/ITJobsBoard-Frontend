@@ -1,39 +1,29 @@
-import React, { useEffect } from 'react';
-import Switch from 'react-switch';
-import { usePathname, useRouter } from 'next/navigation';
-import useThemeToggle from '@/hooks/useDarkTheme';
-import constants from '@/utils/constants';
-import LightThemeImage from '@/components/common/SVGs/themes/LightThemeImage';
-import DarkThemeImage from '@/components/common/SVGs/themes/DarkThemeImage';
 import { useCheckLoggedUserQuery, useLogoutCurrentUserMutation } from '@/api/authenticationApi';
+import Button from '@/components/common/Button/Button';
+import DarkThemeImage from '@/components/common/SVGs/themes/DarkThemeImage';
+import LightThemeImage from '@/components/common/SVGs/themes/LightThemeImage';
+import useThemeToggle from '@/hooks/useDarkTheme';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { userDataActions } from '@/store/slices/userDataSlice';
-import Button from '@/components/common/Button/Button';
+import constants from '@/utils/constants';
 import { changeBodyTheme, toastifySuccess } from '@/utils/helpers';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import Switch from 'react-switch';
 
 const Header = () => {
   const dispatch = useAppDispatch();
   const [logoutUser] = useLogoutCurrentUserMutation();
   const { data: checkUserStatusData } = useCheckLoggedUserQuery();
   const { isUserLogged } = useAppSelector((state) => state.userData);
-  // const { data: checkUserStatusData, isLoading } = useCheckLoggedUserQuery();
-  // const { loggedInUser, isUserLogged, isUserAdmin } = useAppSelector((state) => state.userData);
-  // const { activeTheme, setNewActiveTheme } = useChangeAppTheme(loggedInUser);
 
   const router = useRouter();
-  // const searchParams = useSearchParams();
-
-  // console.log('loggedInUser', loggedInUser);
-  // console.log('isUserAdmin', isUserAdmin);
-  // console.log('isUserLogged', isUserLogged);
-  // console.log('isLoading', isLoading);
 
   const pathName = usePathname();
   const { activeTheme, toggleTheme } = useThemeToggle();
   const isDark = activeTheme === constants.THEME_DARK;
 
   useEffect(() => {
-    // throw new Error('This is a test error');
     if (checkUserStatusData?.user) {
       dispatch(userDataActions.saveLoggedInUser(checkUserStatusData?.user));
     } else {
@@ -49,30 +39,18 @@ const Header = () => {
       newTheme = constants.THEME_DARK;
     }
 
-    // setNewActiveTheme(newTheme || constants.THEME_DARK);
     changeBodyTheme(newTheme || constants.THEME_DARK);
     toggleTheme();
-    // setNewActiveTheme(newTheme || constants.THEME_DARK);
-    // changeBodyTheme(newTheme || constants.THEME_DARK);
   };
-  // console.log('pathName', pathName);
-  // console.log('searchParams', searchParams);
 
   const logoutHandler = async () => {
     await logoutUser(null);
 
     dispatch(userDataActions.setUserLoggedInStatus(false));
-    // dispatch(raceStateActions.setIsNewTextNeeded(true));
-    // dispatch(raceStateActions.setIsNewTypingText(true));
-    // dispatch(appGlobalSettingsActions.setActiveNotification(NotificationLoggedOutSuccessfully));
     toastifySuccess('Logged out successfully!');
-    // setIsDropdownOpen(false);
-    // if (router.asPath !== '/' && !router.asPath.includes('posts') && !router.asPath.includes('go-pro')) {
-    // if (pathName && !searchParams?.get().includes('posts') && !searchParams?.get("/").includes('go-pro'){
     if (pathName !== '/' && !pathName?.includes('posts') && !pathName?.includes('go-pro')) {
       router.replace('/');
     }
-    // closeNavMobileHandler();
   };
 
   const homePageLinkClassActive = `${pathName === '/' ? 'activeTab' : 'inactiveTab'}`;
@@ -107,7 +85,6 @@ const Header = () => {
   } else if (pathName === '/404') {
     pageTitle = '404';
   } else {
-    // pageTitle = 'Page Not Found';
     pageTitle = '';
   }
 

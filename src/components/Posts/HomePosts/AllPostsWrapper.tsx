@@ -1,7 +1,6 @@
 'use client';
 
-// import React, { useEffect, useState } from 'react';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { filterPosts, getFeaturedPosts } from '@/utils/postsHelperClient';
 import { BlogPostModel } from '../../../models/BlogPosts/BlogPostModel';
@@ -40,7 +39,6 @@ const AllPosts = ({ posts, postsLabels }: Props) => {
 
   return (
     <section className={`pageLayoutContainer mx-6 my-2 font-blog lg:mx-12`}>
-      {/* <h1 className={`pageTitle`}>TIPS & TRICKS</h1> */}
       <SearchPosts
         filterPosts={filterPostsHandler}
         topicsPosts={postsLabels}

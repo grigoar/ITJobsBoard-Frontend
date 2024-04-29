@@ -1,5 +1,3 @@
-import React from 'react';
-
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 interface Props {
@@ -10,7 +8,6 @@ interface Props {
   maxWidth?: string;
 }
 
-// ! TODO: Need to check 450px but it shouldn't be a default value
 const MessageResult = ({ message, isError, isLoadingAction, loadingMessage, maxWidth }: Props) => {
   if (isLoadingAction) {
     return (

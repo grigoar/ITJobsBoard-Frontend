@@ -7,8 +7,6 @@ export type TagEntity = {
   isCustom: boolean;
   labelName: string;
   subtype?: string;
-  // profiles?: ProfileEntity[];
-  // jobPosts?: JobPostEntity[];
   created_at?: Date;
   updated_at?: Date;
   deleted_at?: Date;

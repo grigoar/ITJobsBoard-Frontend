@@ -1,11 +1,6 @@
-import React from 'react';
+import Image from 'next/image';
 import { MdTimer } from 'react-icons/md';
 import { VscCalendar } from 'react-icons/vsc';
-import Image from 'next/image';
-
-// import classes from './PostHeader.module.scss';
-// import { useAppSelector } from '../../../store/hooks';
-// import { formattedDateFullDetailsCustom } from '../../../lib/FormatDisplayElements';
 
 interface Props {
   title: string;
@@ -13,24 +8,12 @@ interface Props {
   date?: string;
   postReadTime?: number;
 }
-// TODO: Change font
-// TODO: Change text color
-// TODO: Change blog date color
 
 const PostHeader = ({ title, image, postReadTime = 1, date }: Props) => {
-  // const { userSettings } = useAppSelector((state) => state.userData);
-  // const formattedDate = formattedDateFullDetailsCustom(
-  //   new Date(date).toString(),
-  //   userSettings.dateFormat,
-  //   'numeric',
-  //   'long',
-  //   'numeric'
-  // );
-
   return (
     <header
       className={
-        'header font-blog relative flex flex-col-reverse items-center justify-between gap-4 border-b-8 border-[color:var(--color-accent)] pb-10 lg:flex-row  lg:items-end'
+        'header relative flex flex-col-reverse items-center justify-between gap-4 border-b-8 border-[color:var(--color-accent)] pb-10 font-blog lg:flex-row  lg:items-end'
       }
     >
       <h1
@@ -55,7 +38,6 @@ const PostHeader = ({ title, image, postReadTime = 1, date }: Props) => {
         }
       >
         <Image src={image} alt={title} width={1000} height={750} className="object-cover" />
-        {/* <Image src={image} alt={title} width={1000} height={750} layout="fill" objectFit="cover" objectFit="contain" /> */}
       </div>
     </header>
   );

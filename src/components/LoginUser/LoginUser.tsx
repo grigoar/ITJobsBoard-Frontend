@@ -1,32 +1,29 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import LoginUserModel from '@/models/Users/LoginUserModel';
-import LoginUserValidationBody from '@/validations/users/LoginUserValidationBody';
 import { useLoginUserMutation, useLogoutCurrentUserMutation } from '@/api/authenticationApi';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { userDataActions } from '@/store/slices/userDataSlice';
-import { useAppDispatch } from '@/store/hooks';
-import { toastifySuccess } from '@/utils/helpers';
-import { FcGoogle } from 'react-icons/fc';
-import { FederatedCredentialsIssuer } from '@/models/Users/FederatedCredentialsIssuer';
-import { FederatedAccountError } from '@/models/Users/FederatedAccountError';
 import { typeGuardGeneralError } from '@/models/Errors/typeguards';
-import FormInput from '../common/Form/FormInput';
+import { FederatedAccountError } from '@/models/Users/FederatedAccountError';
+import { FederatedCredentialsIssuer } from '@/models/Users/FederatedCredentialsIssuer';
+import LoginUserModel from '@/models/Users/LoginUserModel';
+import { useAppDispatch } from '@/store/hooks';
+import { userDataActions } from '@/store/slices/userDataSlice';
+import { toastifySuccess } from '@/utils/helpers';
+import LoginUserValidationBody from '@/validations/users/LoginUserValidationBody';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { FcGoogle } from 'react-icons/fc';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
+import FormInput from '../common/Form/FormInput';
 import FormWrapper from '../common/Form/FormWrapper';
-import MessageResult from '../common/MessageResult/MessageResult';
-import LoginSuggestion from '../common/LogInSuggestion/LoginSuggestion';
 import PasswordIconOverInputActive from '../common/Form/PasswordIconOverInput/PasswordIconOverInputActive';
 import PasswordIconOverInputInactive from '../common/Form/PasswordIconOverInput/PasswordIconOverInputInactive';
+import LoginSuggestion from '../common/LogInSuggestion/LoginSuggestion';
+import MessageResult from '../common/MessageResult/MessageResult';
 
-// TODO: check the refresh page and the theme
-// TODO: Login problem when submitting the form using the enter key
-// TODO: Add show/hide password button
 const LoginUser = () => {
   const dispatchAppStore = useAppDispatch();
 
@@ -49,7 +46,6 @@ const LoginUser = () => {
     control,
   } = useForm({
     resolver: yupResolver(LoginUserValidationBody, { abortEarly: false, recursive: true }),
-    // mode: 'onTouched',
     mode: 'all',
   });
 
@@ -68,8 +64,6 @@ const LoginUser = () => {
     return () => clearTimeout(clearLogoutHandler);
   }, [logoutHandler]);
 
-  /* <Button style={`btn btn-ghost !mt-0 mr-2`} link={'/login?add-job=true'}></Button> */
-
   const sendNotificationSuccess = useCallback(() => {
     toastifySuccess('Logged in successfully!');
     if (searchParams?.get('add-job') === 'true') {
@@ -87,17 +81,13 @@ const LoginUser = () => {
       showResultSuccessMessage('Logged in successfully!');
       sendNotificationSuccess();
       setIsButtonLoginDisabled(true);
-      // resetUsernameInput();
-      // resetPasswordInput();
       reset();
     } catch (err: any) {
-      // resetPasswordInput();
       reset({ password: '' });
       if (typeGuardGeneralError(err)) {
         showResultErrorMessage(err?.data?.message);
 
         if (err?.data?.err?.extra?.email) {
-          // setFederatedAccount(err?.data?.err?.extra?.email);
           setFederatedAccount({
             isFederated: err?.data?.err?.extra?.isFederated,
             email: err?.data?.err?.extra?.email,
@@ -107,12 +97,10 @@ const LoginUser = () => {
       } else {
         showResultErrorMessage('Something Went Wrong! Please try again!');
       }
-      // toastifyError('Login failed! Please try again!');
     }
   };
 
   const onSubmitHandler = (data: LoginUserModel) => {
-    console.log('data', data);
     loginUserHandler(data);
   };
 
@@ -137,7 +125,6 @@ const LoginUser = () => {
             <h2 className="block w-full">Lets log you in!</h2>
           )}
 
-          {/* <input className="text-black" {...register('email')} placeholder="email" type="email" required /> */}
           <FormInput
             register={register}
             placeholder="john.doe@gmail.com"
@@ -148,12 +135,10 @@ const LoginUser = () => {
             required={true}
             control={control}
             errors={errors.email?.message}
-            // touchedField={touchedFields.email}
             dirtyField={dirtyFields.email}
             watchField={watch('email')}
             submitted={isSubmitted}
           />
-          {/* <p>{errors.email ? errors.email : ''}</p> */}
 
           <div className={'classesLogin.formControlEmail flex w-full flex-col'}>
             <FormInput
@@ -166,7 +151,6 @@ const LoginUser = () => {
               required
               control={control}
               errors={errors.password?.message}
-              // touchedField={touchedFields.password}
               dirtyField={dirtyFields.password}
               watchField={watch('password')}
               submitted={isSubmitted}
@@ -184,8 +168,6 @@ const LoginUser = () => {
             </Button>
           </div>
 
-          {/* {errors.password && <ul>{errors.password?.types?.map((error, index) => <li key={index}>{error}</li>)}</ul>} */}
-          {/* <button type="submit">Sign in</button> */}
           <Button style={`btn btn-ghost `} type="submit" action={handleSubmit(onSubmitHandler)}>
             Log In
           </Button>
@@ -196,9 +178,6 @@ const LoginUser = () => {
           message={resultMessageDisplay}
           maxWidth={'450px'}
         />
-        {/* <Button style={`btn btn-ghost `} type="submit" action={googleAuthHandler}>
-        Sign in with Google
-      </Button> */}
       </Card>
 
       <Card className="m-0 mt-0 justify-start self-start">

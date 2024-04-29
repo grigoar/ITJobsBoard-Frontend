@@ -1,14 +1,13 @@
 'use client';
 
-import TagLabel from '@/components/common/UI/TagLabel';
-import { JobPostOverviewEntity } from '@/models/JobPosts/JobPostOverviewEntity';
-import React from 'react';
-import Card from '@/components/common/Card/Card';
 import Button from '@/components/common/Button/Button';
-import { useAppSelector } from '@/store/hooks';
+import Card from '@/components/common/Card/Card';
+import TagLabel from '@/components/common/UI/TagLabel';
 import { getJobTagsByCategory } from '@/lib/tags/tagsHelper';
-import TagLabelDetails from './TagLabelDetails';
+import { JobPostOverviewEntity } from '@/models/JobPosts/JobPostOverviewEntity';
+import { useAppSelector } from '@/store/hooks';
 import JobPostBenefits from './JobPostBenefits';
+import TagLabelDetails from './TagLabelDetails';
 
 type Props = {
   jobPostData: JobPostOverviewEntity;
@@ -27,10 +26,8 @@ const JobPostDetailsView = ({ jobPostData }: Props) => {
   if (!jobPostData) {
     return <div>Loading...</div>;
   }
-  // TODO: Add chat gpt to format the description of the job post
   return (
     <div className="relative">
-      {/* <div className="fixed right-24  top-14 z-50 mt-4 flex justify-end hover:brightness-110"> */}
       <div className="sticky right-0 top-3 z-50 mt-4 flex h-0 translate-y-full transform justify-end hover:brightness-110">
         <Button style={`btn !btn-full !mt-0 mr-2 h-fit`} link={`${isUserLogged ? '/add-job' : '/login?add-job=true'}`}>
           Apply

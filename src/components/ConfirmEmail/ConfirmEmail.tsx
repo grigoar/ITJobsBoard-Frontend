@@ -2,14 +2,13 @@
 
 import { useValidateEmailMutation } from '@/api/authenticationApi';
 import constants from '@/utils/constants';
+import { toastifySuccess } from '@/utils/helpers';
 import * as Sentry from '@sentry/nextjs';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useCallback, useEffect, useState } from 'react';
-import { toastifySuccess } from '@/utils/helpers';
-import LoadingSpinner from '../common/LoadingSpinner/LoadingSpinner';
+import { useCallback, useEffect, useState } from 'react';
 import Card from '../common/Card/Card';
+import LoadingSpinner from '../common/LoadingSpinner/LoadingSpinner';
 
-// TODO: Better styling
 const ConfirmEmail = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [validateEmail, { isLoading, isSuccess }] = useValidateEmailMutation();

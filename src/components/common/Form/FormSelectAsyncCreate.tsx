@@ -1,5 +1,5 @@
 import { GenericSelectOption } from '@/models/Common/GenericSelectOption';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import CreatableSelect from 'react-select/creatable';
 
@@ -84,13 +84,11 @@ const FormSelectAsyncCreate = ({
     return () => clearTimeout(timeout);
   }, [watchField]);
 
-  // console.log()
   const isFocusedAndValid =
     errorsArray.length === 0 &&
     !isTyping &&
     'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:ring-1 focus:ring-[var(--color-green-light)]';
   const isInputInvalidClass =
-    // errors != null &&
     errorsArray.length > 0 &&
     (dirtyField || submitted) &&
     !isTyping &&
@@ -115,22 +113,17 @@ const FormSelectAsyncCreate = ({
     }),
     multiValue: (base: any) => ({
       ...base,
-      // backgroundColor: 'var(--color-blue-light)',
-
-      // color: 'white',
       marginRight: '5px',
       borderRadius: '5px',
       boxShadow: '0 0 4px var(--color-blue-light)',
     }),
     multiValueLabel: (base: any) => ({
       ...base,
-      // color: 'white',
     }),
   };
 
   const optionsArrayWithLabelAndValue = options.map((option: any) => {
     return {
-      // ...option,
       label: option[selectOptionLabel],
       value: option[selectOptionField],
     };

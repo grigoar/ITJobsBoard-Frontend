@@ -1,10 +1,9 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
-import React from 'react';
 import constants from '../../../utils/constants';
-import BrokenHeartErrorImage from '../../common/SVGs/BrokenHeartErrorImage';
-import SEO from '../../common/SEO';
-import Card from '../../common/Card/Card';
 import Button from '../../common/Button/Button';
+import Card from '../../common/Card/Card';
+import SEO from '../../common/SEO';
+import BrokenHeartErrorImage from '../../common/SVGs/BrokenHeartErrorImage';
 
 const ErrorFallback = () => {
   const pageMeta = {
@@ -16,7 +15,6 @@ const ErrorFallback = () => {
     window.location.href = '/';
   };
 
-  // TODO: ! implement a feedback form here
   return (
     <section className={'container flex h-[100vh] w-full flex-col items-center justify-center'}>
       <SEO pageCustomSEO={pageMeta} />
@@ -31,13 +29,6 @@ const ErrorFallback = () => {
             </h4>
             <p className={'errorFallbackParagraph text-[16px]'}>In the meantime, you can...</p>
             <ul className={'errorFallbackList mt-4'}>
-              {/* TODO: ! implement a feedback form here */}
-              {/* <li>
-                <Button style={`btn btn-ghost mb-4`} link="/feedback">
-                  Help us by sending us a feedback
-                </Button>
-              </li> */}
-
               <li>
                 <Button style={`btn btn-ghost`} action={onRedirectHomeClick} link="/">
                   Go back to the homepage

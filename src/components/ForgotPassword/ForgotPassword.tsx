@@ -1,21 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
 import { useForgotPasswordMutation } from '@/api/authenticationApi';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
-import * as Sentry from '@sentry/nextjs';
-import ForgotPasswordValidationBody from '@/validations/users/ForgotPasswordValidationBody';
 import ForgotPasswordBodyModel from '@/models/Users/ForgotPasswordModel';
-import FormInput from '../common/Form/FormInput';
+import ForgotPasswordValidationBody from '@/validations/users/ForgotPasswordValidationBody';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Sentry from '@sentry/nextjs';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
+import FormInput from '../common/Form/FormInput';
 import FormWrapper from '../common/Form/FormWrapper';
 import MessageResult from '../common/MessageResult/MessageResult';
 
-// TODO: check the refresh page and the theme
-// TODO: Add show/hide password button
 const ForgotPassword = () => {
   const [forgotPassword, { isLoading, status }] = useForgotPasswordMutation();
 

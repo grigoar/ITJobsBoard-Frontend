@@ -1,9 +1,8 @@
-// import AddJobPostModel from '@/models/JobPosts/AddJobPostModel';
 import { ApiGenericResponse } from '@/models/Common/ApiGenericResponse';
-import constants from '@/utils/constants';
+import { ApiGetOneGenericResponse } from '@/models/Common/ApiGetOneGenericResponse';
 import { GetJobPostsRes } from '@/models/JobPosts/GetJobPostsRes';
 import { JobPostOverviewEntity } from '@/models/JobPosts/JobPostOverviewEntity';
-import { ApiGetOneGenericResponse } from '@/models/Common/ApiGetOneGenericResponse';
+import constants from '@/utils/constants';
 import itJobsBoardApi from './indexITJobsBoardApi';
 
 const jobPostsApi = itJobsBoardApi.injectEndpoints({
@@ -18,14 +17,7 @@ const jobPostsApi = itJobsBoardApi.injectEndpoints({
       }),
       invalidatesTags: [constants.JOB_POSTS_TAG, constants.COMPANIES_TAG, constants.TAGS_TAG],
     }),
-    // addNewJobPost: builder.mutation<ApiGenericResponse, AddJobPostModel>({
-    //   query: (newJobPost: AddJobPostModel) => ({
-    //     url: '/job-posts',
-    //     method: 'POST',
-    //     body: newJobPost,
-    //   }),
-    //   invalidatesTags: [constants.JOB_POSTS_TAG, constants.COMPANIES_TAG, constants.TAGS_TAG],
-    // }),
+
     getAllJobPosts: builder.query<GetJobPostsRes, null>({
       query: () => {
         return {

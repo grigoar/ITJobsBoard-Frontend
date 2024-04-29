@@ -1,15 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit';
-// import { setupListeners } from '@reduxjs/toolkit/query';
-
-// import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import itJobsBoardApi from '@/api/indexITJobsBoardApi';
 import { rtkQueryErrorLogger } from '@/api/ServerErrorsMiddleware';
-import userDataSliceReducer from './slices/userDataSlice';
-import counterSliceReducer from './slices/counterSlice';
+import { configureStore } from '@reduxjs/toolkit';
 import appGlobalSettingsSliceReducer from './slices/appGlobalSettings';
-// import typingMuscleApi from '../services/typingMuscleApis';
-// import raceStatsReducer from './slices/raceStatsSlice';
-// import practiceRaceStatsReducer from './slices/practiceRaceStatsSlice';
+import counterSliceReducer from './slices/counterSlice';
+import userDataSliceReducer from './slices/userDataSlice';
 
 export const makeStore = () => {
   const store = configureStore({
@@ -18,11 +12,6 @@ export const makeStore = () => {
       appGlobalSettings: appGlobalSettingsSliceReducer,
       counter: counterSliceReducer,
       [itJobsBoardApi.reducerPath]: itJobsBoardApi.reducer,
-
-      // raceStats: raceStatsReducer,
-      // practiceRaceStats: practiceRaceStatsReducer,
-      // // * Add the generated reducer as a specific top-level slice
-      // [typingMuscleApi.reducerPath]: typingMuscleApi.reducer,
     },
     // Adding the api middleware enables caching, invalidation, polling,
     // and other useful features of `rtk-query`.
@@ -30,15 +19,6 @@ export const makeStore = () => {
   });
   return store;
 };
-
-// Infer the `RootState` and `AppDispatch` types from the store itself
-// export type RootState = ReturnType<typeof store.getState>;
-
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-// export type AppDispatch = typeof store.dispatch;
-
-// setupListeners(store.dispatch);
-// export default store;
 
 // Infer the type of makeStore
 export type AppStore = ReturnType<typeof makeStore>;

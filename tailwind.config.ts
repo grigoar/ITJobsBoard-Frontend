@@ -37,14 +37,11 @@ const config: Config = {
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors: {
-        // Using modern `hsl`
         primary: 'hsl(var(--bg-color-primary) / <alpha-value>)',
         secondary: 'hsl(var(--bg-color-secondary) / <alpha-value>)',
-        // txtPrimary: 'hsl(var(--text-color-primary) / <alpha-value>)',
       },
     },
   },
   plugins: [],
-  // darkMode: 'class',
 };
 export default config;

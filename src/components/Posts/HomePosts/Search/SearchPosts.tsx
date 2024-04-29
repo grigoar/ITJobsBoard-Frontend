@@ -44,7 +44,6 @@ const SearchPosts = ({ filterPosts, topicsPosts, activeTopicsRemaining }: Props)
 
   return (
     <section className="mb-4 mt-4">
-      {/* <h3>Posts</h3> */}
       <p className="mb-2">Thoughts, mental models, research and my own experiences. Sharing ideas for a better life.</p>
       <input
         type="text"

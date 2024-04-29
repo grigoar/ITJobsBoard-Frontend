@@ -1,9 +1,9 @@
-import React from 'react';
+import AppLayout from '@/components/layout/AppLayout';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
-import '../styles/globals.css';
+import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-import AppLayout from '@/components/layout/AppLayout';
+import '../styles/globals.css';
 import StoreProvider from './StoreProvider';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -24,15 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // <html lang="en">
-    //   <body className={inter.className}>{children}</body>
-    // </html>
     <StoreProvider count={30}>
       <html lang="en">
-        {/* <Head>
-          <meta name="viewport" content={'width=device-width, initial-scale=1'} />
-        </Head> */}
-
         <body className={inter.className}>
           <AppLayout>{children}</AppLayout>
         </body>

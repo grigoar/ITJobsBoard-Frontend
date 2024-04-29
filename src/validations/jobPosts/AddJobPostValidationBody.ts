@@ -42,13 +42,6 @@ const AddJobPostValidationBody = yup.object().shape({
           }
           return !!value;
         }),
-      // logoImage: yup.string().test('logoImage', 'Company Logo is required.', function (value) {
-      //   const { companyID } = this.from?.[1] != null && this.from[1].value;
-      //   if (companyID) {
-      //     return true;
-      //   }
-      //   return !!value;
-      // }),
       logoImage: yup.string(),
       websiteURL: yup
         .string()

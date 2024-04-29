@@ -23,7 +23,6 @@ const FormInput = ({
   errors,
   dirtyField,
   watchField,
-  // touchedField,
   extraError,
   submitted,
   styling = '',
@@ -46,7 +45,6 @@ const FormInput = ({
   }, [errors, extraError]);
 
   const errorMessages =
-    // ((isTyping || touchedField) &&
     (((!isTyping && dirtyField) || submitted) &&
       errorsArray.map((error: string, index) => {
         return (
@@ -60,11 +58,7 @@ const FormInput = ({
       })) ||
     [];
 
-  // ${dirtyField && errors == null && 'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:outline-none focus:ring-1 focus:ring-[var(--color-green-light)]'}`}
-
   useEffect(() => {
-    // implement a debounce to check if the user is typing
-
     if (watchField === undefined) return;
 
     if (watchFieldPrev !== watchField) {
@@ -81,12 +75,10 @@ const FormInput = ({
 
   const isFocusedAndValid =
     dirtyField &&
-    // errors == null &&
     errorsArray.length === 0 &&
     !isTyping &&
     'border-2 border-[var(--color-green-light)] focus:border-[var(--color-green-light)] focus:shadow-[0_0_10px_var(--color-green-light)] focus:ring-1 focus:ring-[var(--color-green-light)]';
   const isInputInvalidClass =
-    // errors != null &&
     errorsArray.length > 0 &&
     (dirtyField || submitted) &&
     !isTyping &&

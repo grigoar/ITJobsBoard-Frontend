@@ -1,29 +1,25 @@
 'use client';
 
-import React, { useCallback, useEffect } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import SignUpUserValidationBody from '@/validations/users/SignUpUserValidationBody';
 import { useCheckUniqueEmailMutation, useRegisterUserMutation } from '@/api/authenticationApi';
-import * as Sentry from '@sentry/nextjs';
-import { RegisterUserModel } from '@/models/Users/RegisterUserModel';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { userDataActions } from '@/store/slices/userDataSlice';
-import { useAppDispatch } from '@/store/hooks';
-import { toastifySuccess } from '@/utils/helpers';
-import { FcGoogle } from 'react-icons/fc';
 import { typeGuardGeneralError } from '@/models/Errors/typeguards';
-import FormInput from '../common/Form/FormInput';
+import { RegisterUserModel } from '@/models/Users/RegisterUserModel';
+import { useAppDispatch } from '@/store/hooks';
+import { userDataActions } from '@/store/slices/userDataSlice';
+import { toastifySuccess } from '@/utils/helpers';
+import SignUpUserValidationBody from '@/validations/users/SignUpUserValidationBody';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Sentry from '@sentry/nextjs';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { FcGoogle } from 'react-icons/fc';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
+import FormInput from '../common/Form/FormInput';
 import FormWrapper from '../common/Form/FormWrapper';
-import MessageResult from '../common/MessageResult/MessageResult';
 import LoginSuggestion from '../common/LogInSuggestion/LoginSuggestion';
-
-// TODO: style the login and register on navbar
-// TODO: Sign in with google account and linke the accounts
-// TODO: Change the text for login with google to Register with google
+import MessageResult from '../common/MessageResult/MessageResult';
 
 const RegisterUser = () => {
   const dispatchAppStore = useAppDispatch();
@@ -34,22 +30,17 @@ const RegisterUser = () => {
   const { showResultErrorMessage, showResultSuccessMessage, isMessageError, resultMessageDisplay } =
     useDisplayResultMessage(0);
 
-  // console.log('dataUniqueEmail', mutationResult);
-  // console.log('error', error);
-
   const router = useRouter();
   const searchParams = useSearchParams();
   const {
     register,
     handleSubmit,
-    // formState: { errors, touchedFields, dirtyFields },
     formState: { errors, dirtyFields },
     reset,
     watch,
     control,
   } = useForm({
     resolver: yupResolver(SignUpUserValidationBody, { abortEarly: false, recursive: true }),
-    // mode: 'onTouched',
     mode: 'all',
     defaultValues: {
       email: searchParams?.get('email-social') || '',
@@ -57,8 +48,6 @@ const RegisterUser = () => {
   });
 
   useEffect(() => {
-    // implement a debounce to check if the user is typing
-
     if (watch('email') === '') return;
 
     const timeout = setTimeout(() => {
@@ -70,9 +59,7 @@ const RegisterUser = () => {
 
   const sendNotificationSuccess = useCallback(() => {
     toastifySuccess('Have a great journey!');
-    console.log('ooooo', searchParams);
     if (searchParams?.get('add-job') === 'true') {
-      console.log("searchParams?.get('add-job')", searchParams?.get('add-job'));
       router.replace('/add-job');
     } else {
       router.replace('/?new-user=true');
@@ -83,11 +70,9 @@ const RegisterUser = () => {
     try {
       const newUser = await registerUser(user).unwrap();
       reset();
-      // dispatchAppStore(raceStateActions.setIsNewTextNeeded(true));
       dispatchAppStore(userDataActions.saveLoggedInUser(newUser.user));
 
       showResultSuccessMessage('User registered successfully!');
-      // setIsButtonSignUpDisabled(true);
       sendNotificationSuccess();
     } catch (err: any) {
       Sentry.captureMessage(JSON.stringify(err, null, 2), 'error');
@@ -102,7 +87,6 @@ const RegisterUser = () => {
 
   const onSubmitHandler = (data: RegisterUserModel) => {
     registerNewUserHandler(data);
-    // reset();
   };
 
   const googleAuthHandler = async () => {
@@ -129,7 +113,6 @@ const RegisterUser = () => {
             required
             control={control}
             errors={errors.email?.message}
-            // touchedField={touchedFields.email}
             dirtyField={dirtyFields.email}
             watchField={watch('email')}
             extraError={typeGuardGeneralError(uniqueEmailError) ? uniqueEmailError?.data.message : undefined}

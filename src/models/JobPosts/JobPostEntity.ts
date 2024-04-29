@@ -1,6 +1,5 @@
 export type JobPostEntity = {
   id: string;
-  // profile: UserEntity;
   profile_id: string;
   description: string;
   title: string;
@@ -9,7 +8,6 @@ export type JobPostEntity = {
   isHighlighted: boolean;
   color?: string;
   isPremium: boolean;
-  // company: CompanyEntity;
   company_id: string;
   created_at: Date;
   updated_at: Date;

@@ -1,11 +1,11 @@
 'use client';
 
 import { useConfirmEmailMutation } from '@/api/authenticationApi';
-import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
-import React, { useEffect, useState } from 'react';
-import * as Sentry from '@sentry/nextjs';
-import constants from '@/utils/constants';
 import MessageResult from '@/components/common/MessageResult/MessageResult';
+import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
+import constants from '@/utils/constants';
+import * as Sentry from '@sentry/nextjs';
+import { useEffect, useState } from 'react';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 
 type EmailValidationProps = {
@@ -13,10 +13,6 @@ type EmailValidationProps = {
   userEmail: string;
 };
 
-// TODO: Improve styling
-// TODO: Style better the button
-// TODO: Investigate why the form submit with enter key is not working
-// TODO: Add an option to change the email if it is wrong - link to change email settings
 const EmailValidation = ({ emailValidated, userEmail }: EmailValidationProps) => {
   const [emailInput, setEmailInput] = useState(userEmail);
   const [isButtonValidationDisabled, setIsButtonValidationDisabled] = useState(false);
@@ -31,7 +27,7 @@ const EmailValidation = ({ emailValidated, userEmail }: EmailValidationProps) =>
     setEmailInput(userEmail);
   }, [userEmail]);
 
-  // set countdown timer for validation button
+  // ? set countdown timer for validation button
   useEffect(() => {
     if (countdown === constants.INACTIVE_COUNTDOWN_TIMER_VALUE) return;
 
@@ -75,11 +71,6 @@ const EmailValidation = ({ emailValidated, userEmail }: EmailValidationProps) =>
 
   return (
     <div>
-      {/* <h1>Email Validation</h1> */}
-      {/* <Button style={`btn btn-ghost `} action={confirmMailHandler}>
-        Confirm Email
-      </Button> */}
-      {/* {isConfirmingEmail && <p>Confirming Email...</p>} */}
       <div className={'classes.emailFieldValue'}>
         <label htmlFor="email" className={'classes.inactiveEmailLabel'}>
           Email

@@ -1,25 +1,22 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
 import { useResetEmailPasswordMutation } from '@/api/authenticationApi';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
-import * as Sentry from '@sentry/nextjs';
 import ResetPasswordModel from '@/models/Users/ResetPasswordBodyModel';
+import { toastifySuccess } from '@/utils/helpers';
 import ResetPasswordValidationBody from '@/validations/users/ResetPasswordValidationBody';
 import { ResetPasswordValidationBodyModel } from '@/validations/users/ResetPasswordValidationBodyModel';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Sentry from '@sentry/nextjs';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { toastifySuccess } from '@/utils/helpers';
-import FormInput from '../common/Form/FormInput';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
+import FormInput from '../common/Form/FormInput';
 import FormWrapper from '../common/Form/FormWrapper';
 import MessageResult from '../common/MessageResult/MessageResult';
 
-// TODO: Add required on FormInput
-// TODO: Add hide/show password on FormInput
-// ! TODO: Need to investigate more about Suspense and how to use it - https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
 const ResetPassword = () => {
   const [resetPassword, { isLoading }] = useResetEmailPasswordMutation();
 

@@ -1,53 +1,41 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
-// import { usePlacesWidget } from 'react-google-autocomplete';
-import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { useAddNewJobPostMutation } from '@/api/jobPostsApi';
+import { useGetAllProfileCompaniesQuery } from '@/api/profilesApi';
+import { useGetAllTagsQuery } from '@/api/tagsApi';
 import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { createJobPostBackendTags } from '@/lib/jobPosts/jobPostsHelpers';
+import { getJobTagsByCategory } from '@/lib/tags/tagsHelper';
+import { LocationPlace } from '@/models/Common/LocationPlace';
+import { CompanyEntity } from '@/models/Companies/CompanyEntity';
+import { typeGuardGeneralError } from '@/models/Errors/typeguards';
+import AddJobPostModel from '@/models/JobPosts/AddJobPostModel';
+import { TagListName } from '@/models/Tags/TagList.type';
+import { useAppSelector } from '@/store/hooks';
+import constants from '@/utils/constants';
 import { toastifySuccess } from '@/utils/helpers';
 import AddJobPostValidationBody from '@/validations/jobPosts/AddJobPostValidationBody';
-import AddJobPostModel from '@/models/JobPosts/AddJobPostModel';
-import { useAddNewJobPostMutation } from '@/api/jobPostsApi';
-import { typeGuardGeneralError } from '@/models/Errors/typeguards';
-import { useGetAllProfileCompaniesQuery } from '@/api/profilesApi';
-import { useAppSelector } from '@/store/hooks';
-import { CompanyEntity } from '@/models/Companies/CompanyEntity';
-import { useGetAllTagsQuery } from '@/api/tagsApi';
-import { TagListName } from '@/models/Tags/TagList.type';
-import { LocationPlace } from '@/models/Common/LocationPlace';
 import AddJobPostValidationModel from '@/validations/jobPosts/AddJobPostValidationModel';
-import { createJobPostBackendTags } from '@/lib/jobPosts/jobPostsHelpers';
-import constants from '@/utils/constants';
-import { getJobTagsByCategory } from '@/lib/tags/tagsHelper';
-import FormInput from '../common/Form/FormInput';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
+import { useForm } from 'react-hook-form';
 import Button from '../common/Button/Button';
 import Card from '../common/Card/Card';
-import FormWrapper from '../common/Form/FormWrapper';
-import MessageResult from '../common/MessageResult/MessageResult';
-import FormTextarea from '../common/Form/FormTextarea';
+import FormInput from '../common/Form/FormInput';
 import FormSelect from '../common/Form/FormSelect';
 import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
+import FormTextarea from '../common/Form/FormTextarea';
+import FormWrapper from '../common/Form/FormWrapper';
+import MessageResult from '../common/MessageResult/MessageResult';
 import UploadCompanyLogo from './UploadCompanyLogo';
 
-// TODO: check the refresh page and the theme
-// TODO: Maybe check the styling for select, but it should work fine for now
-// TODO: Add a role to the user that can edit a company if it is the owner
-// TODO: Create a profile for a company so it can be edited without the user logging in ( some email and token for the authorization)
-
-// TODO: Some issue with the location validation when it is empty ( it needs to be added, because it is required)
-// TODO: Maybe give a scale for the experience level tags(1-100)
-// TODO: Add capability for moving the multiple select options (https://react-select.netlify.app/advanced)
-
-// TODO: Add years of experience tags
 const AddJobPost = () => {
   const [addNewJobPost, { isLoading }] = useAddNewJobPostMutation();
   const { data: allTagsRes } = useGetAllTagsQuery(null);
 
   const { loggedInUser } = useAppSelector((state) => state.userData);
-  // TODO: Change the endpoint to get the companies for a logged in user
   const { data: userCompaniesRes } = useGetAllProfileCompaniesQuery(loggedInUser.id, { skip: loggedInUser.id === '' });
   const { showResultErrorMessage, showResultSuccessMessage, isMessageError, resultMessageDisplay } =
     useDisplayResultMessage(0);
@@ -152,33 +140,9 @@ const AddJobPost = () => {
     setIsUserAddingNewCompany(userCompaniesRes?.items?.length === 0 || !userCompaniesRes?.items);
   }, [userCompaniesRes, setValue]);
 
-  // useEffect(() => {
-  //   const {
-  //     techTagsOnly,
-  //     seniorityTagsOnly,
-  //     employmentTypeTagsOnly,
-  //     companySizeTagsOnly,
-  //     companyTypeTagsOnly,
-  //     workLocationTagsOnly,
-  //     companyDomainTagsOnly,
-  //     benefitsTagsOnly,
-  //   } = getJobPostTagsByType(allTagsRes?.items || []);
-  //   setTags({
-  //     techTags: techTagsOnly,
-  //     seniorityTags: seniorityTagsOnly,
-  //     employmentTypeTags: employmentTypeTagsOnly,
-  //     companySizeTags: companySizeTagsOnly,
-  //     companyTypeTags: companyTypeTagsOnly,
-  //     workLocationTags: workLocationTagsOnly,
-  //     companyDomainTags: companyDomainTagsOnly,
-  //     benefitsTags: benefitsTagsOnly,
-  //   });
-  // }, [allTagsRes, setTags]);
-
   useEffect(() => {
     if (companySelectedOption) {
       setValue('companyID', companySelectedOption.id);
-      // TODO: This is not needed, because the company is selected or the user is adding a new company
       setValue('newCompany.name', companySelectedOption.name);
       setValue('newCompany.description', companySelectedOption.description);
       setValue('newCompany.email', companySelectedOption.email);
@@ -200,33 +164,24 @@ const AddJobPost = () => {
     setImgMultipartPreview(file);
   };
 
-  // const addNewJobPostHandler = async (jobPost: AddJobPostModel) => {
   const addNewJobPostHandler = async (jobPost: FormData) => {
     try {
-      console.log('jobPost', jobPost);
       await addNewJobPost(jobPost).unwrap();
-      // dispatchAppStore(userDataActions.saveLoggedInUser(userLoggedIn.user));
 
       showResultSuccessMessage('Job post created!');
       sendNotificationSuccess();
       setIsButtonLoginDisabled(true);
-      // resetUsernameInput();
-      // resetPasswordInput();
       reset();
     } catch (err: any) {
-      // resetPasswordInput();
-      // reset({ password: '' });
       if (typeGuardGeneralError(err)) {
         showResultErrorMessage(err?.data?.message);
       } else {
         showResultErrorMessage('Something Went Wrong! Please try again!');
       }
-      // toastifyError('Login failed! Please try again!');
     }
   };
 
   const onSubmitHandler = (data: AddJobPostValidationModel) => {
-    console.log('data', data);
     const jobTechTags = createJobPostBackendTags(TagListName.TECH_SKILL, data.techTags);
     const jobSeniorityTags = createJobPostBackendTags(TagListName.EXPERIENCE_LEVEL, data.seniorityTags);
     const jobEmploymentTypeTags = createJobPostBackendTags(TagListName.EMPLOYMENT_TYPE, data.employmentTypeTags);
@@ -288,7 +243,6 @@ const AddJobPost = () => {
     });
     formData.append('companyLogo', imgMultipartPreview || '');
 
-    // addNewJobPostHandler(jobPost);
     addNewJobPostHandler(formData);
   };
 
@@ -302,7 +256,6 @@ const AddJobPost = () => {
 
   const handleCompanyChange = (selectedOption: CompanyEntity | null) => {
     setCompanySelectedOption(selectedOption);
-    // setCompaniesOptions(userCompaniesRes?.companies.map((company) => company.name) || []);
   };
 
   const textExistingCompany = () => {
@@ -508,7 +461,6 @@ const AddJobPost = () => {
 
           {!isNewCompanyNeeded && !isUserAddingNewCompany && (
             <FormSelect
-              // <FormSelectAsyncCreate
               control={control}
               options={profileCompanies}
               inputValueField="companyID"
@@ -529,7 +481,6 @@ const AddJobPost = () => {
               style={`text-[var(--text-color-primary)] cursor-auto  ${!isNewCompanyNeeded && !isUserAddingNewCompany && 'hover:brightness-[80%] mb-4 ml-1 cursor-pointer'}  ${!isNewCompanyNeeded && '[&]:cursor-pointer'}`}
               action={toggleAddNewCompanyHandler}
             >
-              {/* {isNewCompanyNeeded && isUserAddingNewCompany ? 'Select Existing Company' : 'Add New Company'} */}
               {textExistingCompany()}
             </Button>
           </div>
@@ -649,7 +600,6 @@ const AddJobPost = () => {
               required
               control={control}
               errors={errors.color?.message}
-              // touchedField={touchedFields.email}
               dirtyField={dirtyFields.color}
               watchField={watch('color')}
               submitted={isSubmitted}

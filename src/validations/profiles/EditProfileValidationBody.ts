@@ -61,15 +61,12 @@ const EditMyProfileValidationBody = yup.object({
     }),
   bio: yup.string(),
   phoneNumber: yup.string(),
-  // languages: yup.array().of(yup.string().required()),
   preferredMinHourRate: yup.number(),
   employments: yup.array().of(
     yup.object({
       title: yup.string().required(),
       company: yup.string().required(),
       url: yup.string(),
-      // startYear: yup.number().required(),
-      // endYear: yup.number().required(),
       startYear: yup
         .string()
         .test('is-interval', 'Start Year min - 1950', (value: any) => {
@@ -82,7 +79,6 @@ const EditMyProfileValidationBody = yup.object({
       endYear: yup
         .string()
         .test('is-interval', 'End Year max - 2024', (value: any) => {
-          // check if the year is a number
           if (Number.isNaN(value)) {
             return false;
           }
@@ -114,21 +110,12 @@ const EditMyProfileValidationBody = yup.object({
       title: yup.string().required(),
       description: yup.string().required(),
       url: yup.string(),
-      // startYear: yup.number(),
       startYear: yup.string().test('is-interval', 'Start Year min - 1950', (value: any) => {
         return parseInt(value, 10) >= 1950;
       }),
       endYear: yup.string().test('is-interval', 'End Year max - 2024', (value: any) => {
         return parseInt(value, 10) >= 1950;
       }),
-      // startYear: yup.lazy(
-      //   (value) => (value === '' ? yup.string() : yup.number())
-      //   // if (value) {
-      //   //   return yup.number();
-      //   // }
-      //   // return yup.number();
-      // ),
-      // endYear: yup.number(),
       indexOrder: yup.number(),
     })
   ),

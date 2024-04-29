@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { useAppSelector } from '@/store/hooks';
 import { EmploymentEntryModel } from '@/models/Profiles/EmploymentEntryModel';
-import FormInput from '../common/Form/FormInput';
+import { useAppSelector } from '@/store/hooks';
+import { useEffect } from 'react';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 import Button from '../common/Button/Button';
+import FormInput from '../common/Form/FormInput';
 import FormTextarea from '../common/Form/FormTextarea';
 
 type Props = {
@@ -33,7 +33,6 @@ function ProfileEditEmploymentController({
   isSubmitted,
   onSubmitHandler,
 }: Props) {
-  // const { control, register, handleSubmit } = useForm();
   const { loggedInUser } = useAppSelector((state) => state.userData);
 
   useEffect(() => {
@@ -54,7 +53,6 @@ function ProfileEditEmploymentController({
   }, [loggedInUser.employments, append, remove]);
 
   const handleAddField = () => {
-    // e.preventDefault();
     append({
       indexOrder: fields.length + 1,
       title: '',
@@ -123,7 +121,6 @@ function ProfileEditEmploymentController({
               label="Role"
               control={control}
               errors={errors.employments?.[index]?.title?.message}
-              // dirtyField={false}
               touchedField={touchedFields.employments?.[index]?.title}
               dirtyField={dirtyFields.employments?.[index]?.title}
               watchField={watch(`employments.${index}.title`)}
@@ -151,7 +148,6 @@ function ProfileEditEmploymentController({
             />
           </div>
           <div className="mr-[10px] flex w-full min-w-[200px] flex-grow flex-col">
-            {/* Description */}
             <FormTextarea
               register={register}
               placeholder="Add a description of your role and responsibilities..."
@@ -187,8 +183,6 @@ function ProfileEditEmploymentController({
           </div>
         </div>
       ))}
-      {/* <button onClick={handleAddField}>Add field</button>
-      <input type="submit" /> */}
       <div className="flex">
         <div className=" mr-4">
           <Button style={`btn btn-ghost `} type="button" action={handleAddField}>

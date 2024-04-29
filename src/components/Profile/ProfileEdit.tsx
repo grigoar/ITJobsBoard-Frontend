@@ -1,43 +1,37 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useAppSelector } from '@/store/hooks';
-import * as Sentry from '@sentry/nextjs';
-import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { EditMyProfile } from '@/models/Profiles/EditProfileModel';
-import EditMyProfileValidationBody from '@/validations/profiles/EditProfileValidationBody';
-import { useFieldArray, useForm } from 'react-hook-form';
-import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
 import { useUpdateMyProfileMutation } from '@/api/authenticationApi';
-import { toastifyError, toastifySuccess } from '@/utils/helpers';
-import { AiOutlineEdit } from 'react-icons/ai';
-import { LocationPlace } from '@/models/Common/LocationPlace';
-import { EditMyProfileValidationModel } from '@/validations/profiles/EditProfileValidationModel';
 import { useGetAllTagsQuery } from '@/api/tagsApi';
+import useDisplayResultMessage from '@/hooks/useDisplayResultMessage';
 import { createJobPostBackendTags } from '@/lib/jobPosts/jobPostsHelpers';
-import { TagListName } from '@/models/Tags/TagList.type';
 import { getJobTagsByCategory } from '@/lib/tags/tagsHelper';
+import { LocationPlace } from '@/models/Common/LocationPlace';
+import { EditMyProfile } from '@/models/Profiles/EditProfileModel';
 import { TagEntity } from '@/models/Tags/TagEntity';
-import EmailValidation from './Account/EmailValidation';
-import FormInput from '../common/Form/FormInput';
-import FormWrapper from '../common/Form/FormWrapper';
+import { TagListName } from '@/models/Tags/TagList.type';
+import { useAppSelector } from '@/store/hooks';
+import { toastifyError, toastifySuccess } from '@/utils/helpers';
+import EditMyProfileValidationBody from '@/validations/profiles/EditProfileValidationBody';
+import { EditMyProfileValidationModel } from '@/validations/profiles/EditProfileValidationModel';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Sentry from '@sentry/nextjs';
+import { useEffect, useState } from 'react';
+import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { AiOutlineEdit } from 'react-icons/ai';
 import Button from '../common/Button/Button';
-import MessageResult from '../common/MessageResult/MessageResult';
+import FormInput from '../common/Form/FormInput';
 import FormSelectAsyncCreate from '../common/Form/FormSelectAsyncCreate';
 import FormTextarea from '../common/Form/FormTextarea';
+import FormWrapper from '../common/Form/FormWrapper';
+import MessageResult from '../common/MessageResult/MessageResult';
+import EmailValidation from './Account/EmailValidation';
 import ProfileEditEducationController from './ProfileEditEducationController';
 import ProfileEditEmploymentController from './ProfileEditEmploymentController';
 import ProfileEditSideProjectsController from './ProfileEditSideProjectsController';
 
-// TODO: Need to check the disabled buttons
-// TODO: Add Sortable MultiSelect example ( drag and drop options) - https://react-select.com/advanced
-
-// TODO: Set the languages from the backend ( it should take the tags when getting the profile)
-// ! TODO: Check the md editor for the textareas ( https://uiwjs.github.io/react-md-editor/ )
 const ProfileEdit = () => {
   const { loggedInUser } = useAppSelector((state) => state.userData);
-  // console.log('loggedInUser', loggedInUser);
   const [profileTags, setProfileTags] = useState<{
     techTags: TagEntity[];
     languagesTags: TagEntity[];
@@ -63,7 +57,6 @@ const ProfileEdit = () => {
       apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
       debounce: 500,
       options: {
-        // types: ['continent', 'country'],
         types: ['(regions)'],
       },
     });
@@ -73,7 +66,6 @@ const ProfileEdit = () => {
       debounce: 500,
       options: {
         types: ['country'],
-        // types: ['(regions)'],
       },
     });
 
@@ -81,7 +73,6 @@ const ProfileEdit = () => {
     register,
     handleSubmit,
     formState: { errors, dirtyFields, isSubmitted, touchedFields },
-    // reset,
     watch,
     setValue,
     control,
@@ -119,7 +110,6 @@ const ProfileEdit = () => {
     name: 'sideProjects',
     keyName: 'id',
   });
-  // console.log("fields", fields.map(field=>field.))
 
   useEffect(() => {
     const { tags: profileTagsWithCategory } = getJobTagsByCategory(loggedInUser.tags || []);
@@ -197,7 +187,6 @@ const ProfileEdit = () => {
       Sentry.captureMessage(JSON.stringify(err, null, 2), 'error');
       if ('data' in err) {
         showResultErrorMessage(err.data.message);
-        // toastifyError(err.data.message);
         toastifyError('Something Went Wrong! Please try again!');
       } else {
         showResultErrorMessage('Something Went Wrong! Please try again!');
@@ -207,7 +196,6 @@ const ProfileEdit = () => {
   };
 
   const onSubmitHandler = (data: EditMyProfileValidationModel) => {
-    console.log('data', data);
     const profileTechTags = createJobPostBackendTags(TagListName.TECH_SKILL, data.techTags);
     const updatedProfileLanguagesTags = createJobPostBackendTags(TagListName.LANGUAGE, data.languagesTags);
     const updatedProfileDesiredRoleTag = createJobPostBackendTags(
@@ -234,7 +222,6 @@ const ProfileEdit = () => {
       tags: updatedProfileTags,
       desiredRole: updatedProfileDesiredRoleTag[0],
     };
-    // reset();
     updateUserProfileData(updatedUserProfileData);
   };
 
@@ -245,11 +232,6 @@ const ProfileEdit = () => {
     getPlacePredictionsNationality({ input: inputValue });
   };
 
-  // const handleRemoveField = (index: number) => {
-  //   remove(index);
-  // };
-
-  // errors, dirtyFields, isSubmitted, touchedFields
   return (
     <div className="flex flex-col items-start justify-start">
       <FormWrapper onSubmitHandler={handleSubmit(onSubmitHandler)} addStyles="max-w-[800px]">
@@ -408,22 +390,6 @@ const ProfileEdit = () => {
           inputIconInactive={<AiOutlineEdit />}
         />
 
-        {/* <FormInput
-          register={register}
-          placeholder="4"
-          type="number"
-          name="experience"
-          id="experience"
-          label="Years of Experience"
-          control={control}
-          errors={errors.experience?.message}
-          dirtyField={dirtyFields.experience}
-          watchField={watch('experience')}
-          submitted={isSubmitted}
-          hasInputIcon={true}
-          inputIconActive={<AiOutlineEdit />}
-          inputIconInactive={<AiOutlineEdit />}
-        /> */}
         <h4 className="w-full text-[var(--color-blue-light)]">Experience</h4>
         <FormSelectAsyncCreate
           control={control}
@@ -500,19 +466,6 @@ const ProfileEdit = () => {
           submitted={isSubmitted}
         />
 
-        {/* <button onClick={handleAddField}>Add field</button> */}
-        {/* <ul className="List">
-          <li>
-            <div>Title</div>
-            <div>Company</div>
-            <div>Start Year</div>
-            <div>End Year</div>
-            <div>URL</div>
-          </li>
-        </ul>
-        <div>Previous Experience</div>
-        <div>Education</div>
-        <div>Side Projects</div> */}
         <div className="block w-full">
           <Button style={`btn btn-ghost `} type="submit" action={handleSubmit(onSubmitHandler)}>
             Update Profile
@@ -535,9 +488,6 @@ const ProfileEdit = () => {
         touchedFields={touchedFields}
         onSubmitHandler={handleSubmit(onSubmitHandler)}
       />
-      {/* <ProfileEditEmployments /> */}
-
-      {/* ProfileEditEmploymentController */}
 
       <h4 className="mt-8 w-full text-[var(--color-blue-light)]">Education</h4>
       <ProfileEditEducationController
@@ -554,11 +504,7 @@ const ProfileEdit = () => {
         onSubmitHandler={handleSubmit(onSubmitHandler)}
       />
 
-      {/* <h4 className="mt-8 w-full text-[var(--color-blue-light)]">Education</h4>
-      <ProfileEditEducation /> */}
-
       <h4 className="mt-8 w-full text-[var(--color-blue-light)]">Side Projects</h4>
-      {/* <ProfileEditSideProjects /> */}
       <ProfileEditSideProjectsController
         fields={fieldsSideProject}
         append={appendSideProject}

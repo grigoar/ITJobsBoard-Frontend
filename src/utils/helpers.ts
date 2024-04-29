@@ -2,8 +2,6 @@
 
 import { loadThemeLS, saveThemeLS } from '@/store/localStorage/appTheme';
 import { toast } from 'react-toastify';
-// import { GetServerSidePropsContext, PreviewData } from 'next';
-// import { ParsedUrlQuery } from 'querystring';
 
 export const changeBodyTheme = (newTheme: string) => {
   document.body.className = `${newTheme.toLowerCase()}`;

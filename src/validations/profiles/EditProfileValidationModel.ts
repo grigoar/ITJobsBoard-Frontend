@@ -20,7 +20,6 @@ export type EditMyProfileValidationModel = {
   twitter?: string;
   bio?: string;
   phoneNumber?: string;
-  // languages?: string[];
   preferredMinHourRate?: number;
   employments?: EmploymentEntryModel[];
   educations?: EducationEntryModel[];

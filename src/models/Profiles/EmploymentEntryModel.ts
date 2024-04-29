@@ -4,8 +4,6 @@ export type EmploymentEntryModel = {
   startYear: string;
   endYear: string;
   description?: string;
-  // startYear: number;
-  // endYear: number;
   url?: string;
   indexOrder?: number;
 };

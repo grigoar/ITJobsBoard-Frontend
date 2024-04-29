@@ -1,4 +1,3 @@
-import React from 'react';
 import { BlogPostModel } from '../../../models/BlogPosts/BlogPostModel';
 import PostItem from './PostItem';
 
@@ -6,25 +5,9 @@ interface Props {
   posts: BlogPostModel[];
 }
 
-// .allPostsTitle {
-//   position: absolute;
-//   top: 0;
-//   left: 50%;
-//   transform: translate(-50%, -50%);
-//   background-color: var(--color-blue-dark);
-//   border: 1px solid white;
-//   border-radius: 1rem;
-//   padding: var(--space-sm);
-//   z-index: 100;
-//   color: var(--color-blue-dark);
-//   color: var(--color-grey-light-1);
-//   min-width: 160px;
-// }
-
 const PostsGrid = ({ posts }: Props) => {
   return (
     <section className={'relative  mb-10 mt-16 border-t-2 border-[color:var(--color-accent)] pt-7'}>
-      {/* <h2 className={classes.allPostsTitle}>All posts</h2> */}
       <h1
         className={
           'allPostsTitle top absolute left-[50%] min-w-[140px] translate-x-[-50%]  translate-y-[-135%] transform bg-primary px-3 text-center text-[25px] lg:translate-y-[-125%] lg:text-[30px]'
